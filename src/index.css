@@ -1,9 +1,33 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@font-face {
+  font-family: Mont-Regular;
+  src: url(.././public/fonts/Mont-Regular.otf);
+}
+
+.mont-regular {
+  font-family: Mont-Regular;
+}
+
+@font-face {
+  font-family: Mont-Bold;
+  src: url(.././public/fonts/Mont-Bold.otf);
+}
+
+.mont-bold {
+  font-family: Mont-Bold;
+}
+
+@font-face {
+  font-family: Mont-Semibold;
+  src: url(.././public/fonts/Mont-SemiBold.otf);
+}
+
+.mont-semibold {
+  font-family: Mont-Semibold;
+}
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Mont-Regular, Inter, system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
