@@ -45,7 +45,7 @@ export const Header: React.FC = () => {
           <HeaderLogoLink to="">
             <Box
               component="img"
-              src="./public/img/header/logo.svg"
+              src="/img/header/logo.svg"
               alt="Nice Gadget Logo"
             />
           </HeaderLogoLink>
