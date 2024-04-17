@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import './App.css';
-import useFetchData from './utils/client';
+import useFetchData from './utils/useFetchData';
 import { Phone } from './types/Phone';
 
 function App() {
