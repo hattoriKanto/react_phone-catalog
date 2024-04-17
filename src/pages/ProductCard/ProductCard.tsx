@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Card from '@mui/material/Card';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Product } from '../../types/Product';
 import {
   Button,
   CardContent,
@@ -13,7 +14,13 @@ import {
   Typography,
 } from '@mui/material';
 
-export const ProductCard = () => {
+type Props = {
+  product: Product;
+};
+
+export const ProductCard: React.FC<Props> = ({ product }) => {
+  const { name, price, fullPrice, screen, capacity, ram, image } = product;
+
   const [isFavorite, setIsFavorite] = useState(false);
   const [isCart, setIsCart] = useState(false);
 
@@ -34,7 +41,7 @@ export const ProductCard = () => {
       <CardMedia
         component="img"
         height="50%"
-        image={`img/phones/apple-iphone-7/black/00.webp`}
+        image={image}
         sx={{
           pt: 4,
           height: 196,
@@ -45,11 +52,11 @@ export const ProductCard = () => {
       />
       <CardContent sx={{ m: 1 }}>
         <Typography variant="h6" component="div">
-          Apple iPhone Xs 64GB Silver (iMT9G2FS/A)
+          {name}
         </Typography>
         <Stack direction="row" spacing={2} sx={{ pt: 1, pb: 1 }}>
           <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-            $799
+            {`$${price}`}
           </Typography>
           <Typography
             variant="h5"
@@ -59,7 +66,7 @@ export const ProductCard = () => {
               textDecoration: 'line-through',
             }}
           >
-            $899
+            {`$${fullPrice}`}
           </Typography>
         </Stack>
 
@@ -77,7 +84,7 @@ export const ProductCard = () => {
             variant="body1"
             sx={{ color: 'black', fontWeight: 'bold' }}
           >
-            5.8" OLED
+            {screen}
           </Typography>
         </Stack>
         <Stack
@@ -92,7 +99,7 @@ export const ProductCard = () => {
             variant="body1"
             sx={{ color: 'black', fontWeight: 'bold' }}
           >
-            64 GB
+            {capacity}
           </Typography>
         </Stack>
         <Stack
@@ -107,7 +114,7 @@ export const ProductCard = () => {
             variant="body1"
             sx={{ color: 'black', fontWeight: 'bold' }}
           >
-            4 GB
+            {ram}
           </Typography>
         </Stack>
 
