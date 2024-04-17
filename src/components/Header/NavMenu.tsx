@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 
 import { NavList, NavListItem } from './Styles';
-import { HeaderNavLinks } from '../../Types/HeaderNavLinks';
+import { HeaderNavLinks } from '../../types/HeaderNavLinks';
 import { ActiveLink } from './ActiveLink';
 
 export const NavMenu: React.FC = () => {

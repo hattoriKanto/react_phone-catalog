@@ -1,5 +1,5 @@
 import useFetchData from './utils/useFetchData';
-import { Phone } from './Types/Phone';
+import { Phone } from './types/Phone';
 
 import { Header } from './components/Header/Header';
 import { Outlet } from 'react-router-dom';
