@@ -2,22 +2,22 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 type FetchState<T> = {
-  data: T | null;
+  data: T[] | null;
   isLoading: boolean;
   error: Error | null;
 };
 
 function useFetchData<T>(url: string): FetchState<T> {
-  const BASE_URL = '/react_phone-catalog/public/api/'
+  const BASE_URL = '/react_phone-catalog/api/';
 
-  const [data, setData] = useState<T | null>(null);
+  const [data, setData] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<T>(BASE_URL + url);
+        const response = await axios.get<T[]>(BASE_URL + url);
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
