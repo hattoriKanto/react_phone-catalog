@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 type FetchState<T> = {
-  data: T[] | null;
+  data: T[];
   isLoading: boolean;
   error: Error | null;
 };
