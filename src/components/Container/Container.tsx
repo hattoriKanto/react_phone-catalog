@@ -7,7 +7,7 @@ type Props = {
 
 const Container: React.FC<Props> = ({ children }) => (
   <MuiContainer sx={{
-    maxWidth: {desktop: 1200, tablet: 576, mobile: 288},
+    maxWidth: {md: 1200, sm: 576, xs: 288},
   }} disableGutters>
     {children}
   </MuiContainer>
