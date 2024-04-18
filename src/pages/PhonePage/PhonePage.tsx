@@ -25,7 +25,7 @@ export const PhonePage: FC = () => {
   return (
       <CustomGrid>
         {slicedData?.map(phone => (
-          <GridStyled item xs={1} spacing={16} md={1}>
+          <GridStyled item xs={1} md={1} key={phone.id}>
             <ProductCard product={phone} />
           </GridStyled>
         ))}
