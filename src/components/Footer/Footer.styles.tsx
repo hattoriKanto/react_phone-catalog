@@ -1,5 +1,6 @@
 import { Box, Stack, styled } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 
 export const FooterLogoLink = styled(Link)(({ theme }) => ({
   [theme.breakpoints.up('xs')]: {
@@ -10,11 +11,11 @@ export const FooterLogoLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-export const BackToTopButton = styled('a')(({ theme }) => ({
+export const BackToTopButton = styled(HashLink)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   cursor: 'pointer',
-  fontFamily: 'Mont-Bold, sefif',
+  fontFamily: 'Mont, serif',
   fontWeight: 700,
   fontSize: '12px',
   color: '#89939A',
@@ -42,6 +43,8 @@ export const Footer = styled(Box)(() => ({
   paddingTop: 32,
   paddingBottom: 32,
   marginTop: '700px',
+  background: '#FFFFFF',
+  boxShadow: '0px -1px 0px 0px #E2E6E9',
 }));
 
 export const FooterLinks = styled(Stack)(({ theme }) => ({
@@ -59,7 +62,7 @@ export const FooterLinks = styled(Stack)(({ theme }) => ({
 }));
 
 export const FooterLink = styled(Link)({
-  fontFamily: 'Mont-Bold, serif',
+  fontFamily: 'Mont, serif',
   fontWeight: 800,
   fontSize: 12,
   color: '#89939A',

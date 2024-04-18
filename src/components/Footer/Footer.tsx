@@ -9,8 +9,7 @@ import {
   ButtonToTopIcon,
 } from './Footer.styles';
 
-const Footer = () => {
-  return (
+const Footer = () => (
     <StyledFooter component="footer">
       <Container>
         <FooterContent>
@@ -18,27 +17,26 @@ const Footer = () => {
             <img src="img/logo.svg" alt="" />
           </FooterLogoLink>
           <FooterLinks
-            spacing={{ mobile: 2, desktop: 13 }}
-            direction={{ mobile: 'column', tablet: 'row' }}
+            spacing={{ xs: 2, md: 13 }}
+            direction={{ xs: 'column', sm: 'row' }}
           >
-            <FooterLink to="/" className={'footer-link'}>
+            <FooterLink to="/">
               Github
             </FooterLink>
-            <FooterLink to="/" className={'footer-link'}>
+            <FooterLink to="/">
               Contact
             </FooterLink>
-            <FooterLink to="/" className={'footer-link'}>
+            <FooterLink to="/">
               Rights
             </FooterLink>
           </FooterLinks>
-          <BackToTopButton href="#root">
+          <BackToTopButton to="#root">
             Back to top
             <ButtonToTopIcon src="img/back-to-top-button.svg" />
           </BackToTopButton>
         </FooterContent>
       </Container>
     </StyledFooter>
-  );
-};
+);
 
 export default Footer;
