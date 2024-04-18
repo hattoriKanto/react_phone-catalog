@@ -1,9 +1,8 @@
 import { Typography } from '@mui/material';
 import { FC } from 'react';
 import { BurgerMenu } from '../BurgerMenu/BurgerMenu';
-import useFetchData from '../../utils/useFetchData';
-import { Product } from '../../types';
 import { ProductCard } from '../ProductCard/ProductCard';
+import { Product } from '../../types';
 
 export const Dump: FC = () => {
   const { data } = useFetchData<Product>('products.json');

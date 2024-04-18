@@ -11,6 +11,7 @@ import {
   StyledNavLinkBox,
   StyledRootContainer,
 } from './BurgerMenuStyles';
+import { customTypography } from '../../theme';
 
 const TABS = {
   HOME: '/home',
@@ -24,7 +25,7 @@ export const BurgerMenu: React.FC = () => {
     <StyledRootContainer disableGutters>
       <StyledList>
         {Object.entries(TABS).map(([title, path]) => (
-          <StyledListItem key={title}>
+          <StyledListItem key={title} sx={customTypography.subtitle1}>
             <StyledNavLink to={path}>{title}</StyledNavLink>
           </StyledListItem>
         ))}
