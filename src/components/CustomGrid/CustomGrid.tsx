@@ -21,37 +21,34 @@ export const CustomGrid: React.FC<Props> = ({ children }) => {
     switch (true) {
       case isDesktop:
         return {
-          gridTemplateColumns: "270px 270px 270px 270px"
+          gridTemplateColumns: 'repeat(4, 1fr)'
         };
       case isTablet:
         return {
-          gridTemplateColumns: "270px 270px"
+          gridTemplateColumns: 'repeat(2, 1fr)'
         };
       case isMobile:
         return {
-          gridTemplateColumns: "270px"
+          gridTemplateColumns: "1fr"
         };
       default:
         return {
-          gridTemplateColumns: "270px 270px 270px 270px"
+          gridTemplateColumns: 'repeat(4, 1fr)'
         };
     }
   };
 
   return (
-    <Container sx={{
-      width: '576px',
+    <Box sx={{
+      width: 0,
       margin: '0 auto',
-    }}>
-      <Box sx={{
-        display: "grid",
-        justifyContent: "center",
-        placeItems: 'center',
-        columnGap: "16px",
-        rowGap: '40px',
-      }} {...getGridProps()}>
-        {children}
-      </Box>
-    </Container>
+      display: "grid",
+      justifyContent: "center",
+      placeItems: 'center',
+      columnGap: "16px",
+      rowGap: '40px',
+    }} {...getGridProps()}>
+      {children}
+    </Box>
   )
 }
