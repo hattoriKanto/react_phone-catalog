@@ -39,7 +39,7 @@ export const Footer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   paddingTop: 32,
   paddingBottom: 32,
-  marginTop: '700px',
+  marginTop: '20px',
   background: theme.palette.white.main,
   boxShadow: '0px -1px 0px 0px #E2E6E9',
 }));
