@@ -11,7 +11,7 @@ import {
   StyledNavLinkBox,
   StyledRootContainer,
 } from './BurgerMenuStyles';
-import { customTypography } from '../../theme';
+import { customTypography } from '../../theme/typography.config.ts';
 
 const TABS = {
   HOME: '/home',
