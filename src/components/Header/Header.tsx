@@ -16,7 +16,7 @@ import {
 } from './Styles';
 import { NavMenu } from './NavMenu';
 import { ActiveLink } from './ActiveLink';
-import { HeaderOtherLinks } from '../../types/HeaderOtherLinks';
+import { HeaderOtherLinks } from '../../Types/HeaderOtherLinks';
 
 export const Header: React.FC = () => {
   const locationPathname = useLocation().pathname;

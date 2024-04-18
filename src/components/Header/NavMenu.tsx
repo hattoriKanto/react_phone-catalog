@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, ListItem } from '@mui/material';
 
-import { HeaderNavLinks } from '../../types/HeaderNavLinks';
+import { HeaderNavLinks } from '../../Types/HeaderNavLinks';
 import { ActiveLink } from './ActiveLink';
 import { NavList } from '.';
 
