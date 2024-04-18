@@ -36,10 +36,12 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   const cartQuantity = useMemo(() => cart.length, [cart]);
 
   const addToCart = (product: Product) => {
-    const updatedCart = [...cart, product];
-
-    setCart(updatedCart);
-    saveCartToLocalStorage(updatedCart);
+    if (!cart.some((item: Product) => item.id === product.id)) {
+      const updatedCart = [...cart, product];
+  
+      setCart(updatedCart);
+      saveCartToLocalStorage(updatedCart);
+    }
   };
 
   const deleteFromCart = (productId: number) => {
