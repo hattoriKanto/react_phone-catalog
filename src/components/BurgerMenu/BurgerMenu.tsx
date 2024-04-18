@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Box } from '@mui/material';
-import favouritesIcon from '../../../public/img/icons/favouritesIcon.svg';
-import cartIcon from '../../../public/img/icons/cartIcon.svg';
+import favouritesIcon from '/img/icons/favouritesIcon.svg';
+import cartIcon from '/img/icons/cartIcon.svg';
 import {
   StyledIconsContainer,
   StyledList,
@@ -22,10 +22,6 @@ const TABS = {
 export const BurgerMenu: React.FC = () => {
   return (
     <StyledRootContainer disableGutters>
-      {/* <Box sx={{ marginBottom: '24px' }}>
-        <Header />
-      </Box> */}
-
       <StyledList>
         {Object.entries(TABS).map(([title, path]) => (
           <StyledListItem key={title}>
@@ -42,16 +38,7 @@ export const BurgerMenu: React.FC = () => {
         </StyledNavLinkBox>
         <StyledNavLinkBox>
           <NavLink to="/cart">
-            <Box
-              component="img"
-              // sx={{
-              //   '& img': {
-              //     color: 'red',
-              //   },
-              // }}
-              alt="Cart menu"
-              src={cartIcon}
-            />
+            <Box component="img" alt="Cart menu" src={cartIcon} />
           </NavLink>
         </StyledNavLinkBox>
       </StyledIconsContainer>

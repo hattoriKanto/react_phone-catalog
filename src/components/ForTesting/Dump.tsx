@@ -10,7 +10,7 @@ export const Dump: FC = () => {
 
   return (
     <>
-      <ProductCard product={data[0]} />
+      {data.length > 0 && <ProductCard product={data[0]} />}
       <Typography variant="h1">Some test</Typography>
       <Typography variant="h2">Some test</Typography>
       <Typography variant="h3">Some test</Typography>

@@ -138,7 +138,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               {!isFavorite ? (
                 <FavoriteBorderIcon />
               ) : (
-                <FavoriteIcon sx={{ color: '#476DF4' }} />
+                <FavoriteIcon color="secondaryAccent" />
               )}
             </IconButton>
           </Grid>
