@@ -25,16 +25,16 @@ export const Header: React.FC = () => {
   const handleChangeIcon = (link: string) => {
     if (link === HeaderOtherLinks.cart) {
       return locationPathname === HeaderOtherLinks.cart ? (
-        <ShoppingCartIcon color="warning"></ShoppingCartIcon>
+        <ShoppingCartIcon color="primary"></ShoppingCartIcon>
       ) : (
-        <ShoppingCartOutlinedIcon></ShoppingCartOutlinedIcon>
+        <ShoppingCartOutlinedIcon color="primary"></ShoppingCartOutlinedIcon>
       );
     }
 
     return locationPathname === HeaderOtherLinks.favourites ? (
-      <FavoriteIcon color="warning"></FavoriteIcon>
+      <FavoriteIcon color="primary"></FavoriteIcon>
     ) : (
-      <FavoriteBorderIcon></FavoriteBorderIcon>
+      <FavoriteBorderIcon color="primary"></FavoriteBorderIcon>
     );
   };
 
@@ -45,7 +45,7 @@ export const Header: React.FC = () => {
           <HeaderLogoLink to="">
             <Box
               component="img"
-              src="/img/header/logo.svg"
+              src="img/header/logo.svg"
               alt="Nice Gadget Logo"
             />
           </HeaderLogoLink>

@@ -1,16 +1,16 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, ListItem } from '@mui/material';
 
-import { NavList, NavListItem } from './Styles';
 import { HeaderNavLinks } from '../../types/HeaderNavLinks';
 import { ActiveLink } from './ActiveLink';
+import { NavList } from '.';
 
 export const NavMenu: React.FC = () => {
   return (
     <Box component="nav">
-      <NavList>
+      <NavList style={{ padding: 0 }}>
         {Object.entries(HeaderNavLinks).map(([text, link]) => (
-          <NavListItem key={text}>
+          <ListItem key={text} style={{ padding: 0 }}>
             <ActiveLink
               label={text}
               to={link}
@@ -18,7 +18,7 @@ export const NavMenu: React.FC = () => {
                 borderBottom: '3px solid #0f0f11',
               }}
             />
-          </NavListItem>
+          </ListItem>
         ))}
       </NavList>
     </Box>
