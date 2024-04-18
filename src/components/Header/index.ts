@@ -1,3 +1,3 @@
 export * from './NavMenu';
 export * from './Header';
-export * from './Styles';
+export * from './Header.styles';

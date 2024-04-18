@@ -1,6 +1,7 @@
 import { CSSProperties } from 'react';
-import { HeaderNavLinks } from '.';
-import { Button, Typography } from '@mui/material';
+import { StyledButton, StyledLink } from '.';
+import { useTheme } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 
 interface ActiveLinkProps {
   label: string | JSX.Element;
@@ -13,36 +14,47 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
   to,
   activeStyle,
 }) => {
+  const theme = useTheme();
+
+  const primary = theme.palette.primary.main;
+  const secondary = theme.palette.secondary.main;
   const isJSXElem = typeof label !== 'string';
 
-  return (
-    <HeaderNavLinks
+  return isJSXElem ? (
+    <StyledLink
       to={to}
       style={({ isActive }) => (isActive ? activeStyle : undefined)}
-      borderleft={isJSXElem.toString()}
+      theme={theme}
+      issvg={isJSXElem}
+    >
+      {() => {
+        return (
+          <StyledButton disableElevation disableRipple>
+            {label}
+          </StyledButton>
+        );
+      }}
+    </StyledLink>
+  ) : (
+    <StyledLink
+      to={to}
+      style={({ isActive }) => (isActive ? activeStyle : undefined)}
+      theme={theme}
+      issvg={isJSXElem}
     >
       {({ isActive }) => {
-        return !isJSXElem ? (
+        return (
           <Typography
-            color={isActive ? 'primary' : 'secondary'}
-            variant="subtitle1"
+            variant="button"
+            sx={{
+              fontSize: '12px',
+              color: isActive ? primary : secondary,
+            }}
           >
             {label}
           </Typography>
-        ) : (
-          <Button
-            sx={{
-              '&:hover': {
-                background: 'transparent',
-              },
-            }}
-            disableElevation
-            disableRipple
-          >
-            {label}
-          </Button>
         );
       }}
-    </HeaderNavLinks>
+    </StyledLink>
   );
 };
