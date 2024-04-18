@@ -119,16 +119,17 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         </Stack>
 
         <Grid container spacing={2} sx={{ pt: 4, alignItems: 'center' }}>
-          <Grid xs={8}>
+          <Grid item xs={8}>
             <Button
               variant={!isCart ? 'contained' : 'outlined'}
               onClick={() => setIsCart(prev => !prev)}
+              color="accent"
             >
               Add to cart
             </Button>
           </Grid>
 
-          <Grid xs={4}>
+          <Grid item xs={4}>
             <IconButton
               sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
               aria-label="add to favorites"

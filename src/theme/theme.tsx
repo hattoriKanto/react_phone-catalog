@@ -7,18 +7,6 @@ const theme = createTheme({
   palette: customPalette,
   breakpoints: customBreakpoints,
   typography: customTypography,
-  components: {
-    MuiButton: {
-      defaultProps: {
-        color: 'accent',
-      },
-      styleOverrides: {
-        root: {
-          color: 'white',
-        },
-      },
-    },
-  },
 });
 
 interface CustomThemeProviderProps {

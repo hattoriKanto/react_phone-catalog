@@ -19,7 +19,7 @@ const TABS = {
   ACCESSORIES: '/accessories',
 };
 
-export const HomePage: React.FC = () => {
+export const BurgerMenu: React.FC = () => {
   return (
     <StyledRootContainer disableGutters>
       {/* <Box sx={{ marginBottom: '24px' }}>
