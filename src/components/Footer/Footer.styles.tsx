@@ -2,10 +2,10 @@ import { Box, Stack, styled } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 export const FooterLogoLink = styled(Link)(({ theme }) => ({
-  [theme.breakpoints.up('mobile')]: {
+  [theme.breakpoints.up('xs')]: {
     marginBottom: '32px',
   },
-  [theme.breakpoints.up('tablet')]: {
+  [theme.breakpoints.up('sm')]: {
     marginBottom: 0,
   },
 }));
@@ -23,7 +23,7 @@ export const BackToTopButton = styled('a')(({ theme }) => ({
   padding: '0',
   transition: '0,2s easy-out',
 
-  [theme.breakpoints.up('mobile')]: {
+  [theme.breakpoints.up('xs')]: {
     alignSelf: 'center',
   },
 
@@ -48,11 +48,11 @@ export const FooterLinks = styled(Stack)(({ theme }) => ({
   boxSizing: 'border-box',
   display: 'flex',
   flexDirection: 'row',
-  [theme.breakpoints.up('mobile')]: {
+  [theme.breakpoints.up('xs')]: {
     flexDirection: 'column',
     marginBottom: '32px',
   },
-  [theme.breakpoints.up('tablet')]: {
+  [theme.breakpoints.up('sm')]: {
     flexDirection: 'row',
     marginBottom: 0,
   },
@@ -84,11 +84,11 @@ export const FooterContent = styled(Box)(({ theme }) => ({
   height: '100%',
   width: '100%',
   paddingLeft: 0,
-  [theme.breakpoints.up('mobile')]: {
+  [theme.breakpoints.up('xs')]: {
     flexDirection: 'column',
     alignItems: 'start',
   },
-  [theme.breakpoints.up('tablet')]: {
+  [theme.breakpoints.up('sm')]: {
     flexDirection: 'row',
     alignItems: 'center',
   },
