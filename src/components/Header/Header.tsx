@@ -7,8 +7,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
-import { HeaderOtherLinks } from '../../types/HeaderOtherLinks';
-
 import {
   HeaderBar,
   HeaderContainer,
@@ -18,6 +16,7 @@ import {
 } from './Styles';
 import { NavMenu } from './NavMenu';
 import { ActiveLink } from './ActiveLink';
+import { HeaderOtherLinks } from '../../types/HeaderOtherLinks';
 
 export const Header: React.FC = () => {
   const locationPathname = useLocation().pathname;
