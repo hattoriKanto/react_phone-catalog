@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Card from '@mui/material/Card';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Product } from '../../types';
+import { Product } from '../../types/Product';
 import {
   Button,
   CardContent,
@@ -138,7 +138,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               {!isFavorite ? (
                 <FavoriteBorderIcon />
               ) : (
-                <FavoriteIcon sx={{ color: '#476DF4' }} />
+                <FavoriteIcon color="secondaryAccent" />
               )}
             </IconButton>
           </Grid>

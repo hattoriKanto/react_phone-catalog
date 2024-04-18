@@ -2,30 +2,14 @@ import { Typography } from '@mui/material';
 import { FC } from 'react';
 import { BurgerMenu } from '../BurgerMenu/BurgerMenu';
 import { ProductCard } from '../ProductCard/ProductCard';
+import { Product } from '../../types';
 
 export const Dump: FC = () => {
-  //const { data } = useFetchData<Product[]>('products.json');
-
-  const prod = {
-    id: 1,
-    category: 'phones',
-    itemId: 'apple-iphone-7-32gb-black',
-    name: 'Apple iPhone 7 32GB Black',
-    fullPrice: 400,
-    price: 375,
-    screen: "4.7' IPS",
-    capacity: '32GB',
-    color: 'black',
-    ram: '2GB',
-    year: 2016,
-    image: 'img/phones/apple-iphone-7/black/00.webp',
-  };
-
-  //console.log(data[0]);
+  const { data } = useFetchData<Product>('products.json');
 
   return (
     <>
-      <ProductCard product={prod} />
+      {data.length > 0 && <ProductCard product={data[0]} />}
       <Typography variant="h1">Some test</Typography>
       <Typography variant="h2">Some test</Typography>
       <Typography variant="h3">Some test</Typography>
