@@ -8,7 +8,6 @@ import {
   CardContent,
   CardMedia,
   Divider,
-  Grid,
   IconButton,
   Stack,
   Typography,
@@ -50,8 +49,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           objectPosition: 'center',
         }}
       />
-      <CardContent sx={{ m: 1 }}>
-        <Typography variant="h6" component="div">
+      <CardContent sx={{ m: 1, px: 3 }}>
+        <Typography variant="h4" component="div" sx={{ pt: 1 }}>
           {name}
         </Typography>
         <Stack direction="row" spacing={2} sx={{ pt: 1, pb: 1 }}>
@@ -75,7 +74,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         <Stack
           direction="row"
           spacing={2}
-          sx={{ justifyContent: 'space-between', pt: 1 }}
+          sx={{ justifyContent: 'space-between', pt: 2 }}
         >
           <Typography variant="body1" sx={{ color: '#89939A' }}>
             Screen
@@ -118,31 +117,38 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           </Typography>
         </Stack>
 
-        <Grid container spacing={2} sx={{ pt: 4, alignItems: 'center' }}>
-          <Grid item>
-            <Button
-              variant={!isCart ? 'contained' : 'outlined'}
-              onClick={() => setIsCart(prev => !prev)}
-              color="accent"
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ pt: 2, justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <Button
+            variant={!isCart ? 'contained' : 'outlined'}
+            onClick={() => setIsCart(prev => !prev)}
+            color="accent"
+            sx={{ px: 4, py: 1, '&.MuiButton-contained': { color: '#fff' } }}
+          >
+            <Typography
+              variant="button"
+              color="white"
+              sx={{ textTransform: 'none', textDecoration: 'none' }}
             >
               Add to cart
-            </Button>
-          </Grid>
+            </Typography>
+          </Button>
 
-          <Grid item>
-            <IconButton
-              sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
-              aria-label="add to favorites"
-              onClick={() => setIsFavorite(prev => !prev)}
-            >
-              {!isFavorite ? (
-                <FavoriteBorderIcon />
-              ) : (
-                <FavoriteIcon color="secondaryAccent" />
-              )}
-            </IconButton>
-          </Grid>
-        </Grid>
+          <IconButton
+            sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
+            aria-label="add to favorites"
+            onClick={() => setIsFavorite(prev => !prev)}
+          >
+            {!isFavorite ? (
+              <FavoriteBorderIcon />
+            ) : (
+              <FavoriteIcon color="secondaryAccent" />
+            )}
+          </IconButton>
+        </Stack>
       </CardContent>
     </Card>
   );
