@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react';
-import { HeaderNavButton, HeaderNavLinks } from '.';
+import { HeaderNavLinks } from '.';
+import { Button, Typography } from '@mui/material';
 
 interface ActiveLinkProps {
   label: string | JSX.Element;
@@ -18,17 +19,30 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
     <HeaderNavLinks
       to={to}
       style={({ isActive }) => (isActive ? activeStyle : undefined)}
-      borderLeft={isJSXElem}
+      borderleft={isJSXElem.toString()}
     >
-      {({ isActive }) => (
-        <HeaderNavButton
-          disableElevation
-          disableRipple
-          color={isActive ? 'warning' : 'inherit'}
-        >
-          {label}
-        </HeaderNavButton>
-      )}
+      {({ isActive }) => {
+        return !isJSXElem ? (
+          <Typography
+            color={isActive ? 'primary' : 'secondary'}
+            variant="subtitle1"
+          >
+            {label}
+          </Typography>
+        ) : (
+          <Button
+            sx={{
+              '&:hover': {
+                background: 'transparent',
+              },
+            }}
+            disableElevation
+            disableRipple
+          >
+            {label}
+          </Button>
+        );
+      }}
     </HeaderNavLinks>
   );
 };
