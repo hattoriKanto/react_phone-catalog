@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { List, ListItem } from '@mui/material';
 import { Container, styled } from '@mui/system';
-import { customPalette } from '../../theme';
+import { customPalette } from '../../theme/palete.config.ts';
 
 export const StyledRootContainer = styled(Container)({
   position: 'relative',
