@@ -11,8 +11,9 @@ export const Dump: FC = () => {
   return (
     <>
       <Stack direction="row" spacing={2} sx={{ pt: 1, pb: 1 }}>
-        {data.length > 0 && <ProductCard product={data[2]} />}
         {data.length > 0 && <ProductCard product={data[0]} />}
+        {data.length > 0 && <ProductCard product={data[1]} />}
+        {data.length > 0 && <ProductCard product={data[2]} />}
       </Stack>
 
       <Typography variant="h1">Some test</Typography>
