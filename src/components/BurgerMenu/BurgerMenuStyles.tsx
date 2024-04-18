@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import { List, ListItem } from '@mui/material';
 import { Container, styled } from '@mui/system';
+import { customPalette } from '../../theme';
 
 export const StyledRootContainer = styled(Container)({
   position: 'relative',
   width: '320px',
   height: '560px',
-  border: '1px solid #E2E6E9',
+  border: '1px solid ${customPalette.element}',
 });
 
 export const StyledList = styled(List)({
@@ -19,19 +20,16 @@ export const StyledListItem = styled(ListItem)({
   justifyContent: 'center',
   padding: '0',
   cursor: 'pointer',
-  fontWeight: '800',
-  fontSize: '12px',
-  lineHeight: '14px',
 });
 
 export const StyledNavLink = styled(NavLink)({
-  color: '#89939A',
+  color: `${customPalette.secondary}`,
   paddingBottom: '8px',
-  borderBottom: '2px solid white',
+  borderBottom: '2px solid ${customPalette.white}',
   boxSizing: 'border-box',
   ':hover, :focus': {
-    color: 'black',
-    borderBottomColor: 'black',
+    color: `${customPalette.primary}`,
+    borderBottomColor: `${customPalette.primary}`,
   },
 });
 
@@ -40,7 +38,7 @@ export const StyledIconsContainer = styled(Container)({
   bottom: 0,
   height: '70px',
   display: 'flex',
-  border: '1px solid #E2E6E9',
+  border: '1px solid ${customPalette.element}',
 });
 
 export const StyledNavLinkBox = styled(Container)({
@@ -48,8 +46,8 @@ export const StyledNavLinkBox = styled(Container)({
   justifyContent: 'center',
   alignItems: 'center',
   boxSizing: 'border-box',
-  border: '0.5px solid #E2E6E9',
+  border: '0.5px solid ${customPalette.element}',
   ':hover, :focus': {
-    borderBottom: '2px solid black',
+    borderBottom: '2px solid ${customPalette.main}',
   },
 });
