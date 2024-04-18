@@ -126,9 +126,15 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             variant={!isCart ? 'contained' : 'outlined'}
             onClick={() => setIsCart(prev => !prev)}
             color="accent"
-            sx={{ px: 3, py: 1 }}
+            sx={{ px: 4, py: 1, '&.MuiButton-contained': { color: '#fff' } }}
           >
-            Add to cart
+            <Typography
+              variant="button"
+              color="white"
+              sx={{ textTransform: 'none', textDecoration: 'none' }}
+            >
+              Add to cart
+            </Typography>
           </Button>
 
           <IconButton
