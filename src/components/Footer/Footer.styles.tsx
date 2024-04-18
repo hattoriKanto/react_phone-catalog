@@ -15,10 +15,7 @@ export const BackToTopButton = styled(HashLink)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   cursor: 'pointer',
-  fontFamily: 'Mont, serif',
-  fontWeight: 700,
-  fontSize: '12px',
-  color: '#89939A',
+  color: theme.palette.secondary.main,
   textTransform: 'none',
   textDecoration: 'none',
   padding: '0',
@@ -30,20 +27,20 @@ export const BackToTopButton = styled(HashLink)(({ theme }) => ({
 
   '&:hover': {
     backgroundColor: 'transparent',
-    color: '#0F0F11',
+    color: theme.palette.primary.main,
   },
   '&:focus': {
     outline: 'none',
   },
 }));
 
-export const Footer = styled(Box)(() => ({
+export const Footer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   paddingTop: 32,
   paddingBottom: 32,
   marginTop: '700px',
-  background: '#FFFFFF',
+  background: theme.palette.white.main,
   boxShadow: '0px -1px 0px 0px #E2E6E9',
 }));
 
@@ -61,18 +58,15 @@ export const FooterLinks = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export const FooterLink = styled(Link)({
-  fontFamily: 'Mont, serif',
-  fontWeight: 800,
-  fontSize: 12,
-  color: '#89939A',
+export const FooterLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.secondary.main,
   textTransform: 'uppercase',
   textDecoration: 'inherit',
 
   '&:hover': {
-    color: '#0F0F11',
+    color: theme.palette.primary.main,
   },
-});
+}));
 
 export const ButtonToTopIcon = styled('img')({
   display: 'inline-block',
