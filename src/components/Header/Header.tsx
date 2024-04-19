@@ -13,7 +13,6 @@ import {
 } from './Header.styles';
 import { NavMenu } from './NavMenu';
 
-import Container from '../Container/Container';
 import { NavBarButtons } from '.';
 import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';
 
@@ -28,37 +27,37 @@ export const Header: React.FC<Props> = ({
 }) => {
   return (
     <StyledAppBar>
-      <Container>
-        <StyledFlexWrapper>
-          <StyledWrapper>
-            <StyledLogoLink to="" onClick={() => onBurgerToggle(false)}>
-              <StyledLogo src="img/header/logo.svg" alt="Nice Gadget Logo" />
-            </StyledLogoLink>
+      {/* <Container> */}
+      <StyledFlexWrapper>
+        <StyledWrapper>
+          <StyledLogoLink to="" onClick={() => onBurgerToggle(false)}>
+            <StyledLogo src="img/header/logo.svg" alt="Nice Gadget Logo" />
+          </StyledLogoLink>
 
-            <NavMenu />
-          </StyledWrapper>
+          <NavMenu />
+        </StyledWrapper>
 
-          <NavBarButtons />
+        <NavBarButtons />
 
-          <StyledBurgerButton
-            disableElevation
-            disableRipple
-            onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
-          >
-            {isBurgerMenuShown ? (
-              <MenuOpenIcon
-                color="primary"
-                sx={{ width: '16px', height: '16px' }}
-              ></MenuOpenIcon>
-            ) : (
-              <MenuIcon
-                color="primary"
-                sx={{ width: '16px', height: '16px' }}
-              ></MenuIcon>
-            )}
-          </StyledBurgerButton>
-        </StyledFlexWrapper>
-      </Container>
+        <StyledBurgerButton
+          disableElevation
+          disableRipple
+          onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
+        >
+          {isBurgerMenuShown ? (
+            <MenuOpenIcon
+              color="primary"
+              sx={{ width: '16px', height: '16px' }}
+            ></MenuOpenIcon>
+          ) : (
+            <MenuIcon
+              color="primary"
+              sx={{ width: '16px', height: '16px' }}
+            ></MenuIcon>
+          )}
+        </StyledBurgerButton>
+      </StyledFlexWrapper>
+      {/* </Container> */}
     </StyledAppBar>
   );
 };

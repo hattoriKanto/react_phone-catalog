@@ -1,29 +1,32 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { CartContextType } from './CartContextType';
 import { Product } from '../../types';
+import { ProductInCart } from '../../types/ProductInCart';
 
 export const CartContext = createContext<CartContextType>({
   cart: [],
   cartQuantity: 0,
-  addToCart: (product: Product) => {},
-  deleteFromCart: (productId: number) => {},
+  addToCart: () => {},
+  deleteFromCart: () => {},
   clearCart: () => {},
-  isProductInCart: (id: number) => false,
+  isProductInCart: () => false,
+  increaseQuantity: () => {},
+  decreaseQuantity: () => {},
 });
 
 type Props = {
   children: React.ReactNode;
 };
 
-const CARD_KEY = 'card';
+const CART_KEY = 'cart';
 
-const saveCartToLocalStorage = (currentCart: Product[]) => {
-  localStorage.setItem(CARD_KEY, JSON.stringify(currentCart));
+const saveCartToLocalStorage = (currentCart: ProductInCart[]) => {
+  localStorage.setItem(CART_KEY, JSON.stringify(currentCart));
 };
 
 export const CartProvider: React.FC<Props> = ({ children }) => {
   const [cart, setCart] = useState(() => {
-    const currentCart = localStorage.getItem(CARD_KEY);
+    const currentCart = localStorage.getItem(CART_KEY);
 
     if (currentCart === null) {
       return [];
@@ -32,7 +35,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     try {
       return JSON.parse(currentCart);
     } catch (error) {
-      localStorage.removeItem(CARD_KEY);
+      localStorage.removeItem(CART_KEY);
 
       return [];
     }
@@ -41,8 +44,11 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   const cartQuantity = useMemo(() => cart.length, [cart]);
 
   const addToCart = (product: Product) => {
-    if (!cart.some((item: Product) => item.id === product.id)) {
-      const updatedCart = [...cart, product];
+    if (!cart.some((item: ProductInCart) => item.prodId === product.id)) {
+      const updatedCart = [
+        ...cart,
+        { prodId: product.id, product, quantity: 1 },
+      ];
 
       setCart(updatedCart);
       saveCartToLocalStorage(updatedCart);
@@ -51,7 +57,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
 
   const deleteFromCart = (productId: number) => {
     const updatedCart = cart.filter(
-      (product: Product) => product.id !== productId,
+      (product: ProductInCart) => product.prodId !== productId,
     );
 
     setCart(updatedCart);
@@ -60,11 +66,47 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem(CARD_KEY);
+    localStorage.removeItem(CART_KEY);
   };
 
   const isProductInCart = (id: number) => {
-    return cart.some((product: Product) => product.id === id);
+    return cart.some((product: ProductInCart) => product.prodId === id);
+  };
+
+  const increaseQuantity = (productId: number) => {
+    const updatedCart = cart.map((product: ProductInCart) => {
+      if (product.prodId === productId) {
+        return {
+          ...product,
+          quantity: product.quantity + 1,
+        };
+      }
+    });
+    console.log(updatedCart);
+    setCart(updatedCart);
+    saveCartToLocalStorage(updatedCart);
+  };
+
+  const decreaseQuantity = (productId: number) => {
+    if (
+      cart.find((product: ProductInCart) => product.prodId === productId)
+        .quantity === 1
+    ) {
+      deleteFromCart(productId);
+      return;
+    }
+
+    const updatedCart = cart.map((product: ProductInCart) => {
+      if (product.prodId === productId) {
+        return {
+          ...product,
+          quantity: product.quantity - 1,
+        };
+      }
+    });
+
+    setCart(updatedCart);
+    saveCartToLocalStorage(updatedCart);
   };
 
   const cartState: CartContextType = {
@@ -74,6 +116,8 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     deleteFromCart,
     clearCart,
     isProductInCart,
+    increaseQuantity,
+    decreaseQuantity,
   };
 
   return (
