@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { HeaderOtherLinks } from '../../types';
+import { HeaderOtherLinks } from '../../Types';
 
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
