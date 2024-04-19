@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Card from '@mui/material/Card';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Product } from '../../Types/Product';
+import { Product } from '../../types';
 import {
   Button,
   CardContent,
@@ -12,7 +12,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { CartContext } from '../../context/CartContext/CartContext';
+import { useCartContext } from '../../hooks/useCartContext';
 
 type Props = {
   product: Product;
@@ -21,12 +21,7 @@ type Props = {
 export const ProductCard: React.FC<Props> = ({ product }) => {
   const { id, name, price, fullPrice, screen, capacity, ram, image } = product;
 
-  const { addToCart, deleteFromCart, isProductInCart } =
-    useContext(CartContext);
-
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const isInCart = isProductInCart(id);
+  const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
 
   const toggleAddToCard = (product: Product) => {
     if (!isInCart) {
@@ -36,12 +31,16 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     }
   };
 
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const isInCart = isProductInCart(id);
+
   return (
     <Card
       sx={{
         boxSizing: 'border-box',
-        width: 272,
-        height: 506,
+        maxWidth: 272,
+        maxHeight: 506,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -57,7 +56,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         sx={{
           pt: 4,
           height: 196,
-          width: 208,
+          maxWidth: 208,
           objectFit: 'contain',
           objectPosition: 'center',
         }}
