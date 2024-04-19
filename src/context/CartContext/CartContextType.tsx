@@ -1,7 +1,8 @@
-import { Product } from '../../Types';
+import { Product } from '../../types';
+import { ProductInCart } from '../../types/ProductInCart';
 
 export type CartContextType = {
-  cart: Product[];
+  cart: ProductInCart[];
   cartQuantity: number;
   addToCart: (product: Product) => void;
   deleteFromCart: (productId: number) => void;

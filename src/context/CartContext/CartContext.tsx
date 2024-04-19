@@ -1,37 +1,32 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { CartContextType } from './CartContextType';
 import { Product } from '../../types';
+import { ProductInCart } from '../../types/ProductInCart';
 
 export const CartContext = createContext<CartContextType>({
   cart: [],
   cartQuantity: 0,
-  addToCart: (product: Product) => {},
-  deleteFromCart: (productId: number) => {},
+  addToCart: () => {},
+  deleteFromCart: () => {},
   clearCart: () => {},
-  isProductInCart: (id: number) => false,
-  increaseQuantity: (productId: number) => {},
-  decreaseQuantity: (productId: number) => {},
+  isProductInCart: () => false,
+  increaseQuantity: () => {},
+  decreaseQuantity: () => {},
 });
-
-type ProductInCart = {
-  prodId: number;
-  product: Product;
-  quantity: number;
-};
 
 type Props = {
   children: React.ReactNode;
 };
 
-const CARD_KEY = 'card';
+const CART_KEY = 'cart';
 
 const saveCartToLocalStorage = (currentCart: ProductInCart[]) => {
-  localStorage.setItem(CARD_KEY, JSON.stringify(currentCart));
+  localStorage.setItem(CART_KEY, JSON.stringify(currentCart));
 };
 
 export const CartProvider: React.FC<Props> = ({ children }) => {
   const [cart, setCart] = useState(() => {
-    const currentCart = localStorage.getItem(CARD_KEY);
+    const currentCart = localStorage.getItem(CART_KEY);
 
     if (currentCart === null) {
       return [];
@@ -40,7 +35,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     try {
       return JSON.parse(currentCart);
     } catch (error) {
-      localStorage.removeItem(CARD_KEY);
+      localStorage.removeItem(CART_KEY);
 
       return [];
     }
@@ -71,7 +66,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem(CARD_KEY);
+    localStorage.removeItem(CART_KEY);
   };
 
   const isProductInCart = (id: number) => {
