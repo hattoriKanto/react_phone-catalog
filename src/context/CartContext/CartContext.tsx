@@ -81,8 +81,10 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
           quantity: product.quantity + 1,
         };
       }
+
+      return product;
     });
-    console.log(updatedCart);
+
     setCart(updatedCart);
     saveCartToLocalStorage(updatedCart);
   };
@@ -103,6 +105,8 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
           quantity: product.quantity - 1,
         };
       }
+
+      return product;
     });
 
     setCart(updatedCart);

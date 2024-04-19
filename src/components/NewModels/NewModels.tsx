@@ -22,7 +22,7 @@ export const NewModels: React.FC = () => {
   const isTablet = useMediaQuery(theme.breakpoints.between(sm, md));
   const isMobile = useMediaQuery(theme.breakpoints.down(sm));
 
-  switch(true) {
+  switch (true) {
     case isDesktop:
       productsPerRow = 4;
       break;
