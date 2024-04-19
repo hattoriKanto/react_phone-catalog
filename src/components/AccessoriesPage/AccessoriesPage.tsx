@@ -1,7 +1,7 @@
 import { CustomGrid } from '../CustomGrid';
 import { ProductCard } from '../ProductCard/ProductCard';
 import useFetchData from '../../utils/useFetchData';
-import { Product } from '../../types';
+import { Product } from '../../Types';
 import { Grid, Typography, styled } from '@mui/material';
 
 const AccessoriesPage = () => {
