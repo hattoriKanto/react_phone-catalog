@@ -58,6 +58,7 @@ export const HomePage: FC = () => {
           {categories.map(category => (
             <Link
               to={category.path}
+              key={category.id}
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
               <CategoryCard category={category} />

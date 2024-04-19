@@ -40,7 +40,7 @@ export const CategoryCard: React.FC<Props> = ({ category }) => {
   };
 
   return (
-    <Box key={category.id}>
+    <Box>
       <Box
         sx={{
           borderRadius: '8px',
