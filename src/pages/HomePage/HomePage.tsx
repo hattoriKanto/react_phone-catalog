@@ -48,7 +48,13 @@ export const HomePage: FC = () => {
         <Typography variant="h2" sx={{ px: 18, pt: 2, pb: '24px' }}>
           Shop by category
         </Typography>
-        <CustomGrid>
+        <CustomGrid
+          columns={{
+            DT: 3,
+            LT: 3,
+            TB: 3,
+          }}
+        >
           {categories.map(category => (
             <Link
               to={category.path}

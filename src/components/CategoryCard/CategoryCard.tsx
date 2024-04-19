@@ -1,22 +1,54 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { Category } from '../../types/Category';
+import { useTheme } from '@mui/material/styles';
+import { customBreakpoints } from '../../theme/breakpoints.config';
 
 type Props = {
   category: Category;
 };
 
 export const CategoryCard: React.FC<Props> = ({ category }) => {
+  const { sm, lg } = customBreakpoints.values;
+  const theme = useTheme();
+
+  const isTablet = useMediaQuery(theme.breakpoints.between(sm, lg)); // 640px to 1199px
+  const isMobile = useMediaQuery(theme.breakpoints.down(sm)); // up to 639p
+
+  interface BoxProps {
+    width: string;
+    height: string;
+  }
+
+  const getBoxProps = (): BoxProps => {
+    switch (true) {
+      case isTablet:
+        return {
+          width: '187px',
+          height: '187px',
+        };
+      case isMobile:
+        return {
+          width: '288px',
+          height: '288px',
+        };
+      default:
+        return {
+          width: '368px',
+          height: '368px',
+        };
+    }
+  };
+
   return (
     <Box key={category.id}>
       <Box
         sx={{
-          width: '368px',
-          height: '368px',
           borderRadius: '8px',
           position: 'relative',
           bgcolor: category.background,
           overflow: 'hidden',
         }}
+        {...getBoxProps()}
       >
         <Box
           component="img"
