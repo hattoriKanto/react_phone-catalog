@@ -1,21 +1,33 @@
+import { Product } from '../../Types/Product.ts';
+import { CartContext } from '../../context/CartContext/CartContext.tsx';
 import Container from '../Container/Container';
 import {
   CartItemWrapper, ContainerLeftSide, ContainerRightSide,
   ContentContainer,
-  DeleteButton,
   DeleteIcon, IconButtonQuantityMinus, IconButtonQuantityPlus,
   Image,
   ProductImage, ProductName, ProductQuantity,
 } from './CartItem.styles.tsx';
-import { Typography } from '@mui/material';
-import { Product } from '../../types';
-import React from 'react';
+import { IconButton, Typography, styled } from '@mui/material';
+import React, { useContext } from 'react';
 
 type Props = {
   product: Product;
 };
-const CartItem: React.FC<Props> = ({ product}) => {
-  const { name, price, image } = product;
+
+export const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.element.main,
+  border: '1px solid {theme.palette.element.main}',
+  borderRadius: '50%',
+  ':hover, :focus': {
+    color: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,
+  },
+}));
+
+const CartItem: React.FC<Props> = ({ product }) => {
+  const { deleteFromCart } = useContext(CartContext);
+  const { id, name, price, image } = product;
 
   return (
     <Container>
@@ -28,9 +40,9 @@ const CartItem: React.FC<Props> = ({ product}) => {
             spacing={{ xs: 2, sm: 3 }}
             direction={{ xs: 'row' }}
           >
-            <DeleteButton>
+            <StyledIconButton onClick={() => deleteFromCart(id)}>
               <DeleteIcon />
-            </DeleteButton>
+            </StyledIconButton>
 
             <ProductImage>
               <Image src={image} />

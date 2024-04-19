@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import Card from '@mui/material/Card';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Product } from '../../types/Product';
+import { Product } from '../../Types/Product';
 import {
   Button,
   CardContent,
