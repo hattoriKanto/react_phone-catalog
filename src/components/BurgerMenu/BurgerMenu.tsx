@@ -1,48 +1,47 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Box } from '@mui/material';
-import favouritesIcon from '/img/icons/favouritesIcon.svg';
-import cartIcon from '/img/icons/cartIcon.svg';
 import {
-  StyledIconsContainer,
-  StyledList,
-  StyledListItem,
-  StyledNavLink,
-  StyledNavLinkBox,
-  StyledRootContainer,
-} from './BurgerMenuStyles';
-import { customTypography } from '../../theme/typography.config.ts';
+  StyledBurgerMenu,
+  StyledBurgerFlexWrapper,
+  StyledBurgerItem,
+  StyledBurgerList,
+  StyledBurgerNav,
+} from './BurgerMenu.styles.tsx';
+import { HeaderNavLinks } from '../../types/HeaderNavLinks.ts';
+import { BurgerMenuButtons } from './BurgerMenuButtons.tsx';
+import { BurgerActiveLink } from './BurgerActiveLink.tsx';
 
-const TABS = {
-  HOME: '/home',
-  PHONES: '/phones',
-  TABLETS: '/tablets',
-  ACCESSORIES: '/accessories',
-};
+interface Props {
+  isBurgerMenuShown: boolean;
+  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
+}
 
-export const BurgerMenu: React.FC = () => {
+export const BurgerMenu: React.FC<Props> = ({
+  isBurgerMenuShown,
+  onBurgerToggle,
+}) => {
   return (
-    <StyledRootContainer disableGutters>
-      <StyledList>
-        {Object.entries(TABS).map(([title, path]) => (
-          <StyledListItem key={title} sx={customTypography.subtitle1}>
-            <StyledNavLink to={path}>{title}</StyledNavLink>
-          </StyledListItem>
-        ))}
-      </StyledList>
-
-      <StyledIconsContainer disableGutters>
-        <StyledNavLinkBox>
-          <NavLink to="/cart">
-            <Box component="img" alt="Favourites menu" src={favouritesIcon} />
-          </NavLink>
-        </StyledNavLinkBox>
-        <StyledNavLinkBox>
-          <NavLink to="/cart">
-            <Box component="img" alt="Cart menu" src={cartIcon} />
-          </NavLink>
-        </StyledNavLinkBox>
-      </StyledIconsContainer>
-    </StyledRootContainer>
+    <StyledBurgerMenu>
+      <StyledBurgerFlexWrapper>
+        <StyledBurgerNav>
+          <StyledBurgerList>
+            {Object.entries(HeaderNavLinks).map(([text, link]) => (
+              <StyledBurgerItem key={text}>
+                <BurgerActiveLink
+                  label={text}
+                  to={link}
+                  activeStyle={{}}
+                  isBurgerMenuShown={isBurgerMenuShown}
+                  onBurgerToggle={onBurgerToggle}
+                />
+              </StyledBurgerItem>
+            ))}
+          </StyledBurgerList>
+        </StyledBurgerNav>
+        <BurgerMenuButtons
+          isBurgerMenuShown={isBurgerMenuShown}
+          onBurgerToggle={onBurgerToggle}
+        />
+      </StyledBurgerFlexWrapper>
+    </StyledBurgerMenu>
   );
 };
