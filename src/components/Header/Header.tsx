@@ -18,7 +18,7 @@ import {
 } from './Header.styles';
 import { NavMenu } from './NavMenu';
 import { ActiveLink } from './ActiveLink';
-import { HeaderOtherLinks } from '../../Types/HeaderOtherLinks';
+import { HeaderOtherLinks } from '../../types/HeaderOtherLinks';
 import Container from '../Container/Container';
 
 export const Header: React.FC = () => {
