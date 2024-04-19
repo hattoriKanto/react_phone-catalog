@@ -1,10 +1,11 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App';
 import { HomePage, NotFoundPage, PhonePage } from './pages';
+
+import CartPage from './pages/Cart/CartPage';
 import { DumpPage } from './pages/DumpPage';
 import { TabletsPage } from './pages/TabletsPage';
 import AccessoriesPage from './pages/AccessoriesPage/AccessoriesPage';
-import CartPage from './pages/Cart/CartPage';
 
 export const Root = () => {
   return (
