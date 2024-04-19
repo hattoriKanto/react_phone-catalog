@@ -6,7 +6,7 @@ import {
   StyledBurgerList,
   StyledBurgerNav,
 } from './BurgerMenu.styles.tsx';
-import { HeaderNavLinks } from '../../types';
+import { HeaderNavLinks } from '../../types/index.ts';
 import { BurgerMenuButtons } from './BurgerMenuButtons.tsx';
 import { BurgerActiveLink } from './BurgerActiveLink.tsx';
 
