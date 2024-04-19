@@ -80,11 +80,11 @@ export const ButtonToTopIcon = styled('img')({
 });
 
 export const FooterContent = styled(Box)(({ theme }) => ({
+  paddingInline: '10px',
   display: 'flex',
   justifyContent: 'space-between',
   height: '100%',
   width: '100%',
-  paddingLeft: 0,
   [theme.breakpoints.up('xs')]: {
     flexDirection: 'column',
     alignItems: 'start',
