@@ -4,8 +4,8 @@ import { CustomGrid } from '../../components/CustomGrid';
 import { CategoryCard } from '../../components/CategoryCard';
 import { Category } from '../../types/Category';
 import useFetchData from '../../utils/useFetchData';
-import { Product } from '../../types';
 import { Link } from 'react-router-dom';
+import { Product } from '../../Types';
 
 export const HomePage: FC = () => {
   const { data } = useFetchData<Product>('products.json');
