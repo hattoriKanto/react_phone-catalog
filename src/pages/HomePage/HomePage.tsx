@@ -5,7 +5,7 @@ import { CategoryCard } from '../../components/CategoryCard';
 import { Category } from '../../types/Category';
 import useFetchData from '../../utils/useFetchData';
 import { Link } from 'react-router-dom';
-import { Product } from '../../Types';
+import { Product } from '../../types';
 
 export const HomePage: FC = () => {
   const { data } = useFetchData<Product>('products.json');
