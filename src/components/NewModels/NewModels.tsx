@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, Button, useMediaQuery } from '@mui/material';
 import products from '../../../public/api/products.json';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { Product } from '../../Types';
+import { Product } from '../../types';
 import { ProductCard } from '../ProductCard/ProductCard';
 import { CustomGrid } from '../CustomGrid';
 import { useTheme } from '@mui/material/styles';

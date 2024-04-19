@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HeaderNavLinks } from '../../Types/HeaderNavLinks';
+import { HeaderNavLinks } from '../../types/HeaderNavLinks';
 import { ActiveLink } from './ActiveLink';
 import { StyledNav, StyledList, StyledItem } from '.';
 

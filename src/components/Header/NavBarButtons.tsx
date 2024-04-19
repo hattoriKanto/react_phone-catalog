@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { HeaderOtherLinks } from '../../Types';
+import { HeaderOtherLinks } from '../../types';
 import { ActiveLink, StyledWrapperButton } from '.';
 
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
