@@ -13,8 +13,6 @@ import {
 } from './Header.styles';
 import { NavMenu } from './NavMenu';
 
-import { ActiveLink } from './ActiveLink';
-import { HeaderOtherLinks } from '../../types/HeaderOtherLinks';
 import Container from '../Container/Container';
 import { NavBarButtons } from '.';
 import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';

@@ -1,5 +1,5 @@
-import { CustomGrid } from '../CustomGrid';
-import { ProductCard } from '../ProductCard/ProductCard';
+import { CustomGrid } from '../../components/CustomGrid';
+import { ProductCard } from '../../components/ProductCard/ProductCard';
 import useFetchData from '../../utils/useFetchData';
 import { Product } from '../../types';
 import { Grid, Typography, styled } from '@mui/material';
