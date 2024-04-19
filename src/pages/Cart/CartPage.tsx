@@ -12,8 +12,8 @@ import { useCartContext } from '../../hooks/useCartContext';
 import CartItem from '../../components/CartItem';
 
 const CartPage = () => {
-  const { cart, cartQuantity, totalPrice, clearCart } = useCartContext();
-  console.log(cart);
+  const { cart, cartQuantity, clearCart } = useCartContext();
+
   return (
     <Container>
       <Typography variant="h1" component="h2" sx={{ py: 2 }}>
@@ -29,8 +29,8 @@ const CartPage = () => {
         <Box sx={{ width: { md: '70%', xs: '100%' }, pr: { sm: 2, xs: 0 } }}>
           {cartQuantity > 0 &&
             cart.map(item => (
-              <Box sx={{ pb: 2 }} key={item.id}>
-                <CartItem product={item} />{' '}
+              <Box sx={{ pb: 2 }}>
+                <CartItem product={item.product} />{' '}
               </Box>
             ))}
         </Box>
@@ -50,9 +50,7 @@ const CartPage = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <Typography variant="h6">
-                    Total Price: ${totalPrice}
-                  </Typography>
+                  <Typography variant="h6">Total Price: $0</Typography>
                   <Typography variant="subtitle1">
                     Total Items: {cartQuantity}
                   </Typography>

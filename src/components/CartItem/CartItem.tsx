@@ -1,21 +1,40 @@
+import { Product } from '../../types/Product';
 import Container from '../Container/Container';
 import {
-  CartItemWrapper, ContainerLeftSide, ContainerRightSide,
+  CartItemWrapper,
+  ContainerLeftSide,
+  ContainerRightSide,
   ContentContainer,
-  DeleteButton,
-  DeleteIcon, IconButtonQuantityMinus, IconButtonQuantityPlus,
+  DeleteIcon,
+  IconButtonQuantityMinus,
+  IconButtonQuantityPlus,
   Image,
-  ProductImage, ProductName, ProductQuantity,
+  ProductImage,
+  ProductName,
+  ProductQuantity,
 } from './CartItem.styles.tsx';
-import { Typography } from '@mui/material';
-import { Product } from '../../types';
+import { IconButton, Typography, styled } from '@mui/material';
 import React from 'react';
+import { useCartContext } from '../../hooks/useCartContext.ts';
 
 type Props = {
   product: Product;
 };
-const CartItem: React.FC<Props> = ({ product}) => {
-  const { name, price, image } = product;
+
+export const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.element.main,
+  border: '1px solid {theme.palette.element.main}',
+  borderRadius: '50%',
+  ':hover, :focus': {
+    color: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,
+  },
+}));
+
+const CartItem: React.FC<Props> = ({ product }) => {
+  const { deleteFromCart, increaseQuantity, decreaseQuantity, cart } =
+    useCartContext();
+  const { id, name, price, image } = product;
 
   return (
     <Container>
@@ -28,31 +47,26 @@ const CartItem: React.FC<Props> = ({ product}) => {
             spacing={{ xs: 2, sm: 3 }}
             direction={{ xs: 'row' }}
           >
-            <DeleteButton>
+            <StyledIconButton onClick={() => deleteFromCart(id)}>
               <DeleteIcon />
-            </DeleteButton>
+            </StyledIconButton>
 
             <ProductImage>
               <Image src={image} />
             </ProductImage>
 
             <ProductName to="/">
-              <Typography variant="body1">
-                {name}
-              </Typography>
+              <Typography variant="body1">{name}</Typography>
             </ProductName>
           </ContainerLeftSide>
 
-          <ContainerRightSide
-            spacing={{ sm: 3 }}
-            direction={{ xs: 'row' }}
-          >
+          <ContainerRightSide spacing={{ sm: 3 }} direction={{ xs: 'row' }}>
             <ProductQuantity>
-              <IconButtonQuantityMinus />
+              <IconButtonQuantityMinus onClick={() => decreaseQuantity(id)} />
               <Typography variant="body1">
-                1
+                {cart.find(item => item.prodId === id)?.quantity}
               </Typography>
-              <IconButtonQuantityPlus />
+              <IconButtonQuantityPlus onClick={() => increaseQuantity(id)} />
             </ProductQuantity>
 
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
@@ -62,7 +76,7 @@ const CartItem: React.FC<Props> = ({ product}) => {
         </ContentContainer>
       </CartItemWrapper>
     </Container>
-  )
+  );
 };
 
 export default CartItem;

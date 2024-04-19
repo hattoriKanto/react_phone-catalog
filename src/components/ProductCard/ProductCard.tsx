@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Card from '@mui/material/Card';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -12,7 +12,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { CartContext } from '../../context/CartContext/CartContext';
+import { useCartContext } from '../../hooks/useCartContext';
 
 type Props = {
   product: Product;
@@ -21,12 +21,7 @@ type Props = {
 export const ProductCard: React.FC<Props> = ({ product }) => {
   const { id, name, price, fullPrice, screen, capacity, ram, image } = product;
 
-  const { addToCart, deleteFromCart, isProductInCart } =
-    useContext(CartContext);
-
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const isInCart = isProductInCart(id);
+  const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
 
   const toggleAddToCard = (product: Product) => {
     if (!isInCart) {
@@ -35,6 +30,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       deleteFromCart(product.id);
     }
   };
+
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const isInCart = isProductInCart(id);
 
   return (
     <Card
