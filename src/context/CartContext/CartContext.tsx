@@ -9,7 +9,15 @@ export const CartContext = createContext<CartContextType>({
   deleteFromCart: (productId: number) => {},
   clearCart: () => {},
   isProductInCart: (id: number) => false,
+  increaseQuantity: (productId: number) => {},
+  decreaseQuantity: (productId: number) => {},
 });
+
+type ProductInCart = {
+  prodId: number;
+  product: Product;
+  quantity: number;
+};
 
 type Props = {
   children: React.ReactNode;
@@ -17,7 +25,7 @@ type Props = {
 
 const CARD_KEY = 'card';
 
-const saveCartToLocalStorage = (currentCart: Product[]) => {
+const saveCartToLocalStorage = (currentCart: ProductInCart[]) => {
   localStorage.setItem(CARD_KEY, JSON.stringify(currentCart));
 };
 
@@ -41,8 +49,11 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   const cartQuantity = useMemo(() => cart.length, [cart]);
 
   const addToCart = (product: Product) => {
-    if (!cart.some((item: Product) => item.id === product.id)) {
-      const updatedCart = [...cart, product];
+    if (!cart.some((item: ProductInCart) => item.prodId === product.id)) {
+      const updatedCart = [
+        ...cart,
+        { prodId: product.id, product, quantity: 1 },
+      ];
 
       setCart(updatedCart);
       saveCartToLocalStorage(updatedCart);
@@ -51,7 +62,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
 
   const deleteFromCart = (productId: number) => {
     const updatedCart = cart.filter(
-      (product: Product) => product.id !== productId,
+      (product: ProductInCart) => product.prodId !== productId,
     );
 
     setCart(updatedCart);
@@ -64,7 +75,42 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   };
 
   const isProductInCart = (id: number) => {
-    return cart.some((product: Product) => product.id === id);
+    return cart.some((product: ProductInCart) => product.prodId === id);
+  };
+
+  const increaseQuantity = (productId: number) => {
+    const updatedCart = cart.map((product: ProductInCart) => {
+      if (product.prodId === productId) {
+        return {
+          ...product,
+          quantity: product.quantity + 1,
+        };
+      }
+    });
+    setCart(updatedCart);
+    saveCartToLocalStorage(updatedCart);
+  };
+
+  const decreaseQuantity = (productId: number) => {
+    if (
+      cart.find((product: ProductInCart) => product.prodId === productId)
+        .quantity === 1
+    ) {
+      deleteFromCart(productId);
+      return;
+    }
+
+    const updatedCart = cart.map((product: ProductInCart) => {
+      if (product.prodId === productId) {
+        return {
+          ...product,
+          quantity: product.quantity - 1,
+        };
+      }
+    });
+
+    setCart(updatedCart);
+    saveCartToLocalStorage(updatedCart);
   };
 
   const cartState: CartContextType = {
@@ -74,6 +120,8 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     deleteFromCart,
     clearCart,
     isProductInCart,
+    increaseQuantity,
+    decreaseQuantity,
   };
 
   return (
