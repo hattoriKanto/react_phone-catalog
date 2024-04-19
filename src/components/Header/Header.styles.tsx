@@ -55,7 +55,7 @@ export const StyledLogo = styled('img')(({ theme }) => ({
   },
 }));
 
-export const StyledNav = styled(Box)(({ theme }) => ({
+export const StyledNav = styled('nav')(({ theme }) => ({
   display: 'flex',
   [`@media (max-width:${theme.breakpoints.values.sm}px)`]: {
     display: 'none',
