@@ -1,70 +1,66 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 
-import { Box } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
 import {
-  HeaderBar,
-  HeaderContainer,
-  HeaderNavigation,
-  HeaderLinks,
-  HeaderLogoLink,
-} from './Styles';
+  StyledAppBar,
+  StyledFlexWrapper,
+  StyledWrapper,
+  StyledLogoLink,
+  StyledBurgerButton,
+  StyledLogo,
+} from './Header.styles';
 import { NavMenu } from './NavMenu';
+
 import { ActiveLink } from './ActiveLink';
 import { HeaderOtherLinks } from '../../types/HeaderOtherLinks';
+import Container from '../Container/Container';
+import { NavBarButtons } from '.';
+import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';
 
-export const Header: React.FC = () => {
-  const locationPathname = useLocation().pathname;
+interface Props {
+  isBurgerMenuShown: boolean;
+  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
+}
 
-  const handleChangeIcon = (link: string) => {
-    if (link === HeaderOtherLinks.cart) {
-      return locationPathname === HeaderOtherLinks.cart ? (
-        <ShoppingCartIcon color="primary"></ShoppingCartIcon>
-      ) : (
-        <ShoppingCartOutlinedIcon color="primary"></ShoppingCartOutlinedIcon>
-      );
-    }
-
-    return locationPathname === HeaderOtherLinks.favourites ? (
-      <FavoriteIcon color="primary"></FavoriteIcon>
-    ) : (
-      <FavoriteBorderIcon color="primary"></FavoriteBorderIcon>
-    );
-  };
-
+export const Header: React.FC<Props> = ({
+  isBurgerMenuShown,
+  onBurgerToggle,
+}) => {
   return (
-    <HeaderBar>
-      <HeaderContainer>
-        <HeaderNavigation>
-          <HeaderLogoLink to="">
-            <Box
-              component="img"
-              src="img/header/logo.svg"
-              alt="Nice Gadget Logo"
-            />
-          </HeaderLogoLink>
-          <NavMenu />
-        </HeaderNavigation>
-        <HeaderLinks>
-          {Object.entries(HeaderOtherLinks).map(([text, link]) => {
-            return (
-              <ActiveLink
-                key={text}
-                label={handleChangeIcon(link)}
-                to={link}
-                activeStyle={{
-                  borderBottom: '3px solid #0f0f11',
-                }}
-              />
-            );
-          })}
-        </HeaderLinks>
-      </HeaderContainer>
-    </HeaderBar>
+    <StyledAppBar>
+      <Container>
+        <StyledFlexWrapper>
+          <StyledWrapper>
+            <StyledLogoLink to="" onClick={() => onBurgerToggle(false)}>
+              <StyledLogo src="img/header/logo.svg" alt="Nice Gadget Logo" />
+            </StyledLogoLink>
+
+            <NavMenu />
+          </StyledWrapper>
+
+          <NavBarButtons />
+
+          <StyledBurgerButton
+            disableElevation
+            disableRipple
+            onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
+          >
+            {isBurgerMenuShown ? (
+              <MenuOpenIcon
+                color="primary"
+                sx={{ width: '16px', height: '16px' }}
+              ></MenuOpenIcon>
+            ) : (
+              <MenuIcon
+                color="primary"
+                sx={{ width: '16px', height: '16px' }}
+              ></MenuIcon>
+            )}
+          </StyledBurgerButton>
+        </StyledFlexWrapper>
+      </Container>
+    </StyledAppBar>
   );
 };

@@ -1,4 +1,4 @@
-import { Product } from "../../types";
+import { Product } from "../../Types";
 
 export type CartContextType = {
   cart: Product[];

@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Card from '@mui/material/Card';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Product } from '../../types/Product';
+import { Product } from '../../Types/Product';
 import {
   Button,
   CardContent,
@@ -12,16 +12,29 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { CartContext } from '../../context/CartContext/CartContext';
 
 type Props = {
   product: Product;
 };
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
-  const { name, price, fullPrice, screen, capacity, ram, image } = product;
+  const { id, name, price, fullPrice, screen, capacity, ram, image } = product;
+
+  const { addToCart, deleteFromCart, isProductInCart } =
+    useContext(CartContext);
 
   const [isFavorite, setIsFavorite] = useState(false);
-  const [isCart, setIsCart] = useState(false);
+
+  const isInCart = isProductInCart(id);
+
+  const toggleAddToCard = (product: Product) => {
+    if (!isInCart) {
+      addToCart(product);
+    } else {
+      deleteFromCart(product.id);
+    }
+  };
 
   return (
     <Card
@@ -123,17 +136,21 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           sx={{ pt: 2, justifyContent: 'space-between', alignItems: 'center' }}
         >
           <Button
-            variant={!isCart ? 'contained' : 'outlined'}
-            onClick={() => setIsCart(prev => !prev)}
+            variant={!isInCart ? 'contained' : 'outlined'}
+            onClick={() => toggleAddToCard(product)}
             color="accent"
-            sx={{ px: 4, py: 1, '&.MuiButton-contained': { color: '#fff' } }}
+            sx={{
+              width: '160px',
+              py: 1,
+              '&.MuiButton-contained': { color: '#fff' },
+            }}
           >
             <Typography
               variant="button"
               color="white"
               sx={{ textTransform: 'none', textDecoration: 'none' }}
             >
-              Add to cart
+              {!isInCart ? 'Add to cart' : 'Added'}
             </Typography>
           </Button>
 

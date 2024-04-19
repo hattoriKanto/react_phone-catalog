@@ -1,18 +1,24 @@
 import { CSSProperties } from 'react';
-import { StyledButton, StyledLink } from '.';
+import { StyledButton } from '../Header';
 import { useTheme } from '@mui/material/styles';
 import { Typography } from '@mui/material';
+import { StyledBurgerLink } from './BurgerMenu.styles';
+import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';
 
 interface ActiveLinkProps {
   label: string | JSX.Element;
   to: string;
   activeStyle: CSSProperties;
+  isBurgerMenuShown: boolean;
+  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
 }
 
-export const ActiveLink: React.FC<ActiveLinkProps> = ({
+export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
   label,
   to,
   activeStyle,
+  isBurgerMenuShown,
+  onBurgerToggle,
 }) => {
   const theme = useTheme();
 
@@ -21,11 +27,12 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
   const isJSXElem = typeof label !== 'string';
 
   return isJSXElem ? (
-    <StyledLink
+    <StyledBurgerLink
       to={to}
       style={({ isActive }) => (isActive ? activeStyle : undefined)}
       theme={theme}
       issvg={isJSXElem}
+      onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
     >
       {() => {
         return (
@@ -34,13 +41,14 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
           </StyledButton>
         );
       }}
-    </StyledLink>
+    </StyledBurgerLink>
   ) : (
-    <StyledLink
+    <StyledBurgerLink
       to={to}
       style={({ isActive }) => (isActive ? activeStyle : undefined)}
       theme={theme}
       issvg={isJSXElem}
+      onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
     >
       {({ isActive }) => {
         return (
@@ -49,12 +57,18 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
             sx={{
               fontSize: '12px',
               color: isActive ? primary : secondary,
+              borderBottom: isActive
+                ? '2px solid #0f0f11'
+                : '2px solid transparent',
+              '&:hover': {
+                borderBottom: '2px solid #0f0f11',
+              },
             }}
           >
             {label}
           </Typography>
         );
       }}
-    </StyledLink>
+    </StyledBurgerLink>
   );
 };
