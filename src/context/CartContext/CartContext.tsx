@@ -82,6 +82,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
         };
       }
     });
+    console.log(updatedCart);
     setCart(updatedCart);
     saveCartToLocalStorage(updatedCart);
   };
