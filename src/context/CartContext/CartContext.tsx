@@ -5,10 +5,11 @@ import { Product } from '../../types';
 export const CartContext = createContext<CartContextType>({
   cart: [],
   cartQuantity: 0,
-  addToCart: (product: Product) => {},
-  deleteFromCart: (productId: number) => {},
+  addToCart: () => {},
+  deleteFromCart: () => {},
   clearCart: () => {},
-  isProductInCart: (id: number) => false,
+  isProductInCart: () => false,
+  totalPrice: 0,
 });
 
 type Props = {
@@ -39,6 +40,11 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   });
 
   const cartQuantity = useMemo(() => cart.length, [cart]);
+
+  const totalPrice = useMemo(
+    () => cart.reduce((total: number, item: Product) => total + item.price, 0),
+    [cart],
+  );
 
   const addToCart = (product: Product) => {
     if (!cart.some((item: Product) => item.id === product.id)) {
@@ -74,6 +80,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     deleteFromCart,
     clearCart,
     isProductInCart,
+    totalPrice,
   };
 
   return (

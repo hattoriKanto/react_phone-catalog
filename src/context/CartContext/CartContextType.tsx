@@ -1,4 +1,4 @@
-import { Product } from "../../types";
+import { Product } from '../../types';
 
 export type CartContextType = {
   cart: Product[];
@@ -7,4 +7,5 @@ export type CartContextType = {
   deleteFromCart: (productId: number) => void;
   clearCart: () => void;
   isProductInCart: (id: number) => boolean;
+  totalPrice: number;
 };

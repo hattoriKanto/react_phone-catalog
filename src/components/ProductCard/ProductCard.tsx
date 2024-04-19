@@ -40,8 +40,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     <Card
       sx={{
         boxSizing: 'border-box',
-        width: 272,
-        height: 506,
+        maxWidth: 272,
+        maxHeight: 506,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -57,7 +57,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         sx={{
           pt: 4,
           height: 196,
-          width: 208,
+          maxWidth: 208,
           objectFit: 'contain',
           objectPosition: 'center',
         }}
