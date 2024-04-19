@@ -1,6 +1,5 @@
 import { Stack, Typography } from '@mui/material';
 import { FC } from 'react';
-import { BurgerMenu } from '../BurgerMenu/BurgerMenu';
 import { ProductCard } from '../ProductCard/ProductCard';
 import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
@@ -24,7 +23,6 @@ export const Dump: FC = () => {
       <Typography variant="button">Some test</Typography>
       <Typography variant="body1">Some test</Typography>
       <Typography variant="caption">Some test</Typography>
-      <BurgerMenu></BurgerMenu>
     </>
   );
 };
