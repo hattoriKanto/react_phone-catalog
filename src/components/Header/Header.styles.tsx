@@ -16,11 +16,16 @@ export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.element.main}`,
 }));
 
-export const StyledFlexWrapper = styled(Box)(() => ({
+export const StyledFlexWrapper = styled(Box)(({ theme }) => ({
   paddingInline: '10px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  width: '100%',
+  [`@media (min-width:${theme.breakpoints.values.lg}px)`]: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+  },
 }));
 
 export const StyledWrapper = styled(Box)(({ theme }) => ({
@@ -68,9 +73,6 @@ export const StyledList = styled(List)(({ theme }) => ({
   alignItems: 'center',
   gap: '64px',
   [`@media (max-width:${theme.breakpoints.values.md}px)`]: {
-    gap: '32px',
-  },
-  [`@media (max-width:800px)`]: {
     gap: '24px',
   },
 }));
@@ -119,7 +121,7 @@ export const StyledLink = styled(NavLink)(({
   issvg,
 }: {
   theme: Theme;
-  issvg: boolean;
+  issvg: string;
 }) => {
   return {
     display: 'flex',
@@ -128,7 +130,7 @@ export const StyledLink = styled(NavLink)(({
     minHeight: '64px',
     textDecoration: 'none',
 
-    borderLeft: issvg ? '1px solid #e2e6e9' : 'none',
+    borderLeft: issvg === 'true' ? '1px solid #e2e6e9' : 'none',
     borderBottom: '3px solid transparent',
 
     transition: 'border-bottom 500ms',
@@ -138,12 +140,12 @@ export const StyledLink = styled(NavLink)(({
     },
 
     '&:last-child': {
-      borderRight: issvg ? '1px solid #e2e6e9' : 'none',
+      borderRight: issvg === 'true' ? '1px solid #e2e6e9' : 'none',
     },
 
     [`@media (max-width:${theme.breakpoints.values.md}px)`]: {
       minHeight: '48px',
-      width: issvg ? '48px' : 'inherit',
+      width: issvg === 'true' ? '48px' : 'inherit',
     },
   };
 });

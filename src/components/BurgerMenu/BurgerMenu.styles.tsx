@@ -50,31 +50,35 @@ export const StyledBurgerLink = styled(NavLink)(({
   issvg,
 }: {
   theme: Theme;
-  issvg: boolean;
+  issvg: string;
 }) => {
   return {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: issvg ? '50vw' : '80vw',
-    minHeight: issvg ? '64px' : '40px',
+    width: issvg === 'true' ? '50vw' : '80vw',
+    minHeight: issvg === 'true' ? '64px' : '40px',
     textDecoration: 'none',
 
-    borderTop: issvg ? `1px solid ${theme.palette.element.main}` : 'none',
-    borderBottom: issvg ? '3px solid transparent' : 'none',
+    borderTop:
+      issvg === 'true' ? `1px solid ${theme.palette.element.main}` : 'none',
+    borderBottom: issvg === 'true' ? '3px solid transparent' : 'none',
 
     transition: 'border-bottom 500ms',
 
     '&:hover': {
-      borderBottom: issvg ? `3px solid ${theme.palette.primary.main}` : 'none',
+      borderBottom:
+        issvg === 'true' ? `3px solid ${theme.palette.primary.main}` : 'none',
     },
 
     '&:hover > span': {
-      borderBottom: !issvg ? `2px solid ${theme.palette.primary.main}` : 'none',
+      borderBottom:
+        issvg === 'false' ? `2px solid ${theme.palette.primary.main}` : 'none',
     },
 
     '&:last-child': {
-      borderLeft: issvg ? `1px solid ${theme.palette.element.main}` : 'none',
+      borderLeft:
+        issvg === 'true' ? `1px solid ${theme.palette.element.main}` : 'none',
     },
   };
 });
