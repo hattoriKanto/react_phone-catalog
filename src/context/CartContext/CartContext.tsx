@@ -2,9 +2,14 @@ import React, { createContext, useMemo, useState } from 'react';
 import { CartContextType } from './CartContextType';
 import { Product } from '../../types';
 
-export const CartContext = createContext<CartContextType | undefined>(
-  undefined,
-);
+export const CartContext = createContext<CartContextType>({
+  cart: [],
+  cartQuantity: 0,
+  addToCart: (product: Product) => {},
+  deleteFromCart: (productId: number) => {},
+  clearCart: () => {},
+  isProductInCart: (id: number) => false,
+});
 
 type Props = {
   children: React.ReactNode;
@@ -38,7 +43,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   const addToCart = (product: Product) => {
     if (!cart.some((item: Product) => item.id === product.id)) {
       const updatedCart = [...cart, product];
-  
+
       setCart(updatedCart);
       saveCartToLocalStorage(updatedCart);
     }
