@@ -12,6 +12,9 @@ import {
   StyledLogo,
 } from './Header.styles';
 import { NavMenu } from './NavMenu';
+
+import { ActiveLink } from './ActiveLink';
+import { HeaderOtherLinks } from '../../Types/HeaderOtherLinks';
 import Container from '../Container/Container';
 import { NavBarButtons } from '.';
 import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';
