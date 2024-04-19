@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Card from '@mui/material/Card';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -13,6 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useCartContext } from '../../hooks/useCartContext';
+import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 
 type Props = {
   product: Product;
@@ -20,8 +20,8 @@ type Props = {
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
   const { id, name, price, fullPrice, screen, capacity, ram, image } = product;
-
   const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
+  const { addToFavorites, deleteFromFavorites, isProductInFavorites } = useFavoritesContext();
 
   const toggleAddToCard = (product: Product) => {
     if (!isInCart) {
@@ -31,9 +31,16 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     }
   };
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  const toggleAddToFavorites = (product: Product) => {
+    if (!isInFavorites) {
+      addToFavorites(product);
+    } else {
+      deleteFromFavorites(product.id);
+    }
+  };
 
   const isInCart = isProductInCart(id);
+  const isInFavorites = isProductInFavorites(id);
 
   return (
     <Card
@@ -153,12 +160,14 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             </Typography>
           </Button>
 
+
+
           <IconButton
             sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
             aria-label="add to favorites"
-            onClick={() => setIsFavorite(prev => !prev)}
+            onClick={() => toggleAddToFavorites(product)}
           >
-            {!isFavorite ? (
+            {!isInFavorites ? (
               <FavoriteBorderIcon />
             ) : (
               <FavoriteIcon color="secondaryAccent" />
