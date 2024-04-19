@@ -1,29 +1,39 @@
 import { Box, Typography } from '@mui/material';
 import { FC } from 'react';
 import { CustomGrid } from '../../components/CustomGrid';
+import { CategoryCard } from '../../components/CategoryCard';
+import { Category } from '../../types/Category';
+import useFetchData from '../../utils/useFetchData';
+import { Product } from '../../types';
+import { Link } from 'react-router-dom';
 
 export const HomePage: FC = () => {
-  type Category = {
-    img: string;
-    name: string;
-    amount: number;
-  };
+  const { data } = useFetchData<Product>('products.json');
 
   const categories: Category[] = [
     {
-      img: 'public/img/category-accessories.webp',
+      id: 0,
+      img: 'public/img/category-phones.webp',
+      background: '#6D6474',
       name: 'Mobile phones',
-      amount: 0,
+      amount: data.filter(product => product.category === 'phones').length,
+      path: '/phones',
     },
     {
-      img: 'public/img/category-accessories.webp',
+      id: 1,
+      img: 'public/img/category-tablets.png',
+      background: '#8D8D92',
       name: 'Tablets',
-      amount: 0,
+      amount: data.filter(product => product.category === 'tablets').length,
+      path: '/tablets',
     },
     {
-      img: 'public/img/category-accessories.webp',
+      id: 2,
+      img: 'public/img/category-accessories.png',
+      background: '#973D5F',
       name: 'Accessories',
-      amount: 0,
+      amount: data.filter(product => product.category === 'accessories').length,
+      path: '/accessories',
     },
   ];
 
@@ -35,22 +45,27 @@ export const HomePage: FC = () => {
         </Typography>
       </Box>
       <Box>
-        <Typography variant="h2" sx={{ px: 18, pt: 2 }}>
+        <Typography variant="h2" sx={{ px: 18, pt: 2, pb: '24px' }}>
           Shop by category
         </Typography>
         <CustomGrid>
           {categories.map(category => (
-            <Box component="img" src={category.img}></Box>
+            <Link
+              to={category.path}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <CategoryCard category={category} />
+            </Link>
           ))}
         </CustomGrid>
       </Box>
       <Box>
-        <Typography variant="h2" sx={{ px: 18, pt: 2 }}>
+        <Typography variant="h2" sx={{ px: 18, pt: 2, pb: '24px' }}>
           Brand new models
         </Typography>
       </Box>
       <Box>
-        <Typography variant="h2" sx={{ px: 18, pt: 2 }}>
+        <Typography variant="h2" sx={{ px: 18, pt: 2, pb: '24px' }}>
           Hot prices
         </Typography>
       </Box>
