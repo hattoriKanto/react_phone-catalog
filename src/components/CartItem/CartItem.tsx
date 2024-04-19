@@ -1,4 +1,5 @@
-import { Product } from '../../types/Product';
+import { CartContext } from '../../context/CartContext/CartContext.tsx';
+import { Product } from '../../types/Product.ts';
 import Container from '../Container/Container';
 import {
   CartItemWrapper,
