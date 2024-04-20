@@ -38,7 +38,7 @@ export const NavBarButtons: React.FC = () => {
   
     return (
       <Badge badgeContent={favoritesQuantity} color="info" max={99}>
-        {locationPathname === HeaderOtherLinks.favourites ? (
+        {locationPathname === HeaderOtherLinks.favorites ? (
           <FavoriteIcon
             color="primary"
             sx={{ width: '20px', height: '20px' }}
