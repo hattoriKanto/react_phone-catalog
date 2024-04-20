@@ -4,10 +4,10 @@ import products from '../../../public/api/products.json';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Product } from '../../types';
 import { ProductCard } from '../ProductCard/ProductCard';
-import { CustomGrid } from '../CustomGrid';
 import { useTheme } from '@mui/material/styles';
 import { customBreakpoints } from '../../theme/breakpoints.config';
 import { customTypography } from '../../theme/typography.config';
+import { CustomGrid } from '../CustomGrid';
 
 const newModelsList = products.filter(({ year }) => year === 2022);
 
