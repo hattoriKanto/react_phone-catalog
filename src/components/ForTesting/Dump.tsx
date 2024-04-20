@@ -3,6 +3,8 @@ import { FC } from 'react';
 import { ProductCard } from '../ProductCard/ProductCard';
 import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
+import { NewModels } from '../NewModels/NewModels';
+import { HotPrices } from '../HotPrices/HotPrices';
 
 export const Dump: FC = () => {
   const { data } = useFetchData<Product>('products.json');
@@ -14,6 +16,9 @@ export const Dump: FC = () => {
         {data.length > 0 && <ProductCard product={data[1]} />}
         {data.length > 0 && <ProductCard product={data[2]} />}
       </Stack>
+
+      <NewModels></NewModels>
+      <HotPrices></HotPrices>
 
       <Typography variant="h1">Some test</Typography>
       <Typography variant="h2">Some test</Typography>
