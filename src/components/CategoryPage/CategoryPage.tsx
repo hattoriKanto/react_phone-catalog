@@ -24,10 +24,10 @@ export const CategoryPage = () => {
 
   return (
     <>
-      <Typography variant="h1" sx={{ px: 18, pt: 2 }}>
+      <Typography variant="h1" sx={{ px: 18, pt: 4 }}>
         {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
       </Typography>
-      <Typography variant="body1" color="secondary" sx={{ px: 18 }}>
+      <Typography variant="body1" color="secondary" sx={{ px: 18, pb: 4 }}>
         {filteredData.length} models
       </Typography>
       <CustomGrid>
