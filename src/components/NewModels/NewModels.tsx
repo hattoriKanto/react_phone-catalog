@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, useMediaQuery } from '@mui/material';
+import { Box, Typography, Button, useMediaQuery, styled, Grid } from '@mui/material';
 import products from '../../../public/api/products.json';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Product } from '../../types';
@@ -47,6 +47,12 @@ export const NewModels: React.FC = () => {
     );
   };
 
+  const GridStyled = styled(Grid)({
+    '&.MuiGrid-root': {
+      flexBasis: 'auto',
+    },
+  });
+
   return (
     <Box>
       <Box
@@ -78,7 +84,9 @@ export const NewModels: React.FC = () => {
         {newModelsList
           .slice(startIndex, startIndex + productsPerRow)
           .map((product: Product) => (
-            <ProductCard product={product} key={product.id}></ProductCard>
+            <GridStyled item xs={1} md={1} key={product.id}>
+              <ProductCard product={product} key={product.id}></ProductCard>
+            </GridStyled>
           ))}
       </CustomGrid>
     </Box>
