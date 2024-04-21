@@ -35,7 +35,7 @@ export const BurgerMenuButtons: React.FC<Props> = ({
       );
     }
 
-    return locationPathname === HeaderOtherLinks.favourites ? (
+    return locationPathname === HeaderOtherLinks.favorites ? (
       <FavoriteIcon
         color="primary"
         sx={{ width: '16px', height: '16px' }}

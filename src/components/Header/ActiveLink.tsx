@@ -25,7 +25,7 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
       to={to}
       style={({ isActive }) => (isActive ? activeStyle : undefined)}
       theme={theme}
-      issvg={isJSXElem}
+      issvg={isJSXElem.toString()}
     >
       {() => {
         return (
@@ -40,7 +40,7 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
       to={to}
       style={({ isActive }) => (isActive ? activeStyle : undefined)}
       theme={theme}
-      issvg={isJSXElem}
+      issvg={isJSXElem.toString()}
     >
       {({ isActive }) => {
         return (

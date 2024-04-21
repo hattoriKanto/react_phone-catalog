@@ -1,7 +1,6 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { CartContextType } from './CartContextType';
-import { Product } from '../../types';
-import { ProductInCart } from '../../types/ProductInCart';
+import { Product, ProductInCart } from '../../types';
 
 export const CartContext = createContext<CartContextType>({
   cart: [],
@@ -81,8 +80,10 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
           quantity: product.quantity + 1,
         };
       }
+
+      return product;
     });
-    console.log(updatedCart);
+
     setCart(updatedCart);
     saveCartToLocalStorage(updatedCart);
   };
@@ -103,6 +104,8 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
           quantity: product.quantity - 1,
         };
       }
+
+      return product;
     });
 
     setCart(updatedCart);

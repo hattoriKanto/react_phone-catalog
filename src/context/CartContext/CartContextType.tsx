@@ -1,5 +1,4 @@
-import { Product } from '../../types';
-import { ProductInCart } from '../../types/ProductInCart';
+import { Product, ProductInCart } from '../../types';
 
 export type CartContextType = {
   cart: ProductInCart[];

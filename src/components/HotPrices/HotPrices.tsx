@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, useMediaQuery, styled, Grid } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Button,
+  useMediaQuery,
+  styled,
+  Grid,
+} from '@mui/material';
 import products from '../../../public/api/products.json';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Product } from '../../types';
@@ -9,9 +16,13 @@ import { customBreakpoints } from '../../theme/breakpoints.config';
 import { customTypography } from '../../theme/typography.config';
 import { CustomGrid } from '../CustomGrid';
 
-const newModelsList = products.filter(({ year }) => year === 2022);
+const newHotPrices = products.filter(product => {
+  const { price, fullPrice } = product;
+  const percent = Math.round(((fullPrice - price) / price) * 100);
+  return percent > 15;
+});
 
-export const NewModels: React.FC = () => {
+export const HotPrices: React.FC = () => {
   const [startIndex, setStartIndex] = useState(0);
   let productsPerRow = 4;
   const { sm, md, lg } = customBreakpoints.values;
@@ -59,11 +70,10 @@ export const NewModels: React.FC = () => {
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginBottom: '24px',
         }}
       >
         <Typography variant="h2" gutterBottom sx={customTypography.h2}>
-          Brand new models
+          Hot Prices
         </Typography>
 
         <Box>
@@ -73,7 +83,7 @@ export const NewModels: React.FC = () => {
 
           <Button
             onClick={handleClickNext}
-            disabled={startIndex + productsPerRow >= newModelsList.length}
+            disabled={startIndex + productsPerRow >= newHotPrices.length}
           >
             <ArrowForward />
           </Button>
@@ -81,7 +91,7 @@ export const NewModels: React.FC = () => {
       </Box>
 
       <CustomGrid>
-        {newModelsList
+        {newHotPrices
           .slice(startIndex, startIndex + productsPerRow)
           .map((product: Product) => (
             <GridStyled item xs={1} md={1} key={product.id}>

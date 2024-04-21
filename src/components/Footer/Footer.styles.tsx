@@ -35,10 +35,6 @@ export const BackToTopButton = styled(HashLink)(({ theme }) => ({
 }));
 
 export const Footer = styled(Box)(({ theme }) => ({
-  position: 'fixed',
-  bottom: 0,
-  right: 0,
-  left: 0,
   display: 'flex',
   alignItems: 'center',
   paddingTop: 32,
@@ -80,11 +76,11 @@ export const ButtonToTopIcon = styled('img')({
 });
 
 export const FooterContent = styled(Box)(({ theme }) => ({
+  paddingInline: '10px',
   display: 'flex',
   justifyContent: 'space-between',
   height: '100%',
   width: '100%',
-  paddingLeft: 0,
   [theme.breakpoints.up('xs')]: {
     flexDirection: 'column',
     alignItems: 'start',
