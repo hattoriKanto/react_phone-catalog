@@ -10,8 +10,10 @@ import { Button, Typography } from '@mui/material';
 
 export const ProductPage: FC = () => {
   const location = useLocation();
-  const category = location.pathname.split('/')[1];
-  const prodId = location.pathname.split('/')[2];
+  const { pathname } = location;
+
+  const category = pathname.split('/')[1];
+  const prodId = pathname.split('/')[2];
   const { data, isLoading, error } = useFetchData<ProductExpanded>(
     `${category}.json`,
   );
