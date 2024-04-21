@@ -1,8 +1,7 @@
 import React from 'react';
-
-import { HeaderNavLinks } from '../../types/HeaderNavLinks';
 import { ActiveLink } from './ActiveLink';
 import { StyledNav, StyledList, StyledItem } from '.';
+import { HeaderNavLinks } from '../../types';
 
 export const NavMenu: React.FC = () => {
   return (

@@ -26,7 +26,6 @@ export const Header: React.FC<Props> = ({
 }) => {
   return (
     <StyledAppBar>
-      {/* <Container> */}
       <StyledFlexWrapper>
         <StyledWrapper>
           <StyledLogoLink to="" onClick={() => onBurgerToggle(false)}>
@@ -56,7 +55,6 @@ export const Header: React.FC<Props> = ({
           )}
         </StyledBurgerButton>
       </StyledFlexWrapper>
-      {/* </Container> */}
     </StyledAppBar>
   );
 };

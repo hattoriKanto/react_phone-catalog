@@ -31,7 +31,7 @@ export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
       to={to}
       style={({ isActive }) => (isActive ? activeStyle : undefined)}
       theme={theme}
-      issvg={isJSXElem}
+      issvg={isJSXElem.toString()}
       onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
     >
       {() => {
@@ -47,7 +47,7 @@ export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
       to={to}
       style={({ isActive }) => (isActive ? activeStyle : undefined)}
       theme={theme}
-      issvg={isJSXElem}
+      issvg={isJSXElem.toString()}
       onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
     >
       {({ isActive }) => {

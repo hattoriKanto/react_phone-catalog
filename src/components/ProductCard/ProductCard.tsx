@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import Card from '@mui/material/Card';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Product } from '../../types/Product';
+import { Product } from '../../types';
 import {
   Button,
   CardContent,
@@ -13,6 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useCartContext } from '../../hooks/useCartContext';
+import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 import { Link, useLocation } from 'react-router-dom';
 
 type Props = {
@@ -26,6 +26,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     product;
 
   const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
+  const { addToFavorites, deleteFromFavorites, isProductInFavorites } = useFavoritesContext();
 
   const toggleAddToCard = (product: Product) => {
     if (!isInCart) {
@@ -35,9 +36,16 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     }
   };
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  const toggleAddToFavorites = (product: Product) => {
+    if (!isInFavorites) {
+      addToFavorites(product);
+    } else {
+      deleteFromFavorites(product.id);
+    }
+  };
 
   const isInCart = isProductInCart(id);
+  const isInFavorites = isProductInFavorites(id);
 
   return (
     <Link
@@ -137,48 +145,46 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             </Typography>
           </Stack>
 
-          <Stack
-            direction="row"
-            spacing={2}
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ pt: 2, justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <Button
+            variant={!isInCart ? 'contained' : 'outlined'}
+            onClick={() => toggleAddToCard(product)}
+            color="accent"
             sx={{
-              pt: 2,
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              width: '160px',
+              py: 1,
+              '&.MuiButton-contained': { color: '#fff' },
             }}
           >
-            <Button
-              variant={!isInCart ? 'contained' : 'outlined'}
-              onClick={() => toggleAddToCard(product)}
-              color="accent"
-              sx={{
-                width: '160px',
-                py: 1,
-                '&.MuiButton-contained': { color: '#fff' },
-              }}
+            <Typography
+              variant="button"
+              color="white"
+              sx={{ textTransform: 'none', textDecoration: 'none' }}
             >
-              <Typography
-                variant="button"
-                color="white"
-                sx={{ textTransform: 'none', textDecoration: 'none' }}
-              >
-                {!isInCart ? 'Add to cart' : 'Added'}
-              </Typography>
-            </Button>
+              {!isInCart ? 'Add to cart' : 'Added'}
+            </Typography>
+          </Button>
 
-            <IconButton
-              sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
-              aria-label="add to favorites"
-              onClick={() => setIsFavorite(prev => !prev)}
-            >
-              {!isFavorite ? (
-                <FavoriteBorderIcon />
-              ) : (
-                <FavoriteIcon color="secondaryAccent" />
-              )}
-            </IconButton>
-          </Stack>
-        </CardContent>
+
+
+          <IconButton
+            sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
+            aria-label="add to favorites"
+            onClick={() => toggleAddToFavorites(product)}
+          >
+            {!isInFavorites ? (
+              <FavoriteBorderIcon />
+            ) : (
+              <FavoriteIcon color="secondaryAccent" />
+            )}
+          </IconButton>
+        </Stack>
+      </CardContent>
       </Card>
-    </Link>
+      </Link>
   );
 };
