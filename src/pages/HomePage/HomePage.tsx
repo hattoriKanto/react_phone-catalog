@@ -3,14 +3,10 @@ import { FC } from 'react';
 import { NewModels } from '../../components/NewModels/NewModels';
 import { HotPrices } from '../../components/HotPrices/HotPrices';
 import Container from '../../components/Container/Container';
-import { customTypography } from '../../theme/typography.config';
-import { CategorySelector } from '../../components/CategorySelector';
-import { CustomGrid } from '../../components/CustomGrid';
-import { CategoryCard } from '../../components/CategoryCard';
 import { Category } from '../../types/Category';
 import useFetchData from '../../utils/useFetchData';
-import { Link } from 'react-router-dom';
 import { Product } from '../../types';
+import { CategorySelector } from '../../components/CategorySelector';
 
 export const HomePage: FC = () => {
   const { data } = useFetchData<Product>('products.json');
@@ -44,59 +40,22 @@ export const HomePage: FC = () => {
 
   return (
     <>
-      <Box>
-        <Typography variant="h1" sx={{ px: 18, pt: 2 }}>
-          Welcome to Nice Gadgets store!
-        </Typography>
-      </Box>
-      <Box>
-        <Typography variant="h2" sx={{ px: 18, pt: 2, pb: '24px' }}>
-          Shop by category
-        </Typography>
-        <CustomGrid
-          columns={{
-            DT: 3,
-            LT: 3,
-            TB: 3,
-          }}
-        >
-          {categories.map(category => (
-            <Link
-              to={category.path}
-              key={category.id}
-              style={{ textDecoration: 'none', color: 'inherit' }}
-            >
-              <CategoryCard category={category} />
-            </Link>
-          ))}
-        </CustomGrid>
-      </Box>
-      <Box>
-        <Typography variant="h2" sx={{ px: 18, pt: 2, pb: '24px' }}>
-          Brand new models
-        </Typography>
-      </Box>
-      <Box>
-        <Typography variant="h2" sx={{ px: 18, pt: 2, pb: '24px' }}>
-          Hot prices
-        </Typography>
-      </Box>
-
-
       <Container>
+        <Box py={2}>
+          <Typography variant="h1" sx={{ px: 18, pt: 2 }}>
+            Welcome to Nice Gadgets store!
+          </Typography>
+        </Box>
         <Box py={2}>
           <NewModels></NewModels>
         </Box>
-        <Box>
-          <Typography variant="h2" gutterBottom sx={customTypography.h2}>
-            Shop by category
-            <CategorySelector />
-          </Typography>
+        <Box py={2}>
+          <CategorySelector categories={categories} />
         </Box>
-        <Box>
+        <Box py={2}>
           <HotPrices></HotPrices>
         </Box>
       </Container>
-</>
+    </>
   );
 };

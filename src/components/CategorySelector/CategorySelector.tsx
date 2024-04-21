@@ -1,36 +1,37 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { CustomGrid } from '../CustomGrid';
-import useFetchData from '../../utils/useFetchData';
-import { Product } from '../../types';
+import { Link } from 'react-router-dom';
+import { CategoryCard } from '../CategoryCard';
+import { Category } from '../../types/Category';
+import { customTypography } from '../../theme/typography.config';
 
-const categories = [
-  {
-    name: 'Mobile phones',
-    color: '#6D6474',
-    img: 'public/img/category-phones.webp',
-  },
-  {
-    name: 'Tablets',
-    color: '#6D6474',
-    img: 'public/img/category-tablets.png',
-  },
-  {
-    name: 'Accessories',
-    color: '#D53C51',
-    img: 'public/img/category-accessories.png',
-  },
-];
+type Props = {
+  categories: Category[];
+};
 
-export const CategorySelector = () => {
-  const { data } = useFetchData<Product>('products.json');
-
-  const filteredData = data?.filter(data => data.category === 'phones');
-
+export const CategorySelector: React.FC<Props> = ({ categories }) => {
   return (
-    <CustomGrid>
-      {categories.map(category => (
-        <Box></Box>
-      ))}
-    </CustomGrid>
+    <Box>
+      <Typography variant="h2" gutterBottom sx={customTypography.h2}>
+        Shop by category
+      </Typography>
+      <CustomGrid
+        columns={{
+          DT: 3,
+          LT: 3,
+          TB: 3,
+        }}
+      >
+        {categories.map(category => (
+          <Link
+            to={category.path}
+            key={category.id}
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <CategoryCard category={category} />
+          </Link>
+        ))}
+      </CustomGrid>
+    </Box>
   );
 };
