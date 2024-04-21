@@ -70,7 +70,6 @@ export const HotPrices: React.FC = () => {
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginBottom: '24px',
         }}
       >
         <Typography variant="h2" gutterBottom sx={customTypography.h2}>

@@ -13,7 +13,10 @@ import CartItem from '../../components/CartItem';
 
 const CartPage = () => {
   const { cart, cartQuantity, clearCart } = useCartContext();
-  const totalPrice = cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0,
+  );
 
   return (
     <Container>
@@ -38,6 +41,9 @@ const CartPage = () => {
         <Box
           sx={{
             width: { md: '30%', xs: '100%' },
+            position: 'sticky',
+            top: '72px',
+            height: 'fit-content',
           }}
         >
           <Card>
@@ -51,7 +57,9 @@ const CartPage = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <Typography variant="h6">Total Price: {`$${totalPrice}`}</Typography>
+                  <Typography variant="h6">
+                    Total Price: {`$${totalPrice}`}
+                  </Typography>
                   <Typography variant="subtitle1">
                     Total Items: {cartQuantity}
                   </Typography>
