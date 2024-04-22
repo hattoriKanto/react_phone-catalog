@@ -24,7 +24,7 @@ type Props = {
 };
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
-  const { 
+  const {
     id,
     name,
     price,
@@ -42,7 +42,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const { isLoading, error } = useFetchData<Product>('products.json');
   if (error) return <p>Error: {error.message}</p>;
 
-  const toggleAddToCard = (product: Product) => {
+  const toggleAddToCard = (product: Product, event: React.MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+
     if (!isInCart) {
       addToCart(product);
     } else {
@@ -50,7 +53,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     }
   };
 
-  const toggleAddToFavorites = (product: Product) => {
+  const toggleAddToFavorites = (product: Product, event: React.MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+
     if (!isInFavorites) {
       addToFavorites(product);
     } else {
@@ -62,24 +68,24 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const isInFavorites = isProductInFavorites(id);
 
   return (
-    <Card
-      sx={{
-        boxSizing: 'border-box',
-        maxWidth: 272,
-        maxHeight: 506,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        border: 1,
-        borderColor: '#E2E6E9',
-      }}
+    <Link
+      to={`/${category}/${itemId}`}
+      style={{ textDecoration: 'none', color: 'inherit' }}
     >
-      <CardContent sx={{ m: 1, p: '32px' }}>
-        <Link
-          to={`/${category}/${itemId}`}
-          style={{ textDecoration: 'none', color: 'inherit' }}
-        >
+      <Card
+        sx={{
+          boxSizing: 'border-box',
+          maxWidth: 272,
+          maxHeight: 506,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          border: 1,
+          borderColor: '#E2E6E9',
+        }}
+      >
+        <CardContent sx={{ m: 1, p: '32px' }}>
           {isLoading ? (
             <Skeleton
               variant="rounded"
@@ -105,19 +111,17 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                   pt: 1,
                 }}
               >
-                <Tooltip title={name}>
-                  <Typography
-                    variant="body1"
-                    component="div"
-                    sx={{
-                      display: '-webkit-box',
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      WebkitLineClamp: 2,
-                    }}
-                  />
-                </Tooltip>
+                <Typography
+                  variant="body1"
+                  component="div"
+                  sx={{
+                    display: '-webkit-box',
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    WebkitLineClamp: 2,
+                  }}
+                />
               </Box>
             </>
           )}
@@ -128,23 +132,30 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               pb: 1,
             }}
           >
-            <Typography
-              variant="body1"
-              component="div"
-              sx={{
-                display: '-webkit-box',
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                WebkitLineClamp: 2,
-              }}
-            >
-              {isLoading ? (
-                <Skeleton variant="rounded" animation="wave" width="100%" height={40} />
-              ) : (
-                name
-              )}
-            </Typography>
+            <Tooltip title={name}>
+              <Typography
+                variant="body1"
+                component="div"
+                sx={{
+                  display: '-webkit-box',
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  WebkitLineClamp: 2,
+                }}
+              >
+                {isLoading ? (
+                  <Skeleton
+                    variant="rounded"
+                    animation="wave"
+                    width="100%"
+                    height={40}
+                  />
+                ) : (
+                  name
+                )}
+              </Typography>
+            </Tooltip>
           </Box>
 
           <Stack direction="row" spacing={2} sx={{ pt: 2, pb: 1 }}>
@@ -282,67 +293,67 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               )}
             </Typography>
           </Stack>
-        </Link>
 
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{
-            pt: 2,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          {isLoading ? (
-            <Skeleton
-              variant="rounded"
-              animation="wave"
-              width={160}
-              height={50}
-            />
-          ) : (
-            <Button
-              variant={!isInCart ? 'contained' : 'outlined'}
-              onClick={() => toggleAddToCard(product)}
-              color="accent"
-              sx={{
-                width: '160px',
-                py: 1,
-                '&.MuiButton-contained': { color: '#fff' },
-              }}
-            >
-              <Typography
-                variant="button"
-                color="white"
-                sx={{ textTransform: 'none', textDecoration: 'none' }}
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              pt: 2,
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {isLoading ? (
+              <Skeleton
+                variant="rounded"
+                animation="wave"
+                width={160}
+                height={50}
+              />
+            ) : (
+              <Button
+                variant={!isInCart ? 'contained' : 'outlined'}
+                onClick={event => toggleAddToCard(product, event)}
+                color="accent"
+                sx={{
+                  width: '160px',
+                  py: 1,
+                  '&.MuiButton-contained': { color: '#fff' },
+                }}
               >
-                {!isInCart ? 'Add to cart' : 'Added'}
-              </Typography>
-            </Button>
-          )}
+                <Typography
+                  variant="button"
+                  color="white"
+                  sx={{ textTransform: 'none', textDecoration: 'none' }}
+                >
+                  {!isInCart ? 'Add to cart' : 'Added'}
+                </Typography>
+              </Button>
+            )}
 
-          {isLoading ? (
-            <Skeleton
-              variant="circular"
-              animation="wave"
-              width={40}
-              height={40}
-            />
-          ) : (
-            <IconButton
-              sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
-              aria-label="add to favorites"
-              onClick={() => toggleAddToFavorites(product)}
-            >
-              {!isInFavorites ? (
-                <FavoriteBorderIcon />
-              ) : (
-                <FavoriteIcon color="secondaryAccent" />
-              )}
-            </IconButton>
-          )}
-        </Stack>
-      </CardContent>
-    </Card>
+            {isLoading ? (
+              <Skeleton
+                variant="circular"
+                animation="wave"
+                width={40}
+                height={40}
+              />
+            ) : (
+              <IconButton
+                sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
+                aria-label="add to favorites"
+                onClick={event => toggleAddToFavorites(product, event)}
+              >
+                {!isInFavorites ? (
+                  <FavoriteBorderIcon />
+                ) : (
+                  <FavoriteIcon color="secondaryAccent" />
+                )}
+              </IconButton>
+            )}
+          </Stack>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
