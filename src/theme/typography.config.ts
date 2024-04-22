@@ -7,7 +7,7 @@ export const customTypography: TypographyOptions = {
     fontSize: '48px',
     lineHeight: '56px',
     letterSpacing: '-0.01em',
-    '@media (max-width:600px)': {
+    '@media (max-width:640px)': {
       fontSize: '32px',
       lineHeight: '41px',
     },
@@ -16,7 +16,7 @@ export const customTypography: TypographyOptions = {
     fontWeight: 'bold',
     fontSize: '32px',
     lineHeight: '41px',
-    '@media (max-width:600px)': {
+    '@media (max-width:640px)': {
       fontSize: '22px',
       lineHeight: '31px',
     },
@@ -25,7 +25,7 @@ export const customTypography: TypographyOptions = {
     fontWeight: 700, // Bold for desktop
     fontSize: '22px',
     lineHeight: '31px',
-    '@media (max-width:600px)': {
+    '@media (max-width:640px)': {
       fontWeight: 600, // SemiBold for mobile
       fontSize: '20px',
       lineHeight: '26px',
@@ -35,7 +35,7 @@ export const customTypography: TypographyOptions = {
     fontWeight: 600,
     fontSize: '20px',
     lineHeight: '26px',
-    '@media (max-width:600px)': {
+    '@media (max-width:640px)': {
       fontSize: '16px',
       lineHeight: '20px',
     },

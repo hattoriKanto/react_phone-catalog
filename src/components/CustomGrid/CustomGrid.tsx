@@ -1,13 +1,27 @@
-import { Box, useMediaQuery } from "@mui/material"
-import { ReactNode } from "react"
-import { customBreakpoints } from "../../theme/breakpoints.config"
+import { Box, useMediaQuery } from '@mui/material';
+import { ReactNode } from 'react';
+import { customBreakpoints } from '../../theme/breakpoints.config';
 import { useTheme } from '@mui/material/styles';
 
-type Props = {
-  children: ReactNode
+interface Columns {
+  DT: number;
+  LT: number;
+  TB: number;
 }
 
-export const CustomGrid: React.FC<Props> = ({ children }) => {
+type Props = {
+  children: ReactNode;
+  columns?: Columns;
+};
+
+export const CustomGrid: React.FC<Props> = ({
+  children,
+  columns = {
+    DT: 4,
+    LT: 3,
+    TB: 2,
+  },
+}) => {
   const { sm, md, lg } = customBreakpoints.values;
   const theme = useTheme();
 
@@ -15,6 +29,7 @@ export const CustomGrid: React.FC<Props> = ({ children }) => {
   const isLaptop = useMediaQuery(theme.breakpoints.between(md, lg)); // 640px to 1199px
   const isTablet = useMediaQuery(theme.breakpoints.between(sm, md)); // 640px to 1199px
   const isMobile = useMediaQuery(theme.breakpoints.down(sm)); // up to 639p
+
   interface GridProps {
     gridTemplateColumns: string;
   }
@@ -23,38 +38,41 @@ export const CustomGrid: React.FC<Props> = ({ children }) => {
     switch (true) {
       case isDesktop:
         return {
-          gridTemplateColumns: 'repeat(4, 1fr)'
+          gridTemplateColumns: `repeat(${columns.DT}, 1fr)`,
         };
       case isLaptop:
         return {
-          gridTemplateColumns: 'repeat(3, 1fr)'
+          gridTemplateColumns: `repeat(${columns.LT}, 1fr)`,
         };
       case isTablet:
         return {
-          gridTemplateColumns: 'repeat(2, 1fr)'
+          gridTemplateColumns: `repeat(${columns.TB}, 1fr)`,
         };
       case isMobile:
         return {
-          gridTemplateColumns: "1fr"
+          gridTemplateColumns: `1fr`,
         };
       default:
         return {
-          gridTemplateColumns: 'repeat(4, 1fr)'
+          gridTemplateColumns: `repeat(${columns.DT}, 1fr)`,
         };
     }
   };
 
   return (
-    <Box sx={{
-      width: 0,
-      margin: '0 auto',
-      display: "grid",
-      justifyContent: "center",
-      placeItems: 'center',
-      columnGap: "16px",
-      rowGap: '40px',
-    }} {...getGridProps()}>
+    <Box
+      sx={{
+        width: 0,
+        margin: '0 auto',
+        display: 'grid',
+        justifyContent: 'center',
+        placeItems: 'center',
+        columnGap: '16px',
+        rowGap: '40px',
+      }}
+      {...getGridProps()}
+    >
       {children}
     </Box>
-  )
-}
+  );
+};

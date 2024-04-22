@@ -1,4 +1,4 @@
 export enum HeaderOtherLinks {
-  favourites = '/favourites',
+  favorites = '/favorites',
   cart = '/cart',
 }
