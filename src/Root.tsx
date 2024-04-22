@@ -1,6 +1,7 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App';
 import { HomePage, NotFoundPage } from './pages';
+
 import CartPage from './pages/Cart/CartPage';
 import CategoryPage from './components/CategoryPage/CategoryPage';
 import { FavoritesPage } from './pages/Favorites/FavoritesPage';

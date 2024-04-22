@@ -12,6 +12,7 @@ import {
   StyledLogo,
 } from './Header.styles';
 import { NavMenu } from './NavMenu';
+
 import { NavBarButtons } from '.';
 import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';
 
