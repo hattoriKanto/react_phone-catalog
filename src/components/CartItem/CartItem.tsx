@@ -55,7 +55,10 @@ const CartItem: React.FC<Props> = ({ product }) => {
               <Image src={image} />
             </ProductImage>
 
-            <ProductName to="/">
+            <ProductName
+              to={`/${product.category}/${product.itemId}`}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
               <Typography variant="body1">{name}</Typography>
             </ProductName>
           </ContainerLeftSide>
