@@ -27,7 +27,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const { addToFavorites, deleteFromFavorites, isProductInFavorites } =
     useFavoritesContext();
 
-  const toggleAddToCard = (product: Product) => {
+  const toggleAddToCard = (product: Product, event: React.MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+
     if (!isInCart) {
       addToCart(product);
     } else {
@@ -35,7 +38,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     }
   };
 
-  const toggleAddToFavorites = (product: Product) => {
+  const toggleAddToFavorites = (product: Product, event: React.MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+
     if (!isInFavorites) {
       addToFavorites(product);
     } else {
@@ -48,24 +54,24 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
   return (
     <>
-      <Card
-        sx={{
-          boxSizing: 'border-box',
-          maxWidth: 272,
-          maxHeight: 506,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          border: 1,
-          borderColor: '#E2E6E9',
-        }}
+      <Link
+        to={`/${product.category}/${product.itemId}`}
+        style={{ textDecoration: 'none', color: 'inherit' }}
       >
-        <CardContent sx={{ m: 1, p: '32px' }}>
-          <Link
-            to={`/${product.category}/${product.itemId}`}
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
+        <Card
+          sx={{
+            boxSizing: 'border-box',
+            maxWidth: 272,
+            maxHeight: 506,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            border: 1,
+            borderColor: '#E2E6E9',
+          }}
+        >
+          <CardContent sx={{ m: 1, p: '32px' }}>
             <CardMedia
               component="img"
               height="50%"
@@ -163,50 +169,50 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                 {ram}
               </Typography>
             </Stack>
-          </Link>
 
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              pt: 2,
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <Button
-              variant={!isInCart ? 'contained' : 'outlined'}
-              onClick={() => toggleAddToCard(product)}
-              color="accent"
+            <Stack
+              direction="row"
+              spacing={2}
               sx={{
-                width: '160px',
-                py: 1,
-                '&.MuiButton-contained': { color: '#fff' },
+                pt: 2,
+                justifyContent: 'space-between',
+                alignItems: 'center',
               }}
             >
-              <Typography
-                variant="button"
-                color="white"
-                sx={{ textTransform: 'none', textDecoration: 'none' }}
+              <Button
+                variant={!isInCart ? 'contained' : 'outlined'}
+                onClick={event => toggleAddToCard(product, event)}
+                color="accent"
+                sx={{
+                  width: '160px',
+                  py: 1,
+                  '&.MuiButton-contained': { color: '#fff' },
+                }}
               >
-                {!isInCart ? 'Add to cart' : 'Added'}
-              </Typography>
-            </Button>
+                <Typography
+                  variant="button"
+                  color="white"
+                  sx={{ textTransform: 'none', textDecoration: 'none' }}
+                >
+                  {!isInCart ? 'Add to cart' : 'Added'}
+                </Typography>
+              </Button>
 
-            <IconButton
-              sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
-              aria-label="add to favorites"
-              onClick={() => toggleAddToFavorites(product)}
-            >
-              {!isInFavorites ? (
-                <FavoriteBorderIcon />
-              ) : (
-                <FavoriteIcon color="secondaryAccent" />
-              )}
-            </IconButton>
-          </Stack>
-        </CardContent>
-      </Card>
+              <IconButton
+                sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
+                aria-label="add to favorites"
+                onClick={event => toggleAddToFavorites(product, event)}
+              >
+                {!isInFavorites ? (
+                  <FavoriteBorderIcon />
+                ) : (
+                  <FavoriteIcon color="secondaryAccent" />
+                )}
+              </IconButton>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Link>
     </>
   );
 };
