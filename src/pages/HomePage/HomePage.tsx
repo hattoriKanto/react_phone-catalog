@@ -42,7 +42,7 @@ export const HomePage: FC = () => {
     <>
       <Container>
         <Box py={2}>
-          <Typography variant="h1" sx={{ px: 18, pt: 2 }}>
+          <Typography variant="h1" sx={{ pt: 2 }}>
             Welcome to Nice Gadgets store!
           </Typography>
         </Box>
