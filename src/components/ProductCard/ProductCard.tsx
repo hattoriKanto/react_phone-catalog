@@ -13,15 +13,13 @@ import {
 } from '@mui/material';
 import { useCartContext } from '../../hooks/useCartContext';
 import { useFavoritesContext } from '../../hooks/useFavoritesContext';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type Props = {
   product: Product;
 };
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
-  const location = useLocation();
-
   const { id, name, price, fullPrice, screen, capacity, ram, image } = product;
   const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
   const { addToFavorites, deleteFromFavorites, isProductInFavorites } =
@@ -47,10 +45,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const isInFavorites = isProductInFavorites(id);
 
   return (
-    <Link
-      to={`${location.pathname}/${product.itemId}`}
-      style={{ textDecoration: 'none', color: 'inherit' }}
-    >
+    <>
       <Card
         sx={{
           boxSizing: 'border-box',
@@ -64,85 +59,89 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           borderColor: '#E2E6E9',
         }}
       >
-        <CardMedia
-          component="img"
-          height="50%"
-          image={image}
-          sx={{
-            pt: 4,
-            height: 196,
-            maxWidth: 208,
-            objectFit: 'contain',
-            objectPosition: 'center',
-          }}
-        />
-        <CardContent sx={{ m: 1, px: 3 }}>
-          <Typography variant="h4" component="div" sx={{ pt: 1 }}>
-            {name}
-          </Typography>
-          <Stack direction="row" spacing={2} sx={{ pt: 1, pb: 1 }}>
-            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-              {`$${price}`}
-            </Typography>
-            <Typography
-              variant="h5"
+        <CardContent sx={{ m: 1, p: '32px' }}>
+          <Link
+            to={`/${product.category}/${product.itemId}`}
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <CardMedia
+              component="img"
+              height="50%"
+              image={image}
               sx={{
-                fontWeight: 'bold',
-                color: '#89939A',
-                textDecoration: 'line-through',
+                height: 196,
+                maxWidth: 208,
+                objectFit: 'contain',
+                objectPosition: 'center',
               }}
-            >
-              {`$${fullPrice}`}
+            />
+            <Typography variant="h4" component="div" sx={{ pt: '24px' }}>
+              {name}
             </Typography>
-          </Stack>
+            <Stack direction="row" spacing={2} sx={{ pt: 1, pb: 1 }}>
+              <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                {`$${price}`}
+              </Typography>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: 'bold',
+                  color: '#89939A',
+                  textDecoration: 'line-through',
+                }}
+              >
+                {`$${fullPrice}`}
+              </Typography>
+            </Stack>
 
-          <Divider />
+            <Divider />
 
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{ justifyContent: 'space-between', pt: 2 }}
-          >
-            <Typography variant="body1" sx={{ color: '#89939A' }}>
-              Screen
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ color: 'black', fontWeight: 'bold' }}
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{ justifyContent: 'space-between', pt: 2 }}
             >
-              {screen}
-            </Typography>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{ justifyContent: 'space-between', pt: 0.5 }}
-          >
-            <Typography variant="body1" sx={{ color: '#89939A' }}>
-              Capacity
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ color: 'black', fontWeight: 'bold' }}
+              <Typography variant="body1" sx={{ color: '#89939A' }}>
+                Screen
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{ color: 'black', fontWeight: 'bold' }}
+              >
+                {screen}
+              </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{ justifyContent: 'space-between', pt: 0.5 }}
             >
-              {capacity}
-            </Typography>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{ justifyContent: 'space-between', pt: 0.5 }}
-          >
-            <Typography variant="body1" sx={{ color: '#89939A' }}>
-              RAM
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ color: 'black', fontWeight: 'bold' }}
+              <Typography variant="body1" sx={{ color: '#89939A' }}>
+                Capacity
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{ color: 'black', fontWeight: 'bold' }}
+              >
+                {capacity}
+              </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{ justifyContent: 'space-between', pt: 0.5 }}
             >
-              {ram}
-            </Typography>
-          </Stack>
+              <Typography variant="body1" sx={{ color: '#89939A' }}>
+                RAM
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{ color: 'black', fontWeight: 'bold' }}
+              >
+                {ram}
+              </Typography>
+            </Stack>
+          </Link>
 
           <Stack
             direction="row"
@@ -186,6 +185,6 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           </Stack>
         </CardContent>
       </Card>
-    </Link>
+    </>
   );
 };
