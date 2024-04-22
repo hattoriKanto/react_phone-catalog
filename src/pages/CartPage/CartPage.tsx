@@ -10,79 +10,88 @@ import {
 import Container from '../../components/Container/Container';
 import { useCartContext } from '../../hooks/useCartContext';
 import CartItem from '../../components/CartItem';
+import { useState } from 'react';
+import { CartModal } from '../../components/CartModal';
 
 export const CartPage = () => {
-  const { cart, cartQuantity, clearCart } = useCartContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { cart, cartQuantity } = useCartContext();
   const totalPrice = cart.reduce(
     (total, item) => total + item.product.price * item.quantity,
     0,
   );
 
   return (
-    <Container>
-      <Typography variant="h1" component="h2" sx={{ py: 2 }}>
-        Cart
-      </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          width: '100%',
-          flexDirection: { xs: 'column', md: 'row' },
-        }}
-      >
-        <Box sx={{ width: { md: '70%', xs: '100%' }, pr: { sm: 2, xs: 0 } }}>
-          {cartQuantity > 0 &&
-            cart.map(item => (
-              <Box key={item.prodId} sx={{ pb: 2 }}>
-                <CartItem product={item.product} />{' '}
-              </Box>
-            ))}
-        </Box>
+    <>
+      <Container>
+        <Typography variant="h1" component="h2" sx={{ py: 2 }}>
+          Cart
+        </Typography>
         <Box
           sx={{
-            width: { md: '30%', xs: '100%' },
-            position: 'sticky',
-            top: '72px',
-            height: 'fit-content',
+            display: 'flex',
+            width: '100%',
+            flexDirection: { xs: 'column', md: 'row' },
           }}
         >
-          <Card>
-            <CardContent>
-              <Stack direction="column" spacing={2}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Typography variant="h6">
-                    Total Price: {`$${totalPrice}`}
-                  </Typography>
-                  <Typography variant="subtitle1">
-                    Total Items: {cartQuantity}
-                  </Typography>
+          <Box sx={{ width: { md: '70%', xs: '100%' }, pr: { sm: 2, xs: 0 } }}>
+            {cartQuantity > 0 &&
+              cart.map(item => (
+                <Box key={item.prodId} sx={{ pb: 2 }}>
+                  <CartItem product={item.product} />{' '}
                 </Box>
-                <Divider variant="middle" />
-                <Button
-                  variant="contained"
-                  color="accent"
-                  sx={{
-                    width: '100%',
-                    py: 1,
-                    '&.MuiButton-contained': { color: '#fff' },
-                    textTransform: 'none',
-                  }}
-                  onClick={() => clearCart()}
-                >
-                  Checkout
-                </Button>
-              </Stack>
-            </CardContent>
-          </Card>
+              ))}
+          </Box>
+          <Box
+            sx={{
+              width: { md: '30%', xs: '100%' },
+              position: 'sticky',
+              top: '72px',
+              height: 'fit-content',
+            }}
+          >
+            <Card>
+              <CardContent>
+                <Stack direction="column" spacing={2}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Typography variant="h6">
+                      Total Price: {`$${totalPrice}`}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      Total Items: {cartQuantity}
+                    </Typography>
+                  </Box>
+                  <Divider variant="middle" />
+                  <Button
+                    variant="contained"
+                    color="accent"
+                    sx={{
+                      width: '100%',
+                      py: 1,
+                      '&.MuiButton-contained': { color: '#fff' },
+                      textTransform: 'none',
+                    }}
+                    onClick={() =>
+                      cart.length !== 0 ? setIsModalOpen(true) : null
+                    }
+                  >
+                    Checkout
+                  </Button>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+      <CartModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+    </>
   );
 };
