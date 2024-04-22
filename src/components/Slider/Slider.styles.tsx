@@ -20,7 +20,7 @@ export const OrderButton = styled(Button)(({ theme }) => ({
   },
 
   [theme.breakpoints.up('xs')]: {
-    display: 'none'
+    display: 'none',
   },
 
   [theme.breakpoints.up('sm')]: {
@@ -81,16 +81,16 @@ export const SwiperArrow = styled(Box)({
   bottom: 'unset !important',
   width: '32px !important',
   right: 'unset !important',
-  margin: 0
-})
+  margin: 0,
+});
 
 export const SliderImage = styled('img')({
-  width: '100%'
-})
+  width: '100%',
+});
 
 export const SliderArrowIconRight = styled('img')({
   rotate: '180deg',
-})
+});
 
 export const SwiperPaginationWrapper = styled(Box)({
   width: '100%',
@@ -105,29 +105,8 @@ export const SwiperPaginationWrapper = styled(Box)({
     borderRadius: 'initial',
   },
   '.swiper-pagination-bullet-active': {
-    backgroundColor: 'black'
-  }
-})
+    backgroundColor: 'black',
+  },
+});
 
-export const SliderArrowIcon = styled('img')({
-
-})
-
-// export const Test = styled(Box)(({ theme, backgroundTablet }: {
-//   theme: Theme
-//   backgroundTablet: string
-//   backgroundMobile: string
-// }) => ({
-//   backgroundSize: 'contain',
-//   background: `url(${backgroundTablet})`,
-//   height: '400px',
-//   width: '100%',
-// }));
-
-
-
-// ({
-//   height: '400px',
-//   width: '100%',
-//   background: 'url("img/Group 70.png")'
-// })
+export const SliderArrowIcon = styled('img')({});
