@@ -13,15 +13,13 @@ import {
 } from '@mui/material';
 import { useCartContext } from '../../hooks/useCartContext';
 import { useFavoritesContext } from '../../hooks/useFavoritesContext';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type Props = {
   product: Product;
 };
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
-  const location = useLocation();
-
   const { id, name, price, fullPrice, screen, capacity, ram, image } = product;
   const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
   const { addToFavorites, deleteFromFavorites, isProductInFavorites } =
@@ -63,7 +61,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       >
         <CardContent sx={{ m: 1, p: '32px' }}>
           <Link
-            to={`${location.pathname}/${product.itemId}`}
+            to={`/${product.category}/${product.itemId}`}
             style={{ textDecoration: 'none', color: 'inherit' }}
           >
             <CardMedia
