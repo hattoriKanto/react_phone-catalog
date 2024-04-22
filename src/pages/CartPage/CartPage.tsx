@@ -11,7 +11,7 @@ import Container from '../../components/Container/Container';
 import { useCartContext } from '../../hooks/useCartContext';
 import CartItem from '../../components/CartItem';
 
-const CartPage = () => {
+export const CartPage = () => {
   const { cart, cartQuantity, clearCart } = useCartContext();
   const totalPrice = cart.reduce(
     (total, item) => total + item.product.price * item.quantity,
@@ -86,4 +86,3 @@ const CartPage = () => {
     </Container>
   );
 };
-export default CartPage;
