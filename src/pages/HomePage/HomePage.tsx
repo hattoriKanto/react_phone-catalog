@@ -7,6 +7,7 @@ import { Category } from '../../types/Category';
 import useFetchData from '../../utils/useFetchData';
 import { Product } from '../../types';
 import { CategorySelector } from '../../components/CategorySelector';
+import Slider from '../../components/Slider';
 
 export const HomePage: FC = () => {
   const { data } = useFetchData<Product>('products.json');
@@ -46,6 +47,7 @@ export const HomePage: FC = () => {
             Welcome to Nice Gadgets store!
           </Typography>
         </Box>
+        <Slider />
         <Box py={2}>
           <NewModels></NewModels>
         </Box>
