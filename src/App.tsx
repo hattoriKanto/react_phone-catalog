@@ -19,6 +19,7 @@ function App() {
           onBurgerToggle={setIsBurgerMenuShown}
         ></BurgerMenu>
       )}
+
       <Outlet />
       <Footer />
     </>
