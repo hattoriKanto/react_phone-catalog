@@ -76,8 +76,23 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                 objectPosition: 'center',
               }}
             />
-            <Box height={36} sx={{ pt: 1 }}>
-              <Typography variant="body1" component="div">
+            <Box
+              height={36}
+              sx={{
+                pt: 1,
+              }}
+            >
+              <Typography
+                variant="body1"
+                component="div"
+                sx={{
+                  display: '-webkit-box',
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  WebkitLineClamp: 2,
+                }}
+              >
                 {name}
               </Typography>
             </Box>
