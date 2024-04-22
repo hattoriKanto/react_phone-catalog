@@ -10,6 +10,7 @@ import {
   Divider,
   IconButton,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { useCartContext } from '../../hooks/useCartContext';
@@ -82,19 +83,21 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                 pt: 1,
               }}
             >
-              <Typography
-                variant="body1"
-                component="div"
-                sx={{
-                  display: '-webkit-box',
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  WebkitLineClamp: 2,
-                }}
-              >
-                {name}
-              </Typography>
+              <Tooltip title={name}>
+                <Typography
+                  variant="body1"
+                  component="div"
+                  sx={{
+                    display: '-webkit-box',
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    WebkitLineClamp: 2,
+                  }}
+                >
+                  {name}
+                </Typography>
+              </Tooltip>
             </Box>
 
             <Stack direction="row" spacing={2} sx={{ pt: 2, pb: 1 }}>
