@@ -3,6 +3,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Product } from '../../types';
 import {
+  Box,
   Button,
   CardContent,
   CardMedia,
@@ -75,10 +76,13 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                 objectPosition: 'center',
               }}
             />
-            <Typography variant="h4" component="div" sx={{ pt: '24px' }}>
-              {name}
-            </Typography>
-            <Stack direction="row" spacing={2} sx={{ pt: 1, pb: 1 }}>
+            <Box height={36} sx={{ pt: 1 }}>
+              <Typography variant="body1" component="div">
+                {name}
+              </Typography>
+            </Box>
+
+            <Stack direction="row" spacing={2} sx={{ pt: 2, pb: 1 }}>
               <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                 {`$${price}`}
               </Typography>
