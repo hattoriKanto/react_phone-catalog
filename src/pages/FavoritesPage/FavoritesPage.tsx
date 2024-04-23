@@ -1,5 +1,5 @@
 import { useFavoritesContext } from '../../hooks/useFavoritesContext';
-import { Breadcrumbs, Grid, Typography, styled } from '@mui/material';
+import { Grid, Typography, styled } from '@mui/material';
 import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
