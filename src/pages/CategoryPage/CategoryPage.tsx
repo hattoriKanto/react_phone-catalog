@@ -10,14 +10,9 @@ import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsCompon
 export const CategoryPage = () => {
   const location = useLocation();
   const categoryName = location.pathname.slice(1);
-
-  const { data, isLoading, error } = useFetchData<Product>('products.json');
-
+  const { data, error } = useFetchData<Product>('products.json');
   const filteredData = data?.filter(data => data.category === categoryName);
 
-  console.log(location);
-
-  if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   const GridStyled = styled(Grid)({

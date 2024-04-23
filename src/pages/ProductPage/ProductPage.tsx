@@ -39,11 +39,15 @@ export const ProductPage: FC = () => {
             color="secondary"
             sx={{
               lineHeight: '100%',
+              pt: 4,
+              pb: 1,
             }}
           >
             Back
           </Button>
-          <Typography variant="h1">{product.name}</Typography>
+          <Typography variant="h1" pb={3}>
+            {product.name}
+          </Typography>
           <ImageSelector images={product.images} />
           <StyledFlexWrapper>
             <About description={product.description} />

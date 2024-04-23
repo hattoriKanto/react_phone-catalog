@@ -70,7 +70,6 @@ const BreadCrumbsComponent: FC<Props> = ({ product }) => {
   const currentPath = location.pathname.split('/');
   currentPath[0] = 'home';
 
-  console.log(currentPath);
   return (
     <Breadcrumbs
       aria-label="breadcrumb"

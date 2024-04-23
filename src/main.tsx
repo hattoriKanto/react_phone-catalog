@@ -13,6 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <CartProvider>
         <FavoritesProvider>
           <CssBaseline />
+
           <Root />
         </FavoritesProvider>
       </CartProvider>
