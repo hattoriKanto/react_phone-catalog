@@ -4,3 +4,4 @@ export * from './Product';
 export * from './ProductInCart';
 export * from './ProductExpanded';
 export * from './Category';
+export * from './ToastTypes';

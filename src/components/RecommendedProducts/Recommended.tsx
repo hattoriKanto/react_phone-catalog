@@ -1,28 +1,33 @@
-import React, { useState } from 'react';
 import {
   Box,
-  Typography,
   Button,
-  useMediaQuery,
-  styled,
   Grid,
+  Typography,
+  styled,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import products from '../../../public/api/products.json';
-import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Product } from '../../types';
-import { ProductCard } from '../ProductCard/ProductCard';
-import { useTheme } from '@mui/material/styles';
+import { FC, useState } from 'react';
 import { customBreakpoints } from '../../theme/breakpoints.config';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { customTypography } from '../../theme/typography.config';
 import { CustomGrid } from '../CustomGrid';
+import { ProductCard } from '../ProductCard/ProductCard';
 
-const newHotPrices = products.filter(product => {
-  const { price, fullPrice } = product;
-  const percent = Math.round(((fullPrice - price) / price) * 100);
-  return percent > 15;
-});
+interface RecommendedProps {
+  name: string;
+  color: string;
+}
 
-export const HotPrices: React.FC = () => {
+const Recommended: FC<RecommendedProps> = ({ name, color }) => {
+  const recommendedProducts = products
+    .filter(item => {
+      return name !== item.name && item.color === color;
+    })
+    .sort((a, b) => a.price - b.price);
+
   const [startIndex, setStartIndex] = useState(0);
   let productsPerRow = 4;
   const { sm, md, lg } = customBreakpoints.values;
@@ -54,7 +59,10 @@ export const HotPrices: React.FC = () => {
 
   const handleClickNext = () => {
     setStartIndex(
-      Math.min(startIndex + productsPerRow, products.length - productsPerRow),
+      Math.min(
+        startIndex + productsPerRow,
+        recommendedProducts.length - productsPerRow,
+      ),
     );
   };
 
@@ -73,7 +81,7 @@ export const HotPrices: React.FC = () => {
         }}
       >
         <Typography variant="h2" gutterBottom sx={customTypography.h2}>
-          Hot Prices
+          You may also like
         </Typography>
 
         <Box>
@@ -83,24 +91,23 @@ export const HotPrices: React.FC = () => {
 
           <Button
             onClick={handleClickNext}
-            disabled={startIndex + productsPerRow >= newHotPrices.length}
+            disabled={startIndex + productsPerRow >= recommendedProducts.length}
           >
             <ArrowForward />
           </Button>
         </Box>
       </Box>
 
-      <Box display={'flex'} justifyContent={'center'}>
-        <CustomGrid>
-          {newHotPrices
-            .slice(startIndex, startIndex + productsPerRow)
-            .map((product: Product) => (
-              <GridStyled item xs={1} md={1} key={product.id}>
-                <ProductCard product={product} key={product.id}></ProductCard>
-              </GridStyled>
-            ))}
-        </CustomGrid>
-      </Box>
+      <CustomGrid>
+        {recommendedProducts
+          .slice(startIndex, startIndex + productsPerRow)
+          .map((product: Product) => (
+            <GridStyled item xs={1} md={1} key={product.id}>
+              <ProductCard product={product} key={product.id}></ProductCard>
+            </GridStyled>
+          ))}
+      </CustomGrid>
     </Box>
   );
 };
+export default Recommended;
