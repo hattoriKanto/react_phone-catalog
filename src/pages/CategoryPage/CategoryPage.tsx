@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography, styled } from '@mui/material';
+import { Box, Grid, Stack, Typography, styled } from '@mui/material';
 import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
@@ -33,14 +33,15 @@ export const CategoryPage = () => {
             {filteredData.length} models
           </Typography>
         </Stack>
-
-        <CustomGrid>
-          {filteredData?.map(phone => (
-            <GridStyled item xs={1} md={1} key={phone.id}>
-              <ProductCard product={phone} />
-            </GridStyled>
-          ))}
-        </CustomGrid>
+        <Box display={'flex'} justifyContent={'center'}>
+          <CustomGrid>
+            {filteredData?.map(phone => (
+              <GridStyled item xs={1} md={1} key={phone.id}>
+                <ProductCard product={phone} />
+              </GridStyled>
+            ))}
+          </CustomGrid>
+        </Box>
       </Container>
     </>
   );
