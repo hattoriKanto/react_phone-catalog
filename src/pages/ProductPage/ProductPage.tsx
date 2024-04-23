@@ -10,6 +10,8 @@ import { Button, Divider, Stack, Typography } from '@mui/material';
 import Container from '../../components/Container/Container';
 import { About } from '../../components/AboutSection';
 import { StyledFlexWrapper } from './ProductPage.styles';
+import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbsComponent';
+import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
 
 export const ProductPage: FC = () => {
   const location = useLocation();
@@ -30,6 +32,7 @@ export const ProductPage: FC = () => {
     <>
       {product && (
         <Container>
+          <BreadCrumbsComponent product={product} />
           <Button
             onClick={() => history.back()}
             startIcon={<ArrowBackIosNewIcon />}
