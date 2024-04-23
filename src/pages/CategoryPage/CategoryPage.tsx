@@ -5,6 +5,8 @@ import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation } from 'react-router-dom';
 import Container from '../../components/Container/Container';
+import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbsComponent';
+import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
 
 export const CategoryPage = () => {
   const location = useLocation();
@@ -13,6 +15,8 @@ export const CategoryPage = () => {
   const { data, isLoading, error } = useFetchData<Product>('products.json');
 
   const filteredData = data?.filter(data => data.category === categoryName);
+
+  console.log(location);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -26,6 +30,7 @@ export const CategoryPage = () => {
   return (
     <>
       <Container>
+        <BreadCrumbsComponent />
         <Stack sx={{ px: '2rem' }}>
           <Typography variant="h1" sx={{ pt: 4 }}>
             {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}

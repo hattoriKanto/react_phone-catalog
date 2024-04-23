@@ -12,6 +12,7 @@ import { useCartContext } from '../../hooks/useCartContext';
 import CartItem from '../../components/CartItem';
 import { useState } from 'react';
 import { CartModal } from '../../components/CartModal';
+import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
 
 export const CartPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,6 +26,7 @@ export const CartPage = () => {
   return (
     <>
       <Container>
+        <BreadCrumbsComponent />
         <Typography variant="h1" component="h2" sx={{ py: 2 }}>
           Cart
         </Typography>
