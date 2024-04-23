@@ -5,6 +5,7 @@ export const StyledFlexWrapper = styled(Stack)(({ theme }) => ({
 
   [theme.breakpoints.up('xs')]: {
     marginTop: '56px',
+    marginBottom: '56px',
     flexDirection: 'column',
     gap: '56px',
   },

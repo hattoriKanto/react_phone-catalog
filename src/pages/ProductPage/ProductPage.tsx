@@ -3,14 +3,14 @@ import useFetchData from '../../utils/useFetchData';
 import { useLocation } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { ProductExpanded } from '../../types/ProductExpanded';
-
 import './ProductPage.css';
 import { ImageSelector } from '../../components/ImageSelector';
-import { Button, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import Container from '../../components/Container/Container';
 import { About } from '../../components/AboutSection';
 import { StyledFlexWrapper } from './ProductPage.styles';
 import { TechSpecs } from '../../components/TechSpecsSection';
+import Recommended from '../../components/RecommendedProducts/Recommended';
 
 export const ProductPage: FC = () => {
   const location = useLocation();
@@ -47,6 +47,12 @@ export const ProductPage: FC = () => {
             <About description={product.description} />
             <TechSpecs product={product} />
           </StyledFlexWrapper>
+          <Box sx={{ pb: { xs: 3, sm: 6 } }}>
+            <Recommended
+              name={product.namespaceId}
+              color={product.color}
+            ></Recommended>
+          </Box>
         </Container>
       )}
     </>
