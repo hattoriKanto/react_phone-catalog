@@ -1,4 +1,4 @@
-import { Stack, styled } from '@mui/material';
+import { Box, Stack, styled } from '@mui/material';
 
 export const StyledFlexWrapper = styled(Stack)(({ theme }) => ({
   display: 'flex',
@@ -20,3 +20,8 @@ export const StyledFlexWrapper = styled(Stack)(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
+
+export const ProductWrapper = styled(Box)({
+  display: 'flex',
+  justifyContent: 'space-between',
+})
