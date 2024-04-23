@@ -47,7 +47,9 @@ export const HomePage: FC = () => {
             Welcome to Nice Gadgets store!
           </Typography>
         </Box>
-        <Slider />
+      </Container>
+      <Slider />
+      <Container>
         <Box py={2}>
           <NewModels></NewModels>
         </Box>

@@ -6,7 +6,10 @@ import { ProductExpanded } from '../../types/ProductExpanded';
 
 import './ProductPage.css';
 import { ImageSelector } from '../../components/ImageSelector';
-import { Button, Typography } from '@mui/material';
+import { Button, Divider, Stack, Typography } from '@mui/material';
+import Container from '../../components/Container/Container';
+import { About } from '../../components/AboutSection';
+import { StyledFlexWrapper } from './ProductPage.styles';
 
 export const ProductPage: FC = () => {
   const location = useLocation();
@@ -18,29 +21,37 @@ export const ProductPage: FC = () => {
     `${category}.json`,
   );
 
-  const product = data.find(prod => prod.id === prodId);
+  const product = data.find(prod => prod.id === prodId) || null;
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
     <>
-      <Button
-        onClick={() => history.back()}
-        startIcon={<ArrowBackIosNewIcon />}
-        sx={{
-          marginLeft: 18,
-          marginTop: '40px',
-          color: '#89939A',
-          lineHeight: '100%',
-        }}
-      >
-        Back
-      </Button>
-      <Typography variant="h1" sx={{ px: 18, pt: '16px' }}>
-        {product?.name}
-      </Typography>
-      {product && <ImageSelector images={product.images} />}
+      {product && (
+        <Container>
+          <Button
+            onClick={() => history.back()}
+            startIcon={<ArrowBackIosNewIcon />}
+            color="secondary"
+            sx={{
+              lineHeight: '100%',
+            }}
+          >
+            Back
+          </Button>
+          <Typography variant="h1">{product.name}</Typography>
+          <ImageSelector images={product.images} />
+          <StyledFlexWrapper>
+            <About description={product.description} />
+            <Stack sx={{ flex: 1 }}>
+              <Typography variant="h3">Tech specs</Typography>
+
+              <Divider />
+            </Stack>
+          </StyledFlexWrapper>
+        </Container>
+      )}
     </>
   );
 };
