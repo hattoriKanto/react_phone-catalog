@@ -1,4 +1,3 @@
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
@@ -10,7 +9,12 @@ import {
   SwiperPaginationWrapper,
   SliderBanner,
   SwiperArrow,
-  SliderArrowIconRight, LinkOne, LinkTwo, LinkThree, SliderArrowIconLeft, SliderContainer,
+  SliderArrowIconRight,
+  LinkOne,
+  LinkTwo,
+  LinkThree,
+  SliderArrowIconLeft,
+  SliderContainer,
 } from './Slider.styles.tsx';
 
 const Slider = () => {
@@ -22,20 +26,20 @@ const Slider = () => {
         </SwiperArrow>
         <Swiper
           navigation={{
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
-            }}
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }}
           pagination={{
-              clickable: true,
-              el: '.swiper-pagination',
-              type: 'bullets',
-            }}
+            clickable: true,
+            el: '.swiper-pagination',
+            type: 'bullets',
+          }}
           slidesPerView={1}
           scrollbar={{ el: '.swiper-scrollbar', draggable: true }}
           autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
           modules={[Navigation, Pagination, Autoplay]}
         >
           <SwiperSlide>

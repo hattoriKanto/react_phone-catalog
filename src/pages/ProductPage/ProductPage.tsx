@@ -3,14 +3,17 @@ import useFetchData from '../../utils/useFetchData';
 import { useLocation } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { ProductExpanded } from '../../types/ProductExpanded';
-
 import './ProductPage.css';
 import { ImageSelector } from '../../components/ImageSelector';
-import { Button, Divider, Stack, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import Container from '../../components/Container/Container';
 import { About } from '../../components/AboutSection';
 import { ProductWrapper, StyledFlexWrapper } from './ProductPage.styles';
 import ChangeColorSizeBlock from '../../components/ChangeColorSizeBlock/ChangeColorSizeBlock';
+import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
+import { TechSpecs } from '../../components/TechSpecsSection';
+import Recommended from '../../components/RecommendedProducts/Recommended';
+
 
 export const ProductPage: FC = () => {
   const location = useLocation();
@@ -33,30 +36,36 @@ export const ProductPage: FC = () => {
     <>
       {product && (
         <Container>
+          <BreadCrumbsComponent product={product} />
           <Button
             onClick={() => history.back()}
             startIcon={<ArrowBackIosNewIcon />}
             color="secondary"
             sx={{
               lineHeight: '100%',
+              pt: 4,
+              pb: 1,
             }}
           >
             Back
           </Button>
-          <Typography variant="h1">{product.name}</Typography>
+          <Typography variant="h1" pb={3}>
+            {product.name}
+          </Typography>
           <ProductWrapper>
             <ImageSelector images={product.images} />
             <ChangeColorSizeBlock selector={selector}/>
           </ProductWrapper>
-
           <StyledFlexWrapper>
             <About description={product.description} />
-            <Stack sx={{ flex: 1 }}>
-              <Typography variant="h3">Tech specs</Typography>
-
-              <Divider />
-            </Stack>
+            <TechSpecs product={product} />
           </StyledFlexWrapper>
+          <Box sx={{ pb: { xs: 3, sm: 6 } }}>
+            <Recommended
+              name={product.namespaceId}
+              color={product.color}
+            ></Recommended>
+          </Box>
         </Container>
       )}
     </>

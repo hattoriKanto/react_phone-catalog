@@ -51,7 +51,14 @@ const CartItem: React.FC<Props> = ({ product }) => {
               <DeleteIcon />
             </StyledIconButton>
 
-            <ProductImage>
+            <ProductImage
+              sx={{
+                transition: 'transform 0.3s ease-in-out',
+                '&:hover': {
+                  transform: 'scale(1.1)',
+                },
+              }}
+            >
               <Image src={image} />
             </ProductImage>
 
