@@ -9,7 +9,8 @@ import { ImageSelector } from '../../components/ImageSelector';
 import { Button, Divider, Stack, Typography } from '@mui/material';
 import Container from '../../components/Container/Container';
 import { About } from '../../components/AboutSection';
-import { StyledFlexWrapper } from './ProductPage.styles';
+import { ProductWrapper, StyledFlexWrapper } from './ProductPage.styles';
+import ChangeColorSizeBlock from '../../components/ChangeColorSizeBlock/ChangeColorSizeBlock';
 
 export const ProductPage: FC = () => {
   const location = useLocation();
@@ -17,10 +18,12 @@ export const ProductPage: FC = () => {
 
   const category = pathname.split('/')[1];
   const prodId = pathname.split('/')[2];
+
   const { data, isLoading, error } = useFetchData<ProductExpanded>(
     `${category}.json`,
   );
 
+  const selector = prodId.split('-').slice(0, 3).join('-');
   const product = data.find(prod => prod.id === prodId) || null;
 
   if (isLoading) return <p>Loading...</p>;
@@ -41,7 +44,11 @@ export const ProductPage: FC = () => {
             Back
           </Button>
           <Typography variant="h1">{product.name}</Typography>
-          <ImageSelector images={product.images} />
+          <ProductWrapper>
+            <ImageSelector images={product.images} />
+            <ChangeColorSizeBlock selector={selector}/>
+          </ProductWrapper>
+
           <StyledFlexWrapper>
             <About description={product.description} />
             <Stack sx={{ flex: 1 }}>
