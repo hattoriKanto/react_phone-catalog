@@ -53,6 +53,7 @@ export const SliderBanner = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     '.swiper': {
       width: '1040px',
+      margin: '0',
     },
   },
 }));

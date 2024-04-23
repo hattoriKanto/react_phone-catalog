@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import { FC } from 'react';
 import { NewModels } from '../../components/NewModels/NewModels';
 import { HotPrices } from '../../components/HotPrices/HotPrices';
@@ -8,6 +8,15 @@ import useFetchData from '../../utils/useFetchData';
 import { Product } from '../../types';
 import { CategorySelector } from '../../components/CategorySelector';
 import Slider from '../../components/Slider';
+
+const SliderOnPageContainer = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    padding: '0',
+  },
+  [theme.breakpoints.up('md')]: {
+    paddingInline: '32px',
+  },
+}));
 
 export const HomePage: FC = () => {
   const { data } = useFetchData<Product>('products.json');
@@ -48,7 +57,9 @@ export const HomePage: FC = () => {
           </Typography>
         </Box>
       </Container>
-      <Slider />
+      <SliderOnPageContainer>
+        <Slider />
+      </SliderOnPageContainer>
       <Container>
         <Box py={2}>
           <NewModels></NewModels>

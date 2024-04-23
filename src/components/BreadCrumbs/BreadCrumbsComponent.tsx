@@ -9,7 +9,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import InfoIcon from '@mui/icons-material/Info';
 import { useLocation } from 'react-router-dom';
 import { FC } from 'react';
-import { Product } from '../../types';
+import { ProductExpanded } from '../../types';
 
 enum Page {
   Home = 'home',
@@ -62,7 +62,7 @@ function getFullPath(curPath: string[], page: string) {
 }
 
 type Props = {
-  product?: Product | null;
+  product?: ProductExpanded | null;
 };
 
 const BreadCrumbsComponent: FC<Props> = ({ product }) => {
@@ -91,18 +91,16 @@ const BreadCrumbsComponent: FC<Props> = ({ product }) => {
           {getIcon(path as Page)}
           {index !== currentPath.length - 1 ? (
             <Typography variant="body1">
-              {Object.entries(Page).find(
-                ([key, value]) => value === path,
-              )?.[0] || product?.name}
+              {Object.values(Page).find(([value]) => value === path)?.[0] ||
+                product?.name}
             </Typography>
           ) : (
             <Typography
               variant="body1"
               sx={{ fontWeight: 'bold', fontSize: 18 }}
             >
-              {Object.entries(Page).find(
-                ([key, value]) => value === path,
-              )?.[0] || product?.name}
+              {Object.values(Page).find(([value]) => value === path)?.[0] ||
+                product?.name}
             </Typography>
           )}
         </Link>
