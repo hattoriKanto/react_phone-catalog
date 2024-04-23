@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, useMediaQuery, styled, Grid } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Button,
+  useMediaQuery,
+  styled,
+  Grid,
+} from '@mui/material';
 import products from '../../../public/api/products.json';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Product } from '../../types';
@@ -9,7 +16,22 @@ import { customBreakpoints } from '../../theme/breakpoints.config';
 import { customTypography } from '../../theme/typography.config';
 import { CustomGrid } from '../CustomGrid';
 
-const newModelsList = products.filter(({ year }) => year === 2022);
+type UniqueProducts = {
+  [itemIdWithoutColor: string]: Product;
+};
+
+const uniqueProducts: UniqueProducts = {};
+
+products
+  .filter(({ year }) => year === 2022)
+  .forEach((product: Product) => {
+    const idWithoutColor = product.itemId.replace(/-[a-z]+$/, '');
+    if (!uniqueProducts[idWithoutColor]) {
+      uniqueProducts[idWithoutColor] = product;
+    }
+  });
+
+const newModelsList: Product[] = Object.values(uniqueProducts);
 
 export const NewModels: React.FC = () => {
   const [startIndex, setStartIndex] = useState(0);
