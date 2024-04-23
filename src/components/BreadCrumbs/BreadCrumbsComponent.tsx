@@ -1,4 +1,4 @@
-import { Breadcrumbs, Link, Typography } from '@mui/material';
+import { Breadcrumbs, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
@@ -10,6 +10,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useLocation } from 'react-router-dom';
 import { FC } from 'react';
 import { ProductExpanded } from '../../types';
+import { StyledLink } from '.';
 
 enum Page {
   Home = 'home',
@@ -88,10 +89,7 @@ const BreadCrumbsComponent: FC<Props> = ({ product }) => {
       }}
     >
       {currentPath.map((path, index) => (
-        <Link
-          underline="hover"
-          sx={{ display: 'flex', alignItems: 'center' }}
-          color="inherit"
+        <StyledLink
           href={`/react_phone-catalog/#/${getFullPath(currentPath, path)}`}
           key={index}
         >
@@ -108,7 +106,7 @@ const BreadCrumbsComponent: FC<Props> = ({ product }) => {
               {createPath(path) || product?.name}
             </Typography>
           )}
-        </Link>
+        </StyledLink>
       ))}
     </Breadcrumbs>
   );
