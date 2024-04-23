@@ -63,7 +63,6 @@ export const CustomGrid: React.FC<Props> = ({
     <Box
       sx={{
         width: 0,
-        margin: '0 auto',
         display: 'grid',
         justifyContent: 'center',
         placeItems: 'center',
