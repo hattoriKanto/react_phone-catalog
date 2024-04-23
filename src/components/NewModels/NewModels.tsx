@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, useMediaQuery, styled, Grid } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Button,
+  useMediaQuery,
+  styled,
+  Grid,
+} from '@mui/material';
 import products from '../../../public/api/products.json';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Product } from '../../types';
