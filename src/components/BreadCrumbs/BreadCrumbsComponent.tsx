@@ -42,6 +42,13 @@ function getIcon(page: Page) {
   }
 }
 
+const createPath = (path: string) => {
+  return Object.values(Page)
+    .find(value => value === path)
+    ?.split('')
+    .reduce((acc, ch, i) => (i === 0 ? acc + ch.toUpperCase() : acc + ch), '');
+};
+
 function getFullPath(curPath: string[], page: string) {
   const prevPath = [];
 
@@ -91,16 +98,14 @@ const BreadCrumbsComponent: FC<Props> = ({ product }) => {
           {getIcon(path as Page)}
           {index !== currentPath.length - 1 ? (
             <Typography variant="body1">
-              {Object.values(Page).find(([value]) => value === path)?.[0] ||
-                product?.name}
+              {createPath(path) || product?.name}
             </Typography>
           ) : (
             <Typography
               variant="body1"
               sx={{ fontWeight: 'bold', fontSize: 18 }}
             >
-              {Object.values(Page).find(([value]) => value === path)?.[0] ||
-                product?.name}
+              {createPath(path) || product?.name}
             </Typography>
           )}
         </Link>
