@@ -34,15 +34,15 @@ export const CategoryPage = () => {
             {filteredData.length} models
           </Typography>
         </Stack>
-      </Container>
 
-      <CustomGrid>
-        {filteredData?.map(phone => (
-          <GridStyled item xs={1} md={1} key={phone.id}>
-            <ProductCard product={phone} />
-          </GridStyled>
-        ))}
-      </CustomGrid>
+        <CustomGrid>
+          {filteredData?.map(phone => (
+            <GridStyled item xs={1} md={1} key={phone.id}>
+              <ProductCard product={phone} />
+            </GridStyled>
+          ))}
+        </CustomGrid>
+      </Container>
     </>
   );
 };

@@ -4,6 +4,7 @@ import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
+import Container from '../../components/Container/Container';
 
 export const FavoritesPage: React.FC = () => {
   const { favorites, favoritesQuantity } = useFavoritesContext();
@@ -19,10 +20,8 @@ export const FavoritesPage: React.FC = () => {
   });
 
   return (
-    <>
-      <Typography variant="h1" sx={{ px: 18, pt: 4 }}>
-        Favorites
-      </Typography>
+    <Container>
+      <Typography variant="h1">Favorites</Typography>
       {favoritesQuantity !== 0 && (
         <Typography variant="body1" color="secondary" sx={{ px: 18, pb: 4 }}>
           {favoritesQuantity === 1
@@ -37,6 +36,6 @@ export const FavoritesPage: React.FC = () => {
           </GridStyled>
         ))}
       </CustomGrid>
-    </>
+    </Container>
   );
 };

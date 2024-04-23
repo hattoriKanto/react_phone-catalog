@@ -62,11 +62,10 @@ export const CartPage = () => {
                       alignItems: 'center',
                     }}
                   >
-                    <Typography variant="h6">
-                      Total Price: {`$${totalPrice}`}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      Total Items: {cartQuantity}
+                    <Typography variant="h2">{`$${totalPrice}`}</Typography>
+                    <Typography variant="body1" color="secondary">
+                      Total for {cartQuantity}{' '}
+                      {cartQuantity === 1 ? 'item' : 'items'}
                     </Typography>
                   </Box>
                   <Divider variant="middle" />
