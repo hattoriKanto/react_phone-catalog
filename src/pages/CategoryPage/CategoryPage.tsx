@@ -5,7 +5,6 @@ import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation } from 'react-router-dom';
 import Container from '../../components/Container/Container';
-import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbsComponent';
 import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
 
 export const CategoryPage = () => {

@@ -104,6 +104,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                   maxWidth: 208,
                   objectFit: 'contain',
                   objectPosition: 'center',
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                  },
                 }}
               />
               <Box
@@ -319,6 +323,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                   width: '160px',
                   py: 1,
                   '&.MuiButton-contained': { color: '#fff' },
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                  },
                 }}
               >
                 <Typography
