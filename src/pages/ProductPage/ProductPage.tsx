@@ -6,10 +6,12 @@ import { ProductExpanded } from '../../types/ProductExpanded';
 
 import './ProductPage.css';
 import { ImageSelector } from '../../components/ImageSelector';
-import { Button, Divider, Stack, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Container from '../../components/Container/Container';
 import { About } from '../../components/AboutSection';
 import { StyledFlexWrapper } from './ProductPage.styles';
+import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
+import { TechSpecs } from '../../components/TechSpecsSection';
 
 export const ProductPage: FC = () => {
   const location = useLocation();
@@ -30,6 +32,7 @@ export const ProductPage: FC = () => {
     <>
       {product && (
         <Container>
+          <BreadCrumbsComponent product={product} />
           <Button
             onClick={() => history.back()}
             startIcon={<ArrowBackIosNewIcon />}
@@ -44,11 +47,7 @@ export const ProductPage: FC = () => {
           <ImageSelector images={product.images} />
           <StyledFlexWrapper>
             <About description={product.description} />
-            <Stack sx={{ flex: 1 }}>
-              <Typography variant="h3">Tech specs</Typography>
-
-              <Divider />
-            </Stack>
+            <TechSpecs product={product} />
           </StyledFlexWrapper>
         </Container>
       )}

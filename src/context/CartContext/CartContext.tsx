@@ -40,7 +40,14 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     }
   });
 
-  const cartQuantity = useMemo(() => cart.length, [cart]);
+  const cartQuantity = useMemo(
+    () =>
+      cart.reduce(
+        (total: number, item: ProductInCart) => total + item.quantity,
+        0,
+      ),
+    [cart],
+  );
 
   const addToCart = (product: Product) => {
     if (!cart.some((item: ProductInCart) => item.prodId === product.id)) {
