@@ -4,7 +4,7 @@ import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation } from 'react-router-dom';
-import Container from '../Container/Container';
+import Container from '../../components/Container/Container';
 
 export const CategoryPage = () => {
   const location = useLocation();

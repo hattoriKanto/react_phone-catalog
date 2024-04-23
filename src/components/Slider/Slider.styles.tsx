@@ -1,39 +1,31 @@
-import { Box, Button, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
+import { Link } from 'react-router-dom';
 
-export const Card = styled(Box)({
-  display: 'flex',
-  justifyContent: 'center',
-  position: 'relative',
-});
+import slideOne from '../../../public/img/slider/slide-one/slide_one_desktop.png';
+import slideOneTablet from '../../../public/img/slider/slide-one/slide_one_tablet.png';
+import slideOneMobile from '../../../public/img/slider/slide-one/slide_one_mobile.png';
 
-export const OrderButton = styled(Button)(({ theme }) => ({
-  position: 'absolute',
-  bottom: '15%',
-  left: '5%',
-  color: '#FFFFFF',
-  border: '1px solid #89939A',
-  borderRadius: '30px',
+import slideTwo from '../../../public/img/slider/slide-two/slide_two_desktop.png';
+import slideTwoTablet from '../../../public/img/slider/slide-two/slide_two_tablet.png';
+import slideTwoMobile from '../../../public/img/slider/slide-two/slide_two_mobile.png';
 
-  '&:focus': {
-    backgroundColor: '#F86800',
-    border: 'none',
-  },
+import slideThreeDesktop from '../../../public/img/slider/slide-three/slider_three_desktop.png';
+import slideThreeTablet from '../../../public/img/slider/slide-three/slider_three_tablet.png';
+import slideThreeMobile from '../../../public/img/slider/slide-three/slider_three_mobile.png';
+import { Container } from '@mui/material';
 
+
+export const SliderContainer = styled(Container)(({ theme }) => ({
   [theme.breakpoints.up('xs')]: {
-    display: 'none'
+    padding: '0',
   },
 
   [theme.breakpoints.up('sm')]: {
-    width: '95px',
-    height: '30px',
-    fontSize: '8px',
-    display: 'initial',
+    width: '576px',
   },
+
   [theme.breakpoints.up('md')]: {
-    width: '200px',
-    height: '60px',
-    fontSize: '14px',
-    display: 'initial',
+    width: 'auto',
   },
 }));
 
@@ -43,13 +35,11 @@ export const SliderBanner = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   gap: '16px',
   marginBottom: '8px',
-  '.swiper': {
-    borderRadius: '8px',
-  },
 
   [theme.breakpoints.up('xs')]: {
     '.swiper': {
-      width: '320px',
+      width: '100vh',
+      borderRadius: '0',
     },
   },
 
@@ -57,6 +47,7 @@ export const SliderBanner = styled(Box)(({ theme }) => ({
     '.swiper': {
       width: '490px',
       gap: '19px',
+      borderRadius: '8px',
     },
   },
 
@@ -67,13 +58,12 @@ export const SliderBanner = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const SwiperArrow = styled(Box)({
+export const SwiperArrow = styled(Box)(({ theme }) => ({
   '&::after': {
     content: 'none',
   },
   alignSelf: 'stretch',
   position: 'relative',
-  height: 'auto',
   border: '1px solid #B2BDC3',
   borderRadius: '48px',
   top: 'unset !important',
@@ -81,16 +71,94 @@ export const SwiperArrow = styled(Box)({
   bottom: 'unset !important',
   width: '32px !important',
   right: 'unset !important',
-  margin: 0
-})
+  margin: 0,
+  textAlign: 'center',
+  minWidth: '32px',
 
-export const SliderImage = styled('img')({
-  width: '100%'
-})
+  [theme.breakpoints.up('xs')]: {
+    display: 'none'
+  },
+
+  [theme.breakpoints.up('sm')]: {
+    display: 'flex',
+    height: '189px',
+    boxSizing: 'border-box',
+  },
+
+  [theme.breakpoints.up('md')]: {
+    height: '400px',
+  },
+}));
+
+export const LinkOne = styled(Link)(({ theme }) => ({
+  display: 'block',
+  width: '100%',
+  // backgroundImage: `url(${slideOne})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'top center',
+
+  [theme.breakpoints.up('xs')]: {
+    backgroundImage: `url(${slideOneMobile})`,
+    height: '100vw',
+  },
+
+  [theme.breakpoints.up('sm')]: {
+    backgroundImage: `url(${slideOneTablet})`,
+    height: '189px',
+  },
+  [theme.breakpoints.up('md')]: {
+    backgroundImage: `url(${slideOne})`,
+    height: '400px',
+  },
+}));
+
+export const LinkTwo = styled(Link)(({ theme }) => ({
+  display: 'block',
+  width: '100%',
+  backgroundSize: 'cover',
+  backgroundPosition: 'top center',
+
+  [theme.breakpoints.up('xs')]: {
+    backgroundImage: `url(${slideTwoMobile})`,
+    height: '100vw',
+  },
+
+  [theme.breakpoints.up('sm')]: {
+    backgroundImage: `url(${slideTwoTablet})`,
+    height: '189px',
+  },
+  [theme.breakpoints.up('md')]: {
+    backgroundImage: `url(${slideTwo})`,
+    height: '400px',
+  },
+}));
+
+export const LinkThree = styled(Link)(({ theme }) => ({
+  display: 'block',
+  width: '100%',
+  backgroundSize: 'cover',
+  backgroundPosition: 'top center',
+
+  [theme.breakpoints.up('xs')]: {
+    backgroundImage: `url(${slideThreeMobile})`,
+    height: '100vw',
+  },
+
+  [theme.breakpoints.up('sm')]: {
+    backgroundImage: `url(${slideThreeTablet})`,
+    height: '189px',
+  },
+
+  [theme.breakpoints.up('md')]: {
+    backgroundImage: `url(${slideThreeDesktop})`,
+    height: '400px',
+  },
+}));
 
 export const SliderArrowIconRight = styled('img')({
+  width: '16px',
   rotate: '180deg',
-})
+});
 
 export const SwiperPaginationWrapper = styled(Box)({
   width: '100%',
@@ -105,29 +173,10 @@ export const SwiperPaginationWrapper = styled(Box)({
     borderRadius: 'initial',
   },
   '.swiper-pagination-bullet-active': {
-    backgroundColor: 'black'
-  }
-})
+    backgroundColor: 'black',
+  },
+});
 
-export const SliderArrowIcon = styled('img')({
-
-})
-
-// export const Test = styled(Box)(({ theme, backgroundTablet }: {
-//   theme: Theme
-//   backgroundTablet: string
-//   backgroundMobile: string
-// }) => ({
-//   backgroundSize: 'contain',
-//   background: `url(${backgroundTablet})`,
-//   height: '400px',
-//   width: '100%',
-// }));
-
-
-
-// ({
-//   height: '400px',
-//   width: '100%',
-//   background: 'url("img/Group 70.png")'
-// })
+export const SliderArrowIconLeft = styled('img')({
+  width: '16px',
+});

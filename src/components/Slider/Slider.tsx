@@ -1,76 +1,60 @@
-import Container from '../Container/Container';
-import { Swiper, SwiperSlide } from "swiper/react";
+
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
-import slideOne from '../../../public/img/Group 70.png';
-import slideTwo from '../../../public/img/Group 70.png';
-import slideThree from '../../../public/img/Group 70.png';
-
-import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import {
   SwiperPaginationWrapper,
-  Card, SliderArrowIcon,
-  SliderBanner, SwiperArrow, OrderButton, SliderImage, SliderArrowIconRight,
+  SliderBanner,
+  SwiperArrow,
+  SliderArrowIconRight, LinkOne, LinkTwo, LinkThree, SliderArrowIconLeft, SliderContainer,
 } from './Slider.styles.tsx';
-// import { Box } from '@mui/material';
-// import TestSlide from './TestSlide.tsx';
 
 const Slider = () => {
-  const swiperContent = [slideTwo, slideThree];
-  // const swiperContent2 = [{
-  //   backgroundTablet: slideTwo
-  // }, {
-  //   backgroundTablet: slideThree
-  // }]
   return (
-    <Container>
+    <SliderContainer>
       <SliderBanner>
-          <SwiperArrow className="swiper-button-prev">
-            <SliderArrowIconRight src="img/chevron-right.svg" />
-          </SwiperArrow>
+        <SwiperArrow className="swiper-button-prev">
+          <SliderArrowIconRight src="img/chevron-right.svg" />
+        </SwiperArrow>
         <Swiper
-          cssMode={true}
-            navigation={{
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+          navigation={{
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
             }}
-            pagination={{
+          pagination={{
               clickable: true,
               el: '.swiper-pagination',
               type: 'bullets',
             }}
-            mousewheel={true}
-            keyboard={true}
-            modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-            className="mySwiper"
-          >
-            <SwiperSlide>
-              <Card>
-                {/*<TestSlide backgroundTablet={slideOne} backgroundMobile={slideOne}>*/}
-                  <SliderImage src={slideOne} alt="" />
-                  <OrderButton>Order now</OrderButton>
-                {/*</TestSlide>*/}
-              </Card>
-            </SwiperSlide>
-            {swiperContent.map(content => (
-              <SwiperSlide>
-                <Card>
-                  {/*<TestSlide backgroundTablet={content.backgroundTablet}  backgroundMobile={content.backgroundTablet}/>*/}
-                  <SliderImage src={content} alt="" />
-                </Card>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <SwiperArrow className='swiper-button-next'>
-            <SliderArrowIcon src="img/chevron-right.svg" />
-          </SwiperArrow>
-        </SliderBanner>
-      <SwiperPaginationWrapper className='swiper-pagination'/>
-    </Container>
-  )
-}
+          slidesPerView={1}
+          scrollbar={{ el: '.swiper-scrollbar', draggable: true }}
+          autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+          modules={[Navigation, Pagination, Autoplay]}
+        >
+          <SwiperSlide>
+            <LinkOne to="/phones" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <LinkTwo to="/accessories" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <LinkThree to="/tablets" />
+          </SwiperSlide>
+        </Swiper>
+        <SwiperArrow className="swiper-button-next">
+          <SliderArrowIconLeft src="img/chevron-right.svg" />
+        </SwiperArrow>
+      </SliderBanner>
+      <SwiperPaginationWrapper className="swiper-pagination" />
+    </SliderContainer>
+  );
+};
 
 export default Slider;

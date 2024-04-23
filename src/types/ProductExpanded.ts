@@ -1,4 +1,4 @@
-type description = {
+export type Description = {
   title: string;
   text: string[];
 };
@@ -15,7 +15,7 @@ export type ProductExpanded = {
   colorsAvailable: string[];
   color: string;
   images: string[];
-  description: description[];
+  description: Description[];
   screen: string;
   resolution: string;
   processor: string;

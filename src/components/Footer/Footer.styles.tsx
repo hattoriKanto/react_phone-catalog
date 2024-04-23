@@ -35,7 +35,7 @@ export const BackToTopButton = styled(HashLink)(({ theme }) => ({
 }));
 
 export const Footer = styled(Box)(({ theme }) => ({
-  position: 'relative',
+  position: 'absolute',
   bottom: 0,
   right: 0,
   left: 0,
