@@ -14,6 +14,8 @@ import { customTypography } from '../../theme/typography.config';
 import { Button, TextField } from '@mui/material';
 import { useCartContext } from '../../hooks/useCartContext';
 import { ChangeEvent, useState } from 'react';
+import { StyledIconButton } from '../CartItem/CartItem';
+import { DeleteIcon } from '../CartItem/CartItem.styles';
 
 const style = {
   position: 'absolute',
@@ -21,7 +23,8 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  border: '2px solid #E2E6E9',
+  borderRadius: '16px',
   boxShadow: 24,
   p: 4,
 };
@@ -137,14 +140,32 @@ export const CartModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
       >
         <Fade in={isModalOpen}>
           <Box sx={style}>
-            <Typography
-              variant="h2"
-              textAlign={'center'}
-              gutterBottom
-              sx={customTypography.h2}
+            <Box
+              position={'relative'}
+              display={'flex'}
+              flexDirection={'row'}
+              alignItems={'center'}
+              justifyContent={'center'}
             >
-              Enter your info
-            </Typography>
+              <StyledIconButton
+                onClick={handleClose}
+                sx={{
+                  position: 'absolute',
+                  left: '0',
+                  top: '0',
+                }}
+              >
+                <DeleteIcon />
+              </StyledIconButton>
+              <Typography
+                variant="h2"
+                textAlign={'center'}
+                gutterBottom
+                sx={customTypography.h2}
+              >
+                Enter your info
+              </Typography>
+            </Box>
             <Box
               display={'flex'}
               flexDirection={'row'}
