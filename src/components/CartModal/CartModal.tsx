@@ -51,7 +51,10 @@ export const CartModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
 
   const [error, setError] = useState<string[]>([]);
 
-  const handleClose = () => setIsModalOpen(false);
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setError([]);
+  };
   const { clearCart } = useCartContext();
 
   const handleChange = (
