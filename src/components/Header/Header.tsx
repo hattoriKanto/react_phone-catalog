@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
@@ -16,6 +17,7 @@ import { NavMenu } from './NavMenu';
 import { NavBarButtons } from '.';
 import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';
 import Container from '../Container/Container';
+import { Search } from './Search';
 
 interface Props {
   isBurgerMenuShown: boolean;
@@ -26,6 +28,13 @@ export const Header: React.FC<Props> = ({
   isBurgerMenuShown,
   onBurgerToggle,
 }) => {
+  // new
+  const { pathname } = useLocation();
+  const searchField =
+    pathname === '/phones' ||
+    pathname === '/tablets' ||
+    pathname === '/accessories';
+
   return (
     <StyledAppBar>
       <Container>
@@ -37,6 +46,9 @@ export const Header: React.FC<Props> = ({
 
             <NavMenu />
           </StyledWrapper>
+
+          {/* new */}
+          {searchField && <Search />}
 
           <NavBarButtons />
 

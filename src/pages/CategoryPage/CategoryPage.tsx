@@ -17,6 +17,8 @@ import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
+import { useMemo } from 'react';
+import { getFilter } from '../../functions/getFilter';
 import { getSearchWith } from '../../utils/searchHelper';
 
 const perPageStates = [4, 8, 16];
@@ -37,10 +39,18 @@ export const CategoryPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryName = location.pathname.slice(1);
   const { data, error } = useFetchData<Product>('products.json');
-  const filteredData = data?.filter(data => data.category === categoryName);
 
+  const query = searchParams.get('query');
   const page = searchParams.get('page') || 1;
   const perPage = searchParams.get('perPage') || 4;
+
+  const visibleProducts = useMemo(() => {
+    return getFilter({ data, query });
+  }, [data, query]);
+
+  const filteredData = visibleProducts?.filter(
+    data => data.category === categoryName,
+  );
 
   const slicedData = getSlicedData(
     filteredData,
@@ -82,9 +92,16 @@ export const CategoryPage = () => {
           <Typography variant="h1" sx={{ pt: 4 }}>
             {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
           </Typography>
-          <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
-            {filteredData.length} models
-          </Typography>
+          {filteredData.length > 0 && (
+            <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
+              {filteredData.length} models
+            </Typography>
+          )}
+          {filteredData.length === 0 && (
+            <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
+              There are no {categoryName} matching the query
+            </Typography>
+          )}
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label">
               Items per page
