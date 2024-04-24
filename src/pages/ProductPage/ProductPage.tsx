@@ -18,6 +18,7 @@ import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsCompon
 import { TechSpecs } from '../../components/TechSpecsSection';
 import Recommended from '../../components/RecommendedProducts/Recommended';
 import { CartAndFavouriteBlock } from '../../components/CartAndFavouriteBlock';
+import { PriceBlock } from '../../components/PriceBlock';
 
 export const ProductPage: FC = () => {
   const location = useLocation();
@@ -60,6 +61,10 @@ export const ProductPage: FC = () => {
             <ImageSelector images={product.images} />
             <ProductInfoWrapper>
               <ChangeColorSizeBlock selector={selector} />
+              <PriceBlock
+                price={product.priceDiscount}
+                fullPrice={product.priceRegular}
+              />
               <CartAndFavouriteBlock product={product} />
             </ProductInfoWrapper>
           </ProductWrapper>
