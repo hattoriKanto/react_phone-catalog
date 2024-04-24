@@ -23,7 +23,6 @@ type Props = {
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
   const {
-    id,
     name,
     price,
     fullPrice,
@@ -43,9 +42,15 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     event.preventDefault();
 
     if (!isInCart) {
-      addToCart(product);
+      addToCart({
+        prodId: product.itemId,
+        img: product.image,
+        name: product.name,
+        category: product.category,
+        price: product.price,
+      });
     } else {
-      deleteFromCart(id);
+      deleteFromCart(product.itemId);
     }
   };
 
@@ -54,19 +59,18 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     event.preventDefault();
 
     if (!isInFavorites) {
-      addToFavorites(product);
+      addToFavorites(product.itemId);
     } else {
-      deleteFromFavorites(id);
+      deleteFromFavorites(product.itemId);
     }
   };
 
-  const isInCart = isProductInCart(id);
-  const isInFavorites = isProductInFavorites(id);
+  const isInCart = isProductInCart(product.itemId);
+  const isInFavorites = isProductInFavorites(product.itemId);
 
   return (
     <Link
       to={`/${category}/${itemId}`}
-      onClick={() => sessionStorage.setItem('shownProduct', `${product.id}`)}
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
       <Card

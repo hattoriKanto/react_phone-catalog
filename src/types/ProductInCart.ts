@@ -1,7 +1,8 @@
-import { Product } from './Product';
-
 export type ProductInCart = {
-  prodId: number;
-  product: Product;
+  prodId: string;
+  img: string;
+  name: string;
   quantity: number;
+  category: string;
+  price: number;
 };

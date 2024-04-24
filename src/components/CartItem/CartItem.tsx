@@ -1,4 +1,3 @@
-import { Product } from '../../types/Product.ts';
 import Container from '../Container/Container';
 import {
   CartItemWrapper,
@@ -16,9 +15,10 @@ import {
 import { IconButton, Typography, styled } from '@mui/material';
 import React from 'react';
 import { useCartContext } from '../../hooks/useCartContext.ts';
+import { ProductInCart } from '../../types/ProductInCart.ts';
 
 type Props = {
-  product: Product;
+  product: ProductInCart;
 };
 
 export const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -34,7 +34,7 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const CartItem: React.FC<Props> = ({ product }) => {
   const { deleteFromCart, increaseQuantity, decreaseQuantity, cart } =
     useCartContext();
-  const { id, name, price, image } = product;
+  const { prodId, name, price, img, category } = product;
 
   return (
     <Container>
@@ -47,7 +47,7 @@ const CartItem: React.FC<Props> = ({ product }) => {
             spacing={{ xs: 2, sm: 3 }}
             direction={{ xs: 'row' }}
           >
-            <StyledIconButton onClick={() => deleteFromCart(id)}>
+            <StyledIconButton onClick={() => deleteFromCart(prodId)}>
               <DeleteIcon />
             </StyledIconButton>
 
@@ -59,11 +59,11 @@ const CartItem: React.FC<Props> = ({ product }) => {
                 },
               }}
             >
-              <Image src={image} />
+              <Image src={img} />
             </ProductImage>
 
             <ProductName
-              to={`/${product.category}/${product.itemId}`}
+              to={`/${category}/${prodId}`}
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
               <Typography variant="body1">{name}</Typography>
@@ -72,11 +72,15 @@ const CartItem: React.FC<Props> = ({ product }) => {
 
           <ContainerRightSide spacing={{ sm: 3 }} direction={{ xs: 'row' }}>
             <ProductQuantity>
-              <IconButtonQuantityMinus onClick={() => decreaseQuantity(id)} />
+              <IconButtonQuantityMinus
+                onClick={() => decreaseQuantity(prodId)}
+              />
               <Typography variant="body1">
-                {cart.find(item => item.prodId === id)?.quantity}
+                {cart.find(item => item.prodId === prodId)?.quantity}
               </Typography>
-              <IconButtonQuantityPlus onClick={() => increaseQuantity(id)} />
+              <IconButtonQuantityPlus
+                onClick={() => increaseQuantity(prodId)}
+              />
             </ProductQuantity>
 
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>

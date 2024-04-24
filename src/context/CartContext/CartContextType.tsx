@@ -1,12 +1,12 @@
-import { Product, ProductInCart } from '../../types';
+import { ProductInCart } from '../../types';
 
 export type CartContextType = {
   cart: ProductInCart[];
   cartQuantity: number;
-  addToCart: (product: Product) => void;
-  deleteFromCart: (productId: number) => void;
+  addToCart: (product: Omit<ProductInCart, 'quantity'>) => void;
+  deleteFromCart: (productId: string) => void;
   clearCart: () => void;
-  isProductInCart: (id: number) => boolean;
-  increaseQuantity: (productId: number) => void;
-  decreaseQuantity: (productId: number) => void;
+  isProductInCart: (id: string) => boolean;
+  increaseQuantity: (productId: string) => void;
+  decreaseQuantity: (productId: string) => void;
 };
