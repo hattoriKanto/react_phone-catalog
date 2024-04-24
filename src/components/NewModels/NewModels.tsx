@@ -102,15 +102,17 @@ export const NewModels: React.FC = () => {
         </Box>
       </Box>
 
-      <CustomGrid>
-        {newModelsList
-          .slice(startIndex, startIndex + productsPerRow)
-          .map((product: Product) => (
-            <GridStyled item xs={1} md={1} key={product.id}>
-              <ProductCard product={product} key={product.id}></ProductCard>
-            </GridStyled>
-          ))}
-      </CustomGrid>
+      <Box display={'flex'} justifyContent={'center'}>
+        <CustomGrid>
+          {newModelsList
+            .slice(startIndex, startIndex + productsPerRow)
+            .map((product: Product) => (
+              <GridStyled item xs={1} md={1} key={product.id}>
+                <ProductCard product={product} key={product.id}></ProductCard>
+              </GridStyled>
+            ))}
+        </CustomGrid>
+      </Box>
     </Box>
   );
 };

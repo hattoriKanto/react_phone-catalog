@@ -3,6 +3,7 @@ import Footer from './components/Footer';
 import { Outlet } from 'react-router-dom';
 import { useState } from 'react';
 import { BurgerMenu } from './components/BurgerMenu/BurgerMenu';
+import { Box } from '@mui/material';
 
 function App() {
   const [isBurgerMenuShown, setIsBurgerMenuShown] = useState(false);
@@ -19,8 +20,9 @@ function App() {
           onBurgerToggle={setIsBurgerMenuShown}
         ></BurgerMenu>
       )}
-
-      <Outlet />
+      <Box sx={{ minHeight: 'calc(100vh - 64px - 125px)' }}>
+        <Outlet />
+      </Box>
       <Footer />
     </>
   );

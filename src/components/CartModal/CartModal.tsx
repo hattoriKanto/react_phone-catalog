@@ -11,9 +11,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 
 import { customTypography } from '../../theme/typography.config';
-import { Button, TextField } from '@mui/material';
+import { Button, Grow, GrowProps, TextField } from '@mui/material';
 import { useCartContext } from '../../hooks/useCartContext';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { StyledIconButton } from '../CartItem/CartItem';
+import { DeleteIcon } from '../CartItem/CartItem.styles';
+import { isToastOpen } from '../../types';
 
 const style = {
   position: 'absolute',
@@ -21,7 +24,8 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  border: '2px solid #E2E6E9',
+  borderRadius: '16px',
   boxShadow: 24,
   p: 4,
 };
@@ -36,19 +40,31 @@ const textBoxStyle = {
 type Props = {
   isModalOpen: boolean;
   setIsModalOpen: (isModalOpen: boolean) => void;
+  setIsToastOpen: (isToastOpen: isToastOpen) => void;
 };
 
-export const CartModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
+export const CartModal: React.FC<Props> = ({
+  isModalOpen,
+  setIsModalOpen,
+  setIsToastOpen,
+}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [postIndex, setPostIndex] = useState('');
   const [creditCard, setCreditCard] = useState('');
+  let isValid = true;
 
   const [error, setError] = useState<string[]>([]);
+  function GrowTransition(props: GrowProps) {
+    return <Grow {...props} />;
+  }
 
-  const handleClose = () => setIsModalOpen(false);
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setError([]);
+  };
   const { clearCart } = useCartContext();
 
   const handleChange = (
@@ -115,8 +131,45 @@ export const CartModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
         return (
           creditCard.length === 0 && setError(prev => [...prev, fieldName])
         );
+      case 'confimation':
+        name.length === 0
+          ? (setError(prev => [...prev, 'name']), (isValid = false))
+          : null;
+        email.length === 0
+          ? (setError(prev => [...prev, 'email']), (isValid = false))
+          : null;
+        phone.length === 0
+          ? (setError(prev => [...prev, 'phone']), (isValid = false))
+          : null;
+        address.length === 0
+          ? (setError(prev => [...prev, 'address']), (isValid = false))
+          : null;
+        postIndex.length === 0
+          ? (setError(prev => [...prev, 'postIndex']), (isValid = false))
+          : null;
+        creditCard.length === 0
+          ? (setError(prev => [...prev, 'creditCard']), (isValid = false))
+          : null;
+
+        break;
       default:
         return null;
+    }
+  };
+
+  const onConfirm = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    validateField('confimation');
+
+    if (isValid === true) {
+      clearCart();
+      setIsModalOpen(false);
+      setIsToastOpen({
+        open: true,
+        Transition: GrowTransition,
+        message: 'Success!',
+        status: 'success',
+      });
     }
   };
 
@@ -137,155 +190,177 @@ export const CartModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
       >
         <Fade in={isModalOpen}>
           <Box sx={style}>
-            <Typography
-              variant="h2"
-              textAlign={'center'}
-              gutterBottom
-              sx={customTypography.h2}
-            >
-              Enter your info
-            </Typography>
-            <Box
-              display={'flex'}
-              flexDirection={'row'}
-              flexWrap={'wrap'}
-              rowGap={'8px'}
-            >
-              <Box sx={textBoxStyle}>
-                <PersonIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                <TextField
-                  error={error.includes('name')}
-                  helperText={error.includes('name') && 'Name must be correct'}
-                  fullWidth
-                  label="Name"
-                  type="text"
-                  id="fullWidth"
-                  variant="standard"
-                  required
-                  value={name}
-                  name="name"
-                  onBlur={e => validateField(e.target.name)}
-                  onChange={e => handleChange(e)}
-                />
+            <form onSubmit={onConfirm} onInvalid={onConfirm}>
+              <Box
+                position={'relative'}
+                display={'flex'}
+                flexDirection={'row'}
+                alignItems={'center'}
+                justifyContent={'center'}
+              >
+                <StyledIconButton
+                  onClick={handleClose}
+                  sx={{
+                    position: 'absolute',
+                    left: '0',
+                    top: '0',
+                  }}
+                >
+                  <DeleteIcon />
+                </StyledIconButton>
+                <Typography
+                  variant="h2"
+                  textAlign={'center'}
+                  gutterBottom
+                  sx={customTypography.h2}
+                >
+                  Enter your info
+                </Typography>
               </Box>
-              <Box sx={textBoxStyle}>
-                <EmailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                <TextField
-                  error={error.includes('email')}
-                  helperText={
-                    error.includes('email') && 'Email must be correct'
-                  }
-                  fullWidth
-                  label="Email"
-                  type="email"
-                  id="fullWidth-error"
-                  variant="standard"
-                  required
-                  value={email}
-                  name="email"
-                  onBlur={e => validateField(e.target.name)}
-                  onChange={e => handleChange(e)}
-                />
+              <Box
+                display={'flex'}
+                flexDirection={'row'}
+                flexWrap={'wrap'}
+                rowGap={'8px'}
+              >
+                <Box sx={textBoxStyle}>
+                  <PersonIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                  <TextField
+                    error={error.includes('name')}
+                    helperText={
+                      error.includes('name') && 'Name must be correct'
+                    }
+                    autoComplete="name"
+                    fullWidth
+                    label="Name"
+                    type="text"
+                    id="fullWidth"
+                    variant="standard"
+                    required
+                    value={name}
+                    name="name"
+                    onBlur={e => validateField(e.target.name)}
+                    onChange={e => handleChange(e)}
+                  />
+                </Box>
+                <Box sx={textBoxStyle}>
+                  <EmailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                  <TextField
+                    error={error.includes('email')}
+                    helperText={
+                      error.includes('email') && 'Email must be correct'
+                    }
+                    fullWidth
+                    label="Email"
+                    type="email"
+                    id="fullWidth-error"
+                    variant="standard"
+                    required
+                    value={email}
+                    name="email"
+                    onBlur={e => validateField(e.target.name)}
+                    onChange={e => handleChange(e)}
+                  />
+                </Box>
+                <Box sx={textBoxStyle}>
+                  <PhoneIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                  <TextField
+                    error={error.includes('phone')}
+                    helperText={
+                      error.includes('phone') && 'Phone must be correct'
+                    }
+                    fullWidth
+                    label="Phone number"
+                    type="tel"
+                    id="fullWidth"
+                    variant="standard"
+                    required
+                    value={phone}
+                    name="phone"
+                    onBlur={e => validateField(e.target.name)}
+                    onChange={e => handleChange(e)}
+                  />
+                </Box>
+                <Box sx={textBoxStyle}>
+                  <HomeIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                  <TextField
+                    error={error.includes('address')}
+                    helperText={
+                      error.includes('address') && 'Address must be correct'
+                    }
+                    fullWidth
+                    label="Address"
+                    type="text"
+                    id="fullWidth"
+                    variant="standard"
+                    required
+                    value={address}
+                    name="address"
+                    onBlur={e => validateField(e.target.name)}
+                    onChange={e => handleChange(e)}
+                  />
+                </Box>
+                <Box sx={textBoxStyle}>
+                  <LocalShippingIcon
+                    sx={{ color: 'action.active', mr: 1, my: 0.5 }}
+                  />
+                  <TextField
+                    error={error.includes('postIndex')}
+                    helperText={
+                      error.includes('postIndex') &&
+                      'Post index must be correct'
+                    }
+                    fullWidth
+                    label="Post index"
+                    type="text"
+                    id="fullWidth"
+                    variant="standard"
+                    required
+                    value={postIndex}
+                    name="postIndex"
+                    onBlur={e => validateField(e.target.name)}
+                    onChange={e => handleChange(e)}
+                  />
+                </Box>
+                <Box sx={textBoxStyle}>
+                  <CreditCardIcon
+                    sx={{ color: 'action.active', mr: 1, my: 0.5 }}
+                  />
+                  <TextField
+                    error={error.includes('creditCard')}
+                    helperText={
+                      error.includes('creditCard') &&
+                      'Credit card must be correct'
+                    }
+                    autoComplete="cc-number"
+                    fullWidth
+                    label="Credit card"
+                    type="text"
+                    id="fullWidth"
+                    variant="standard"
+                    required
+                    value={creditCard}
+                    name="creditCard"
+                    onBlur={e => validateField(e.target.name)}
+                    onChange={e => handleChange(e)}
+                  />
+                </Box>
               </Box>
-              <Box sx={textBoxStyle}>
-                <PhoneIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                <TextField
-                  error={error.includes('phone')}
-                  helperText={
-                    error.includes('phone') && 'Phone must be correct'
-                  }
-                  fullWidth
-                  label="Phone number"
-                  type="tel"
-                  id="fullWidth"
-                  variant="standard"
-                  required
-                  value={phone}
-                  name="phone"
-                  onBlur={e => validateField(e.target.name)}
-                  onChange={e => handleChange(e)}
-                />
-              </Box>
-              <Box sx={textBoxStyle}>
-                <HomeIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                <TextField
-                  error={error.includes('address')}
-                  helperText={
-                    error.includes('address') && 'Address must be correct'
-                  }
-                  fullWidth
-                  label="Address"
-                  type="text"
-                  id="fullWidth"
-                  variant="standard"
-                  required
-                  value={address}
-                  name="address"
-                  onBlur={e => validateField(e.target.name)}
-                  onChange={e => handleChange(e)}
-                />
-              </Box>
-              <Box sx={textBoxStyle}>
-                <LocalShippingIcon
-                  sx={{ color: 'action.active', mr: 1, my: 0.5 }}
-                />
-                <TextField
-                  error={error.includes('postIndex')}
-                  helperText={
-                    error.includes('postIndex') && 'Post index must be correct'
-                  }
-                  fullWidth
-                  label="Post index"
-                  type="text"
-                  id="fullWidth"
-                  variant="standard"
-                  required
-                  value={postIndex}
-                  name="postIndex"
-                  onBlur={e => validateField(e.target.name)}
-                  onChange={e => handleChange(e)}
-                />
-              </Box>
-              <Box sx={textBoxStyle}>
-                <CreditCardIcon
-                  sx={{ color: 'action.active', mr: 1, my: 0.5 }}
-                />
-                <TextField
-                  error={error.includes('creditCard')}
-                  helperText={
-                    error.includes('creditCard') &&
-                    'Credit card must be correct'
-                  }
-                  fullWidth
-                  label="Credit card"
-                  type="text"
-                  id="fullWidth"
-                  variant="standard"
-                  required
-                  value={creditCard}
-                  name="creditCard"
-                  onBlur={e => validateField(e.target.name)}
-                  onChange={e => handleChange(e)}
-                />
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              color="accent"
-              sx={{
-                mt: '32px',
-                width: '100%',
-                py: 1,
-                '&.MuiButton-contained': { color: '#fff' },
-                textTransform: 'none',
-              }}
-              onClick={() => {
-                clearCart();
-                setIsModalOpen(false);
-              }}
-            >
-              Confirm
-            </Button>
+              <Button
+                variant="contained"
+                color="accent"
+                sx={{
+                  mt: '32px',
+                  width: '100%',
+                  py: 1,
+                  '&.MuiButton-contained': { color: '#fff' },
+                  textTransform: 'none',
+                }}
+                type="submit"
+              >
+                Confirm
+              </Button>
+            </form>
           </Box>
         </Fade>
       </Modal>

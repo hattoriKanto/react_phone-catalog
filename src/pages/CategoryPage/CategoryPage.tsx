@@ -1,21 +1,21 @@
-import { Grid, Stack, Typography, styled } from '@mui/material';
+import { Box, Grid, Stack, Typography, styled } from '@mui/material';
 import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
+import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
 import { useMemo } from 'react';
 import { getFilter } from '../../functions/getFilter';
 
 export const CategoryPage = () => {
   const location = useLocation();
   const categoryName = location.pathname.slice(1);
+  const { data, error } = useFetchData<Product>('products.json');
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
-
-  const { data, isLoading, error } = useFetchData<Product>('products.json');
 
   const visibleProducts = useMemo(() => {
     return getFilter({ data, query });
@@ -23,7 +23,6 @@ export const CategoryPage = () => {
 
   const filteredData = visibleProducts?.filter(data => data.category === categoryName);
 
-  if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   const GridStyled = styled(Grid)({
@@ -35,6 +34,7 @@ export const CategoryPage = () => {
   return (
     <>
       <Container>
+        <BreadCrumbsComponent />
         <Stack sx={{ px: '2rem' }}>
           <Typography variant="h1" sx={{ pt: 4 }}>
             {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
@@ -43,15 +43,16 @@ export const CategoryPage = () => {
             {filteredData.length} models
           </Typography>
         </Stack>
+        <Box display={'flex'} justifyContent={'center'}>
+          <CustomGrid>
+            {filteredData?.map(phone => (
+              <GridStyled item xs={1} md={1} key={phone.id}>
+                <ProductCard product={phone} />
+              </GridStyled>
+            ))}
+          </CustomGrid>
+        </Box>
       </Container>
-
-      <CustomGrid>
-        {filteredData?.map(phone => (
-          <GridStyled item xs={1} md={1} key={phone.id}>
-            <ProductCard product={phone} />
-          </GridStyled>
-        ))}
-      </CustomGrid>
     </>
   );
 };

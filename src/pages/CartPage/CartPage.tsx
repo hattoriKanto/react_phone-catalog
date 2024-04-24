@@ -4,6 +4,8 @@ import {
   Card,
   CardContent,
   Divider,
+  Grow,
+  GrowProps,
   Stack,
   Typography,
 } from '@mui/material';
@@ -12,9 +14,44 @@ import { useCartContext } from '../../hooks/useCartContext';
 import CartItem from '../../components/CartItem';
 import { useState } from 'react';
 import { CartModal } from '../../components/CartModal';
+import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
+import { TransitionProps } from '@mui/material/transitions';
+import { Toast } from '../../components/Toast';
+import { Transition } from '../../types';
 
 export const CartPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isToastOpen, setIsToastOpen] = useState<{
+    open: boolean;
+    Transition: React.ComponentType<
+      TransitionProps & {
+        children: React.ReactElement<
+          React.ReactNode,
+          string | React.JSXElementConstructor<React.ReactNode>
+        >;
+      }
+    >;
+    message: string;
+    status: 'warning' | 'success' | null;
+  }>({
+    open: false,
+    Transition: Grow,
+    message: '',
+    status: null,
+  });
+
+  const handleEmpty = (Transition: Transition) => {
+    setIsToastOpen({
+      open: true,
+      Transition,
+      message: 'Cart is empty',
+      status: 'warning',
+    });
+  };
+
+  function GrowTransition(props: GrowProps) {
+    return <Grow {...props} />;
+  }
 
   const { cart, cartQuantity } = useCartContext();
   const totalPrice = cart.reduce(
@@ -25,6 +62,7 @@ export const CartPage = () => {
   return (
     <>
       <Container>
+        <BreadCrumbsComponent />
         <Typography variant="h1" component="h2" sx={{ py: 2 }}>
           Cart
         </Typography>
@@ -62,11 +100,10 @@ export const CartPage = () => {
                       alignItems: 'center',
                     }}
                   >
-                    <Typography variant="h6">
-                      Total Price: {`$${totalPrice}`}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      Total Items: {cartQuantity}
+                    <Typography variant="h2">{`$${totalPrice}`}</Typography>
+                    <Typography variant="body1" color="secondary">
+                      Total for {cartQuantity}{' '}
+                      {cartQuantity === 1 ? 'item' : 'items'}
                     </Typography>
                   </Box>
                   <Divider variant="middle" />
@@ -80,7 +117,9 @@ export const CartPage = () => {
                       textTransform: 'none',
                     }}
                     onClick={() =>
-                      cart.length !== 0 ? setIsModalOpen(true) : null
+                      cart.length !== 0
+                        ? setIsModalOpen(true)
+                        : handleEmpty(GrowTransition)
                     }
                   >
                     Checkout
@@ -91,7 +130,12 @@ export const CartPage = () => {
           </Box>
         </Box>
       </Container>
-      <CartModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <CartModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        setIsToastOpen={setIsToastOpen}
+      />
+      <Toast isToastOpen={isToastOpen} setIsToastOpen={setIsToastOpen} />
     </>
   );
 };

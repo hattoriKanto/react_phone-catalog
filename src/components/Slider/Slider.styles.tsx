@@ -1,19 +1,18 @@
 import { Box, styled } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import slideOne from '../../../public/img/slider/slide-one/slide_one_desktop.png';
-import slideOneTablet from '../../../public/img/slider/slide-one/slide_one_tablet.png';
-import slideOneMobile from '../../../public/img/slider/slide-one/slide_one_mobile.png';
+import slideOne from '/img/slider/slide-one/slide_one_desktop.png';
+import slideOneTablet from '/img/slider/slide-one/slide_one_tablet.png';
+import slideOneMobile from '/img/slider/slide-one/slide_one_mobile.png';
 
-import slideTwo from '../../../public/img/slider/slide-two/slide_two_desktop.png';
-import slideTwoTablet from '../../../public/img/slider/slide-two/slide_two_tablet.png';
-import slideTwoMobile from '../../../public/img/slider/slide-two/slide_two_mobile.png';
+import slideTwo from '/img/slider/slide-two/slide_two_desktop.png';
+import slideTwoTablet from '/img/slider/slide-two/slide_two_tablet.png';
+import slideTwoMobile from '/img/slider/slide-two/slide_two_mobile.png';
 
-import slideThreeDesktop from '../../../public/img/slider/slide-three/slider_three_desktop.png';
-import slideThreeTablet from '../../../public/img/slider/slide-three/slider_three_tablet.png';
-import slideThreeMobile from '../../../public/img/slider/slide-three/slider_three_mobile.png';
+import slideThreeDesktop from '/img/slider/slide-three/slider_three_desktop.png';
+import slideThreeTablet from '/img/slider/slide-three/slider_three_tablet.png';
+import slideThreeMobile from '/img/slider/slide-three/slider_three_mobile.png';
 import { Container } from '@mui/material';
-
 
 export const SliderContainer = styled(Container)(({ theme }) => ({
   [theme.breakpoints.up('xs')]: {
@@ -54,6 +53,7 @@ export const SliderBanner = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     '.swiper': {
       width: '1040px',
+      margin: '0',
     },
   },
 }));
@@ -76,7 +76,7 @@ export const SwiperArrow = styled(Box)(({ theme }) => ({
   minWidth: '32px',
 
   [theme.breakpoints.up('xs')]: {
-    display: 'none'
+    display: 'none',
   },
 
   [theme.breakpoints.up('sm')]: {
@@ -93,7 +93,6 @@ export const SwiperArrow = styled(Box)(({ theme }) => ({
 export const LinkOne = styled(Link)(({ theme }) => ({
   display: 'block',
   width: '100%',
-  // backgroundImage: `url(${slideOne})`,
   backgroundSize: 'cover',
   backgroundPosition: 'top center',
 

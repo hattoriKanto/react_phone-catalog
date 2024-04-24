@@ -15,23 +15,25 @@ export const CategorySelector: React.FC<Props> = ({ categories }) => {
       <Typography variant="h2" gutterBottom sx={customTypography.h2}>
         Shop by category
       </Typography>
-      <CustomGrid
-        columns={{
-          DT: 3,
-          LT: 3,
-          TB: 3,
-        }}
-      >
-        {categories.map(category => (
-          <Link
-            to={category.path}
-            key={category.id}
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <CategoryCard category={category} />
-          </Link>
-        ))}
-      </CustomGrid>
+      <Box display={'flex'} justifyContent={'center'}>
+        <CustomGrid
+          columns={{
+            DT: 3,
+            LT: 3,
+            TB: 3,
+          }}
+        >
+          {categories.map(category => (
+            <Link
+              to={category.path}
+              key={category.id}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <CategoryCard category={category} />
+            </Link>
+          ))}
+        </CustomGrid>
+      </Box>
     </Box>
   );
 };
