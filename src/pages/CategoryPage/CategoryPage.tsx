@@ -13,13 +13,12 @@ import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import { CardSkeleton } from '../../components/ProductCard';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { getFilter } from '../../functions/getFilter';
 import { getSearchWith } from '../../utils/searchHelper';
 import { BreadCrumbsComponent } from '../../components';
 import CategorySort from '../../components/CategorySort/CategorySort';
 import { SortBy } from '../../types/SortBy';
-import { Sort } from '@mui/icons-material';
 
 function getSlicedData(data: Product[], page: number, perPage: string) {
   if (perPage === 'All') {
@@ -32,7 +31,7 @@ function getSlicedData(data: Product[], page: number, perPage: string) {
   return data.slice(startIndex, endIndex);
 }
 
-function getSortedData(data: Product[], sortBy: SortBy) {
+function getSortedData(data: Product[], sortBy: string) {
   switch (sortBy) {
     case 'alphabetically':
       return data.sort((a, b) => a.name.localeCompare(b.name));
@@ -55,6 +54,13 @@ export const CategoryPage = () => {
   const page = searchParams.get('page') || 1;
   const perPage = searchParams.get('perPage') || 4;
   const sortBy = searchParams.get('sortBy') || SortBy.Alphabetically;
+
+  useEffect(() => {
+    const newSearchParams = getSearchWith(searchParams, {
+      page: '1',
+    });
+    setSearchParams(newSearchParams);
+  }, [perPage, searchParams, setSearchParams]);
 
   const visibleProducts = useMemo(() => {
     return getFilter({ data, query });
