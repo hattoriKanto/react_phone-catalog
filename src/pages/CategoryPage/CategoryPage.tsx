@@ -21,7 +21,9 @@ export const CategoryPage = () => {
     return getFilter({ data, query });
   }, [data, query]);
 
-  const filteredData = visibleProducts?.filter(data => data.category === categoryName);
+  const filteredData = visibleProducts?.filter(
+    data => data.category === categoryName,
+  );
 
   if (error) return <p>Error: {error.message}</p>;
 
@@ -39,9 +41,16 @@ export const CategoryPage = () => {
           <Typography variant="h1" sx={{ pt: 4 }}>
             {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
           </Typography>
-          <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
-            {filteredData.length} models
-          </Typography>
+          {filteredData.length > 0 && (
+            <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
+              {filteredData.length} models
+            </Typography>
+          )}
+          {filteredData.length === 0 && (
+            <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
+              There are no {categoryName} matching the query
+            </Typography>
+          )}
         </Stack>
         <Box display={'flex'} justifyContent={'center'}>
           <CustomGrid>
