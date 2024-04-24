@@ -9,7 +9,6 @@ import {
   CardMedia,
   Divider,
   IconButton,
-  Skeleton,
   Stack,
   Tooltip,
   Typography,
@@ -17,7 +16,6 @@ import {
 import { useCartContext } from '../../hooks/useCartContext';
 import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 import { Link } from 'react-router-dom';
-import useFetchData from '../../utils/useFetchData';
 
 type Props = {
   product: Product;
@@ -39,8 +37,6 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
   const { addToFavorites, deleteFromFavorites, isProductInFavorites } =
     useFavoritesContext();
-  const { isLoading, error } = useFetchData<Product>('products.json');
-  if (error) return <p>Error: {error.message}</p>;
 
   const toggleAddToCard = (product: Product, event: React.MouseEvent) => {
     event.stopPropagation();
@@ -86,50 +82,39 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           borderColor: '#E2E6E9',
         }}
       >
-        <CardContent sx={{ m: 1, p: '32px' }}>
-          {isLoading ? (
-            <Skeleton
-              variant="rounded"
-              animation="wave"
-              width="100%"
-              height={196}
+        <CardContent sx={{ width: '100%', m: 1, p: '32px' }}>
+          <CardMedia
+            component="img"
+            height="50%"
+            image={image}
+            sx={{
+              height: 196,
+              maxWidth: 208,
+              objectFit: 'contain',
+              objectPosition: 'center',
+              transition: 'transform 0.3s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.1)',
+              },
+            }}
+          />
+          <Box
+            sx={{
+              pt: 1,
+            }}
+          >
+            <Typography
+              variant="body1"
+              component="div"
+              sx={{
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                WebkitLineClamp: 2,
+              }}
             />
-          ) : (
-            <>
-              <CardMedia
-                component="img"
-                height="50%"
-                image={image}
-                sx={{
-                  height: 196,
-                  maxWidth: 208,
-                  objectFit: 'contain',
-                  objectPosition: 'center',
-                  transition: 'transform 0.3s ease-in-out',
-                  '&:hover': {
-                    transform: 'scale(1.1)',
-                  },
-                }}
-              />
-              <Box
-                sx={{
-                  pt: 1,
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  component="div"
-                  sx={{
-                    display: '-webkit-box',
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    WebkitLineClamp: 2,
-                  }}
-                />
-              </Box>
-            </>
-          )}
+          </Box>
           <Box
             height={36}
             sx={{
@@ -149,32 +134,14 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                   WebkitLineClamp: 2,
                 }}
               >
-                {isLoading ? (
-                  <Skeleton
-                    variant="rounded"
-                    animation="wave"
-                    width="100%"
-                    height={40}
-                  />
-                ) : (
-                  name
-                )}
+                {name}
               </Typography>
             </Tooltip>
           </Box>
 
           <Stack direction="row" spacing={2} sx={{ pt: 2, pb: 1 }}>
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-              {isLoading ? (
-                <Skeleton
-                  variant="rounded"
-                  animation="wave"
-                  width={50}
-                  height={40}
-                />
-              ) : (
-                `$${price}`
-              )}
+              ${price}
             </Typography>
             <Typography
               variant="h5"
@@ -184,16 +151,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                 textDecoration: 'line-through',
               }}
             >
-              {isLoading ? (
-                <Skeleton
-                  variant="rounded"
-                  animation="wave"
-                  width={50}
-                  height={40}
-                />
-              ) : (
-                `$${fullPrice}`
-              )}
+              ${fullPrice}
             </Typography>
           </Stack>
 
@@ -205,31 +163,13 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             sx={{ justifyContent: 'space-between', pt: 2 }}
           >
             <Typography variant="body1" sx={{ color: '#89939A' }}>
-              {isLoading ? (
-                <Skeleton
-                  variant="rounded"
-                  animation="wave"
-                  width={50}
-                  height={18}
-                />
-              ) : (
-                'Screen'
-              )}
+              Screen
             </Typography>
             <Typography
               variant="body1"
               sx={{ color: 'black', fontWeight: 'bold' }}
             >
-              {isLoading ? (
-                <Skeleton
-                  variant="rounded"
-                  animation="wave"
-                  width={125}
-                  height={18}
-                />
-              ) : (
-                screen
-              )}
+              {screen}
             </Typography>
           </Stack>
           <Stack
@@ -238,31 +178,13 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             sx={{ justifyContent: 'space-between', pt: 0.5 }}
           >
             <Typography variant="body1" sx={{ color: '#89939A' }}>
-              {isLoading ? (
-                <Skeleton
-                  variant="rounded"
-                  animation="wave"
-                  width={70}
-                  height={18}
-                />
-              ) : (
-                'Capacity'
-              )}
+              Capacity
             </Typography>
             <Typography
               variant="body1"
               sx={{ color: 'black', fontWeight: 'bold' }}
             >
-              {isLoading ? (
-                <Skeleton
-                  variant="rounded"
-                  animation="wave"
-                  width={50}
-                  height={18}
-                />
-              ) : (
-                capacity
-              )}
+              {capacity}
             </Typography>
           </Stack>
           <Stack
@@ -271,31 +193,13 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             sx={{ justifyContent: 'space-between', pt: 0.5 }}
           >
             <Typography variant="body1" sx={{ color: '#89939A' }}>
-              {isLoading ? (
-                <Skeleton
-                  variant="rounded"
-                  animation="wave"
-                  width={40}
-                  height={19}
-                />
-              ) : (
-                'RAM'
-              )}
+              'RAM'
             </Typography>
             <Typography
               variant="body1"
               sx={{ color: 'black', fontWeight: 'bold' }}
             >
-              {isLoading ? (
-                <Skeleton
-                  variant="rounded"
-                  animation="wave"
-                  width={40}
-                  height={19}
-                />
-              ) : (
-                ram
-              )}
+              {ram}
             </Typography>
           </Stack>
 
@@ -308,58 +212,39 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               alignItems: 'center',
             }}
           >
-            {isLoading ? (
-              <Skeleton
-                variant="rounded"
-                animation="wave"
-                width={160}
-                height={50}
-              />
-            ) : (
-              <Button
-                variant={!isInCart ? 'contained' : 'outlined'}
-                onClick={event => toggleAddToCard(product, event)}
-                color="accent"
-                sx={{
-                  width: '160px',
-                  py: 1,
-                  '&.MuiButton-contained': { color: '#fff' },
-                  transition: 'transform 0.3s ease-in-out',
-                  '&:hover': {
-                    transform: 'scale(1.1)',
-                  },
-                }}
+            <Button
+              variant={!isInCart ? 'contained' : 'outlined'}
+              onClick={event => toggleAddToCard(product, event)}
+              color="accent"
+              sx={{
+                width: '160px',
+                py: 1,
+                '&.MuiButton-contained': { color: '#fff' },
+                transition: 'transform 0.3s ease-in-out',
+                '&:hover': {
+                  transform: 'scale(1.1)',
+                },
+              }}
+            >
+              <Typography
+                variant="button"
+                color="white"
+                sx={{ textTransform: 'none', textDecoration: 'none' }}
               >
-                <Typography
-                  variant="button"
-                  color="white"
-                  sx={{ textTransform: 'none', textDecoration: 'none' }}
-                >
-                  {!isInCart ? 'Add to cart' : 'Added'}
-                </Typography>
-              </Button>
-            )}
-
-            {isLoading ? (
-              <Skeleton
-                variant="circular"
-                animation="wave"
-                width={40}
-                height={40}
-              />
-            ) : (
-              <IconButton
-                sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
-                aria-label="add to favorites"
-                onClick={event => toggleAddToFavorites(product, event)}
-              >
-                {!isInFavorites ? (
-                  <FavoriteBorderIcon />
-                ) : (
-                  <FavoriteIcon color="secondaryAccent" />
-                )}
-              </IconButton>
-            )}
+                {!isInCart ? 'Add to cart' : 'Added'}
+              </Typography>
+            </Button>
+            <IconButton
+              sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
+              aria-label="add to favorites"
+              onClick={event => toggleAddToFavorites(product, event)}
+            >
+              {!isInFavorites ? (
+                <FavoriteBorderIcon />
+              ) : (
+                <FavoriteIcon color="secondaryAccent" />
+              )}
+            </IconButton>
           </Stack>
         </CardContent>
       </Card>
