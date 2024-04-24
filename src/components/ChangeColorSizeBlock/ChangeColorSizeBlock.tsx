@@ -29,8 +29,6 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({
   const { data } = useFetchData<ProductExpanded>(`${category}.json`);
   const selectedData = data.find(data => data.id === prodId);
 
-  console.log(selectedData);
-
   const initialColor = pathname.split('-').slice(-1).join();
   const initialCapacity = pathname
     .split('-')
