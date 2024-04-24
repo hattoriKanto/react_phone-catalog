@@ -44,7 +44,9 @@ export const TechSpecs: React.FC<TechSpecsProps> = ({ product }) => {
   };
 
   const rows = Object.entries(productSpecs).reduce((accum, [key, value]) => {
-    accum.push(createRow(key, value));
+    if (value) {
+      accum.push(createRow(key, value));
+    }
 
     return accum;
   }, [] as TableRow[]);
