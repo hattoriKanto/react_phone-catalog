@@ -49,7 +49,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     [cart],
   );
 
-  const addToCart = (product: Omit<ProductInCart, 'quantity'>) => {
+  const addToCart = (product: ProductInCart) => {
     if (!cart.some((item: ProductInCart) => item.prodId === product.prodId)) {
       const updatedCart = [
         ...cart,

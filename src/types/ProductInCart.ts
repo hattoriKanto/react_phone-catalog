@@ -1,8 +1,10 @@
 export type ProductInCart = {
   prodId: string;
-  img: string;
-  name: string;
+  product: {
+    img: string;
+    name: string;
+    category: string;
+    price: number;
+  };
   quantity: number;
-  category: string;
-  price: number;
 };

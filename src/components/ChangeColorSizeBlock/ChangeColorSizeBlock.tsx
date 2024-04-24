@@ -29,8 +29,6 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({
   const { data } = useFetchData<ProductExpanded>(`${category}.json`);
   const selectedData = data.find(data => data.id === prodId);
 
-  console.log(selectedData);
-
   const initialColor = pathname.split('-').slice(-1).join();
   const initialCapacity = pathname
     .split('-')
@@ -73,7 +71,7 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({
       <Box>
         <OptionsTitle>Available colors</OptionsTitle>
         <Colors>
-          {selectedData?.colorsAvailable.map(color => {
+          {selectedData?.colorsAvailable.map((color, i) => {
             const tempColor =
               ColorsAvailable[color as keyof typeof ColorsAvailable];
             return (
@@ -82,7 +80,7 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({
                   handleChangeColor(color);
                   setSelectedColor(color);
                 }}
-                key={tempColor}
+                key={i}
                 className={selectedColor === color ? 'active' : ''}
               >
                 <Color style={{ backgroundColor: tempColor }} />

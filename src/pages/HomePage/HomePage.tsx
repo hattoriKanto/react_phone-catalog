@@ -1,13 +1,13 @@
 import { Box, Typography, styled } from '@mui/material';
 import { FC } from 'react';
-import { NewModels } from '../../components/NewModels/NewModels';
-import { HotPrices } from '../../components/HotPrices/HotPrices';
 import Container from '../../components/Container/Container';
 import { Category } from '../../types/Category';
 import useFetchData from '../../utils/useFetchData';
 import { Product } from '../../types';
 import { CategorySelector } from '../../components/CategorySelector';
 import Slider from '../../components/Slider';
+import { ProductSliderFabric } from '../../components/ProductSliderFabric/ProductSliderFabric';
+import { FilterCallback } from '../../types/FilterCallback';
 
 const SliderOnPageContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -62,13 +62,19 @@ export const HomePage: FC = () => {
       </SliderOnPageContainer>
       <Container>
         <Box py={2}>
-          <NewModels></NewModels>
+          <ProductSliderFabric
+            title="New models"
+            callback={FilterCallback.NewModels}
+          ></ProductSliderFabric>
         </Box>
         <Box py={2}>
           <CategorySelector categories={categories} />
         </Box>
         <Box py={2}>
-          <HotPrices></HotPrices>
+          <ProductSliderFabric
+            title="Hot prices"
+            callback={FilterCallback.HotPrices}
+          />
         </Box>
       </Container>
     </>
