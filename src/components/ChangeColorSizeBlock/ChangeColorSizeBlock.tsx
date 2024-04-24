@@ -1,7 +1,8 @@
 import { Box } from '@mui/material';
 import {
   Capacity,
-  Capacityes, CapacityValue,
+  Capacityes,
+  CapacityValue,
   Color,
   Colors,
   ColWrapper,
@@ -124,12 +125,10 @@ const ChangeColorSizeBlock: React.FC<Props> = ({ prodId, category, pathname }) =
             >
               <CapacityValue>{item}</CapacityValue>
             </Capacity>
-          )}
+          ))}
         </Capacityes>
       </Box>
       <LineBox/>
     </Box>
-  )
-}
-
-export default ChangeColorSizeBlock;
+  );
+};

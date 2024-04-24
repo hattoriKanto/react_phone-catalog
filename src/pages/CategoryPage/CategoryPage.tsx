@@ -1,17 +1,64 @@
-import { Box, Grid, Stack, Typography, styled } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  Typography,
+  styled,
+} from '@mui/material';
 import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
-import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
+import { CardSkeleton } from '../../components/ProductCard';
+import React, { useMemo } from 'react';
+import { getFilter } from '../../functions/getFilter';
+import { getSearchWith } from '../../utils/searchHelper';
+
+const perPageStates = [4, 8, 16];
+
+function getSlicedData(data: Product[], page: number, perPage: string) {
+  if (perPage === 'All') {
+    return data;
+  }
+
+  const startIndex = (page - 1) * Number(perPage);
+  const endIndex = startIndex + Number(perPage);
+
+  return data.slice(startIndex, endIndex);
+}
+import { BreadCrumbsComponent } from '../../components';
 
 export const CategoryPage = () => {
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const categoryName = location.pathname.slice(1);
-  const { data, error } = useFetchData<Product>('products.json');
-  const filteredData = data?.filter(data => data.category === categoryName);
+  const { data, isLoading, error } = useFetchData<Product>('products.json');
+
+  const query = searchParams.get('query');
+  const page = searchParams.get('page') || 1;
+  const perPage = searchParams.get('perPage') || 4;
+
+  const visibleProducts = useMemo(() => {
+    return getFilter({ data, query });
+  }, [data, query]);
+
+  const filteredData = visibleProducts?.filter(
+    data => data.category === categoryName,
+  );
+
+  const slicedData = getSlicedData(
+    filteredData,
+    Number(page),
+    perPage.toString(),
+  );
 
   if (error) return <p>Error: {error.message}</p>;
 
@@ -21,6 +68,22 @@ export const CategoryPage = () => {
     },
   });
 
+  function handlePageChange(event: React.ChangeEvent<unknown>, value: number) {
+    const newSearchParams = getSearchWith(searchParams, {
+      page: value.toString(),
+    });
+
+    setSearchParams(newSearchParams);
+  }
+
+  function handlePerPageChange(event: SelectChangeEvent<string | number>) {
+    const newSearchParams = getSearchWith(searchParams, {
+      perPage: event.target.value.toString(),
+    });
+
+    setSearchParams(newSearchParams);
+  }
+
   return (
     <>
       <Container>
@@ -29,19 +92,77 @@ export const CategoryPage = () => {
           <Typography variant="h1" sx={{ pt: 4 }}>
             {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
           </Typography>
-          <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
-            {filteredData.length} models
-          </Typography>
+          {filteredData.length > 0 && (
+            <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
+              {filteredData.length} models
+            </Typography>
+          )}
+          {filteredData.length === 0 && (
+            <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
+              There are no {categoryName} matching the query
+            </Typography>
+          )}
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="demo-simple-select-helper-label">
+              Items per page
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={perPage}
+              label="Items per page"
+              sx={{ width: '128px' }}
+              onChange={handlePerPageChange}
+            >
+              <MenuItem value="All" key="All">
+                <em>All</em>
+              </MenuItem>
+              {perPageStates.map(pagPerPage => (
+                <MenuItem key={pagPerPage} value={pagPerPage}>
+                  {pagPerPage}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Stack>
         <Box display={'flex'} justifyContent={'center'}>
           <CustomGrid>
-            {filteredData?.map(phone => (
-              <GridStyled item xs={1} md={1} key={phone.id}>
-                <ProductCard product={phone} />
-              </GridStyled>
-            ))}
+            {isLoading ? (
+              <>
+                {Array.from(new Array(20)).map(item => (
+                  <GridStyled item xs={1} md={1} key={item}>
+                    <CardSkeleton />
+                  </GridStyled>
+                ))}
+              </>
+            ) : (
+              <>
+                {slicedData?.map(phone => (
+                  <GridStyled item xs={1} md={1} key={phone.id}>
+                    <ProductCard product={phone} />
+                  </GridStyled>
+                ))}
+              </>
+            )}
           </CustomGrid>
         </Box>
+
+        <Pagination
+          size="large"
+          color="primary"
+          page={Number(page)}
+          onChange={handlePageChange}
+          count={
+            perPage === 'All'
+              ? 1
+              : Math.ceil(filteredData.length / Number(perPage))
+          }
+          sx={{
+            py: 4,
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        />
       </Container>
     </>
   );

@@ -20,7 +20,7 @@ export const NavBarButtons: React.FC = () => {
   const handleChangeIcon = (link: string) => {
     if (link === HeaderOtherLinks.cart) {
       return (
-        <Badge badgeContent={cartQuantity} color="info" max={99} >
+        <Badge badgeContent={cartQuantity} color="info" max={99}>
           {locationPathname === HeaderOtherLinks.cart ? (
             <ShoppingCartIcon
               color="primary"
@@ -35,7 +35,7 @@ export const NavBarButtons: React.FC = () => {
         </Badge>
       );
     }
-  
+
     return (
       <Badge badgeContent={favoritesQuantity} color="info" max={99}>
         {locationPathname === HeaderOtherLinks.favorites ? (
@@ -61,9 +61,7 @@ export const NavBarButtons: React.FC = () => {
             key={text}
             label={handleChangeIcon(link)}
             to={link}
-            activeStyle={{
-              borderBottom: '3px solid #0f0f11',
-            }}
+            activeStyle={{}}
           />
         );
       })}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
@@ -15,6 +16,8 @@ import { NavMenu } from './NavMenu';
 
 import { NavBarButtons } from '.';
 import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';
+import Container from '../Container/Container';
+import { Search } from './Search';
 
 interface Props {
   isBurgerMenuShown: boolean;
@@ -25,37 +28,48 @@ export const Header: React.FC<Props> = ({
   isBurgerMenuShown,
   onBurgerToggle,
 }) => {
+  // new
+  const { pathname } = useLocation();
+  const searchField =
+    pathname === '/phones' ||
+    pathname === '/tablets' ||
+    pathname === '/accessories';
+
   return (
     <StyledAppBar>
-      <StyledFlexWrapper>
-        <StyledWrapper>
-          <StyledLogoLink to="" onClick={() => onBurgerToggle(false)}>
-            <StyledLogo src="img/header/logo.svg" alt="Nice Gadget Logo" />
-          </StyledLogoLink>
+      <Container>
+        <StyledFlexWrapper>
+          <StyledWrapper>
+            <StyledLogoLink to="" onClick={() => onBurgerToggle(false)}>
+              <StyledLogo src="img/header/logo.svg" alt="Nice Gadget Logo" />
+            </StyledLogoLink>
 
-          <NavMenu />
-        </StyledWrapper>
+            <NavMenu />
+          </StyledWrapper>
 
-        <NavBarButtons />
+          {/* new */}
+          {searchField && <Search />}
 
-        <StyledBurgerButton
-          disableElevation
-          disableRipple
-          onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
-        >
-          {isBurgerMenuShown ? (
-            <MenuOpenIcon
-              color="primary"
-              sx={{ width: '16px', height: '16px' }}
-            ></MenuOpenIcon>
-          ) : (
-            <MenuIcon
-              color="primary"
-              sx={{ width: '16px', height: '16px' }}
-            ></MenuIcon>
-          )}
-        </StyledBurgerButton>
-      </StyledFlexWrapper>
+          <NavBarButtons />
+
+          <StyledBurgerButton
+            disableElevation
+            onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
+          >
+            {isBurgerMenuShown ? (
+              <MenuOpenIcon
+                color="primary"
+                sx={{ width: '16px', height: '16px' }}
+              ></MenuOpenIcon>
+            ) : (
+              <MenuIcon
+                color="primary"
+                sx={{ width: '16px', height: '16px' }}
+              ></MenuIcon>
+            )}
+          </StyledBurgerButton>
+        </StyledFlexWrapper>
+      </Container>
     </StyledAppBar>
   );
 };
