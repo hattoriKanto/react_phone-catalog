@@ -36,7 +36,7 @@ export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
     >
       {() => {
         return (
-          <StyledButton disableElevation disableRipple>
+          <StyledButton disableElevation sx={{ height: '100%' }}>
             {label}
           </StyledButton>
         );
@@ -45,6 +45,12 @@ export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
   ) : (
     <StyledBurgerLink
       to={to}
+      sx={{
+        outline: 'none',
+        '&:focus, &:active': {
+          transform: 'scale(1.2)',
+        },
+      }}
       style={({ isActive }) => (isActive ? activeStyle : undefined)}
       theme={theme}
       issvg={isJSXElem.toString()}
