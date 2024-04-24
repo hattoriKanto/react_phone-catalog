@@ -70,6 +70,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   return (
     <Link
       to={`/${category}/${itemId}`}
+      onClick={() => sessionStorage.setItem('shownProduct', `${product.id}`)}
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
       <Card
