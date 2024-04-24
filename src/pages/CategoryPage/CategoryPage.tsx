@@ -3,16 +3,25 @@ import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
+import { useMemo } from 'react';
+import { getFilter } from '../../functions/getFilter';
 
 export const CategoryPage = () => {
   const location = useLocation();
   const categoryName = location.pathname.slice(1);
 
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('query');
+
   const { data, isLoading, error } = useFetchData<Product>('products.json');
 
-  const filteredData = data?.filter(data => data.category === categoryName);
+  const visibleProducts = useMemo(() => {
+    return getFilter({ data, query });
+  }, [data, query]);
+
+  const filteredData = visibleProducts?.filter(data => data.category === categoryName);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
