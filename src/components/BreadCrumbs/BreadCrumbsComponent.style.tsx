@@ -5,9 +5,8 @@ export const StyledLink = styled(Link)(({ theme }) => ({
   alignItems: 'center',
   textDecoration: 'none',
   color: theme.palette.primary.main,
-  transition: 'transform 500ms',
-
+  transition: 'transform 0.3s ease-in-out',
   '&:hover': {
-    transform: 'scale(1.05)',
+    transform: 'scale(1.1)',
   },
 }));
