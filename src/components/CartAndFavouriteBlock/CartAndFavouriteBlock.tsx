@@ -10,10 +10,6 @@ type Props = {
 };
 
 export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
-  let id = sessionStorage.getItem('shownProduct');
-
-  id ? id : (id = '0');
-
   const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
   const { addToFavorites, deleteFromFavorites, isProductInFavorites } =
     useFavoritesContext();
@@ -25,23 +21,16 @@ export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
     event.stopPropagation();
     event.preventDefault();
 
-    if (!isInCart && id) {
+    if (!isInCart) {
       addToCart({
-        id: +id,
+        prodId: product.id,
+        img: product.images[0],
         name: product.name,
-        price: product.priceDiscount,
-        image: product.images[0],
         category: product.category,
-        itemId: product.id,
-        fullPrice: product.priceRegular,
-        screen: product.screen,
-        capacity: product.capacity,
-        color: product.color,
-        ram: product.ram,
-        year: 0,
+        price: product.priceDiscount,
       });
-    } else if (id) {
-      deleteFromCart(+id);
+    } else {
+      deleteFromCart(product.id);
     }
   };
 
@@ -53,22 +42,14 @@ export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
     event.preventDefault();
 
     if (!isInFavorites) {
-      addToFavorites({
-        ...product,
-        id: +id,
-        price: product.priceDiscount,
-        image: product.images[0],
-        itemId: product.id,
-        fullPrice: product.priceRegular,
-        year: 0,
-      });
+      addToFavorites(product.id);
     } else {
-      deleteFromFavorites(+id);
+      deleteFromFavorites(product.id);
     }
   };
 
-  const isInCart = isProductInCart(+id);
-  const isInFavorites = isProductInFavorites(+id);
+  const isInCart = isProductInCart(product.id);
+  const isInFavorites = isProductInFavorites(product.id);
 
   return (
     <Stack

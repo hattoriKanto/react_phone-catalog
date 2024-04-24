@@ -1,5 +1,4 @@
 import React, { createContext, useMemo, useState } from 'react';
-import { Product } from '../../types';
 import { FavoritesContextType } from './FavoritesContextType';
 
 export const FavoritesContext = createContext<FavoritesContextType>({
@@ -16,7 +15,7 @@ type Props = {
 
 const FAVORITES_KEY = 'favorites';
 
-const saveFavoritesToLocalStorage = (currentFavorites: Product[]) => {
+const saveFavoritesToLocalStorage = (currentFavorites: string[]) => {
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(currentFavorites));
 };
 
@@ -39,29 +38,26 @@ export const FavoritesProvider: React.FC<Props> = ({ children }) => {
 
   const favoritesQuantity = useMemo(() => favorites.length, [favorites]);
 
-  const addToFavorites = (product: Product) => {
-    if (!favorites.some((item: Product) => item.id === product.id)) {
-      const updatedFavorites = [
-        ...favorites,
-        product,
-      ];
+  const addToFavorites = (product: string) => {
+    if (!favorites.some((item: string) => item === product)) {
+      const updatedFavorites = [...favorites, product];
 
       setFavorites(updatedFavorites);
       saveFavoritesToLocalStorage(updatedFavorites);
     }
   };
 
-  const deleteFromFavorites = (productId: number) => {
+  const deleteFromFavorites = (productId: string) => {
     const updatedFavorites = favorites.filter(
-      (product: Product) => product.id !== productId,
+      (product: string) => product !== productId,
     );
 
     setFavorites(updatedFavorites);
     saveFavoritesToLocalStorage(updatedFavorites);
   };
 
-  const isProductInFavorites = (id: number) => {
-    return favorites.some((product: Product) => product.id === id);
+  const isProductInFavorites = (id: string) => {
+    return favorites.some((product: string) => product === id);
   };
 
   const favoritesState: FavoritesContextType = {
@@ -73,6 +69,8 @@ export const FavoritesProvider: React.FC<Props> = ({ children }) => {
   };
 
   return (
-    <FavoritesContext.Provider value={favoritesState}>{children}</FavoritesContext.Provider>
+    <FavoritesContext.Provider value={favoritesState}>
+      {children}
+    </FavoritesContext.Provider>
   );
 };

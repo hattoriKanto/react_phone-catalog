@@ -1,12 +1,7 @@
 import {
   Box,
-  FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
   Pagination,
-  Select,
-  SelectChangeEvent,
   Stack,
   Typography,
   styled,
@@ -18,11 +13,12 @@ import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import { CardSkeleton } from '../../components/ProductCard';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { getFilter } from '../../functions/getFilter';
 import { getSearchWith } from '../../utils/searchHelper';
-
-const perPageStates = [4, 8, 16];
+import { BreadCrumbsComponent } from '../../components';
+import CategorySort from '../../components/CategorySort/CategorySort';
+import { SortBy } from '../../types/SortBy';
 
 function getSlicedData(data: Product[], page: number, perPage: string) {
   if (perPage === 'All') {
@@ -34,7 +30,19 @@ function getSlicedData(data: Product[], page: number, perPage: string) {
 
   return data.slice(startIndex, endIndex);
 }
-import { BreadCrumbsComponent } from '../../components';
+
+function getSortedData(data: Product[], sortBy: string) {
+  switch (sortBy) {
+    case 'alphabetically':
+      return data.sort((a, b) => a.name.localeCompare(b.name));
+    case 'cheapest':
+      return data.sort((a, b) => a.price - b.price);
+    case 'newest':
+      return data.sort((a, b) => b.id - a.id);
+    default:
+      return data;
+  }
+}
 
 export const CategoryPage = () => {
   const location = useLocation();
@@ -45,6 +53,14 @@ export const CategoryPage = () => {
   const query = searchParams.get('query');
   const page = searchParams.get('page') || 1;
   const perPage = searchParams.get('perPage') || 4;
+  const sortBy = searchParams.get('sortBy') || SortBy.Alphabetically;
+
+  useEffect(() => {
+    const newSearchParams = getSearchWith(searchParams, {
+      page: '1',
+    });
+    setSearchParams(newSearchParams);
+  }, [perPage]);
 
   const visibleProducts = useMemo(() => {
     return getFilter({ data, query });
@@ -54,8 +70,10 @@ export const CategoryPage = () => {
     data => data.category === categoryName,
   );
 
+  const sortedData = getSortedData(filteredData, sortBy);
+
   const slicedData = getSlicedData(
-    filteredData,
+    sortedData,
     Number(page),
     perPage.toString(),
   );
@@ -76,19 +94,11 @@ export const CategoryPage = () => {
     setSearchParams(newSearchParams);
   }
 
-  function handlePerPageChange(event: SelectChangeEvent<string | number>) {
-    const newSearchParams = getSearchWith(searchParams, {
-      perPage: event.target.value.toString(),
-    });
-
-    setSearchParams(newSearchParams);
-  }
-
   return (
     <>
       <Container>
         <BreadCrumbsComponent />
-        <Stack sx={{ px: '2rem' }}>
+        <Stack>
           <Typography variant="h1" sx={{ pt: 4 }}>
             {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
           </Typography>
@@ -102,28 +112,8 @@ export const CategoryPage = () => {
               There are no {categoryName} matching the query
             </Typography>
           )}
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">
-              Items per page
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={perPage}
-              label="Items per page"
-              sx={{ width: '128px' }}
-              onChange={handlePerPageChange}
-            >
-              <MenuItem value="All" key="All">
-                <em>All</em>
-              </MenuItem>
-              {perPageStates.map(pagPerPage => (
-                <MenuItem key={pagPerPage} value={pagPerPage}>
-                  {pagPerPage}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+
+          {!!filteredData.length && <CategorySort />}
         </Stack>
         <Box display={'flex'} justifyContent={'center'}>
           <CustomGrid>
@@ -147,22 +137,24 @@ export const CategoryPage = () => {
           </CustomGrid>
         </Box>
 
-        <Pagination
-          size="large"
-          color="primary"
-          page={Number(page)}
-          onChange={handlePageChange}
-          count={
-            perPage === 'All'
-              ? 1
-              : Math.ceil(filteredData.length / Number(perPage))
-          }
-          sx={{
-            py: 4,
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        />
+        {!!filteredData.length && (
+          <Pagination
+            size="large"
+            color="primary"
+            page={Number(page)}
+            onChange={handlePageChange}
+            count={
+              perPage === 'All'
+                ? 1
+                : Math.ceil(filteredData.length / Number(perPage))
+            }
+            sx={{
+              py: 4,
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          />
+        )}
       </Container>
     </>
   );

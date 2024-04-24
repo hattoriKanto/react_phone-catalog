@@ -97,16 +97,17 @@ export const RecommendedProducts: FC<RecommendedProps> = ({ name, color }) => {
           </Button>
         </Box>
       </Box>
-
-      <CustomGrid>
-        {recommendedProducts
-          .slice(startIndex, startIndex + productsPerRow)
-          .map((product: Product) => (
-            <GridStyled item xs={1} md={1} key={product.id}>
-              <ProductCard product={product} key={product.id}></ProductCard>
-            </GridStyled>
-          ))}
-      </CustomGrid>
+      <Box display={'flex'} justifyContent={'center'}>
+        <CustomGrid>
+          {recommendedProducts
+            .slice(startIndex, startIndex + productsPerRow)
+            .map((product: Product) => (
+              <GridStyled item xs={1} md={1} key={product.id}>
+                <ProductCard product={product} key={product.id}></ProductCard>
+              </GridStyled>
+            ))}
+        </CustomGrid>
+      </Box>
     </Box>
   );
 };
