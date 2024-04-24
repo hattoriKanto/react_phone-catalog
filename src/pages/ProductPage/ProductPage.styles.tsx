@@ -23,7 +23,7 @@ export const StyledFlexWrapper = styled(Stack)(({ theme }) => ({
 
 export const ProductWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-between',
+  alignItems: 'flex-start',
 
   [theme.breakpoints.up('xs')]: {
     flexDirection: 'column',
@@ -38,4 +38,5 @@ export const ProductInfoWrapper = styled(Box)({
   display: 'flex',
   justifyContent: 'space-between',
   flexDirection: 'column',
+  margin: '0 auto',
 });

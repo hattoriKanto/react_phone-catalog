@@ -78,9 +78,7 @@ export const ProductPage: FC = () => {
             {name}
           </Typography>
           <ProductWrapper>
-            <Box m={'0 auto'}>
-              <ImageSelector images={images} />
-            </Box>
+            <ImageSelector images={images} />
             <ProductInfoWrapper>
               <ChangeColorSizeBlock
                 prodId={prodId}
