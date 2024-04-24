@@ -21,7 +21,15 @@ export const StyledFlexWrapper = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export const ProductWrapper = styled(Box)({
+export const ProductWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-})
+
+  [theme.breakpoints.up('xs')]: {
+    flexDirection: 'column',
+  },
+
+  [theme.breakpoints.up('sm')]: {
+    flexDirection: 'row',
+  },
+}));

@@ -26,7 +26,6 @@ export const ProductPage: FC = () => {
     `${category}.json`,
   );
 
-  const selector = prodId.split('-').slice(0, 3).join('-');
   const product = data.find(prod => prod.id === prodId) || null;
 
   if (isLoading) return <p>Loading...</p>;
@@ -54,7 +53,7 @@ export const ProductPage: FC = () => {
           </Typography>
           <ProductWrapper>
             <ImageSelector images={product.images} />
-            <ChangeColorSizeBlock selector={selector}/>
+            <ChangeColorSizeBlock prodId={prodId} category={category} pathname={pathname}/>
           </ProductWrapper>
           <StyledFlexWrapper>
             <About description={product.description} />

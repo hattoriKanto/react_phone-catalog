@@ -4,8 +4,6 @@ import { Box } from '@mui/material';
 export const Colors = styled(Box)({
   display: 'flex',
   gap: '8px',
-  // justifyContent: 'space-between',
-  // width: '152px',
 })
 
 export const OptionsTitle = styled(Box)({
@@ -21,7 +19,7 @@ export const LineBox = styled(Box)(({ theme }) => ({
   marginBottom: '24px',
 
   [theme.breakpoints.up('sm')]: {
-    width: '287px',
+    width: '237px',
   },
 
   [theme.breakpoints.up('md')]: {
@@ -39,12 +37,19 @@ export const Capacity = styled(Box)({
   padding: '8px',
   border: '1px solid #B4BDC3',
   borderRadius: '4px',
+  color: '#0F0F11',
+  cursor: 'pointer',
+
+  '&.active': {
+    border: '1px solid #0F0F11',
+    color: '#FFFFFF',
+    backgroundColor: '#0F0F11'
+  },
 })
 
 export const CapacityValue = styled('p')({
   fontFamily: 'Mont',
   fontSize: '14px',
-  color: '#0F0F11',
   margin: 0,
   lineHeight: '10px',
 })
@@ -58,10 +63,14 @@ export const ColWrapper = styled(Box)({
   borderRadius: '50%',
   border: '1px solid #E2E6E9',
   marginBottom: '24px',
+  cursor: 'pointer',
+
+  '&.active': {
+    border: '1px solid #0F0F11'
+  },
 })
 
 export const Color = styled('p')({
-  // backgroundColor: '#FCDBC1',
   width: '30px',
   height: '30px',
   borderRadius: '50%',
