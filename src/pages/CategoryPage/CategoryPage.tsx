@@ -17,6 +17,7 @@ import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
+import { CardSkeleton } from '../../components/ProductCard';
 import { useMemo } from 'react';
 import { getFilter } from '../../functions/getFilter';
 import { getSearchWith } from '../../utils/searchHelper';
@@ -38,7 +39,7 @@ export const CategoryPage = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryName = location.pathname.slice(1);
-  const { data, error } = useFetchData<Product>('products.json');
+  const { data, isLoading, error } = useFetchData<Product>('products.json');
 
   const query = searchParams.get('query');
   const page = searchParams.get('page') || 1;
@@ -127,11 +128,23 @@ export const CategoryPage = () => {
         </Stack>
         <Box display={'flex'} justifyContent={'center'}>
           <CustomGrid>
-            {slicedData?.map(phone => (
-              <GridStyled item xs={1} md={1} key={phone.id}>
-                <ProductCard product={phone} />
-              </GridStyled>
-            ))}
+            {isLoading ? (
+              <>
+                {Array.from(new Array(20)).map(item => (
+                  <GridStyled item xs={1} md={1} key={item}>
+                    <CardSkeleton />
+                  </GridStyled>
+                ))}
+              </>
+            ) : (
+              <>
+                {slicedData?.map(phone => (
+                  <GridStyled item xs={1} md={1} key={phone.id}>
+                    <ProductCard product={phone} />
+                  </GridStyled>
+                ))}
+              </>
+            )}
           </CustomGrid>
         </Box>
 

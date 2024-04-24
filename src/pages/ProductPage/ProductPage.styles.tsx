@@ -24,4 +24,10 @@ export const StyledFlexWrapper = styled(Stack)(({ theme }) => ({
 export const ProductWrapper = styled(Box)({
   display: 'flex',
   justifyContent: 'space-between',
-})
+});
+
+export const ProductInfoWrapper = styled(Box)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  flexDirection: 'column',
+});
