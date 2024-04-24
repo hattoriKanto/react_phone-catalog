@@ -6,6 +6,7 @@ import {
   MenuItem,
   Pagination,
   Select,
+  SelectChangeEvent,
   Stack,
   Typography,
   styled,
@@ -18,7 +19,7 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
 import { CardSkeleton } from '../../components/ProductCard';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { getFilter } from '../../functions/getFilter';
 import { getSearchWith } from '../../utils/searchHelper';
 
@@ -75,11 +76,9 @@ export const CategoryPage = () => {
     setSearchParams(newSearchParams);
   }
 
-  function handlePerPageChange(
-    event: React.SelectChangeEvent<HTMLInputElement>,
-  ) {
+  function handlePerPageChange(event: SelectChangeEvent<string | number>) {
     const newSearchParams = getSearchWith(searchParams, {
-      perPage: event.target.value,
+      perPage: event.target.value.toString(),
     });
 
     setSearchParams(newSearchParams);
