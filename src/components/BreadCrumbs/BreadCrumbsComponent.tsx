@@ -1,4 +1,4 @@
-import { Breadcrumbs, Link, Typography } from '@mui/material';
+import { Breadcrumbs, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
@@ -9,7 +9,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import InfoIcon from '@mui/icons-material/Info';
 import { useLocation } from 'react-router-dom';
 import { FC } from 'react';
-import { Product } from '../../types';
+import { ProductExpanded } from '../../types';
+import { StyledLink } from '.';
 
 enum Page {
   Home = 'home',
@@ -42,6 +43,13 @@ function getIcon(page: Page) {
   }
 }
 
+const createPath = (path: string) => {
+  return Object.values(Page)
+    .find(value => value === path)
+    ?.split('')
+    .reduce((acc, ch, i) => (i === 0 ? acc + ch.toUpperCase() : acc + ch), '');
+};
+
 function getFullPath(curPath: string[], page: string) {
   const prevPath = [];
 
@@ -62,10 +70,10 @@ function getFullPath(curPath: string[], page: string) {
 }
 
 type Props = {
-  product?: Product | null;
+  product?: ProductExpanded | null;
 };
 
-const BreadCrumbsComponent: FC<Props> = ({ product }) => {
+export const BreadCrumbsComponent: FC<Props> = ({ product }) => {
   const location = useLocation();
   const currentPath = location.pathname.split('/');
   currentPath[0] = 'home';
@@ -81,34 +89,25 @@ const BreadCrumbsComponent: FC<Props> = ({ product }) => {
       }}
     >
       {currentPath.map((path, index) => (
-        <Link
-          underline="hover"
-          sx={{ display: 'flex', alignItems: 'center' }}
-          color="inherit"
+        <StyledLink
           href={`/react_phone-catalog/#/${getFullPath(currentPath, path)}`}
           key={index}
         >
           {getIcon(path as Page)}
           {index !== currentPath.length - 1 ? (
             <Typography variant="body1">
-              {Object.entries(Page).find(
-                ([key, value]) => value === path,
-              )?.[0] || product?.name}
+              {createPath(path) || product?.name}
             </Typography>
           ) : (
             <Typography
               variant="body1"
               sx={{ fontWeight: 'bold', fontSize: 18 }}
             >
-              {Object.entries(Page).find(
-                ([key, value]) => value === path,
-              )?.[0] || product?.name}
+              {createPath(path) || product?.name}
             </Typography>
           )}
-        </Link>
+        </StyledLink>
       ))}
     </Breadcrumbs>
   );
 };
-
-export default BreadCrumbsComponent;

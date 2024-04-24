@@ -33,3 +33,9 @@ export const ProductWrapper = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
+
+export const ProductInfoWrapper = styled(Box)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  flexDirection: 'column',
+});

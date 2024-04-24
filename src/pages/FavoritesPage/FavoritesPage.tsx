@@ -5,7 +5,7 @@ import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import Container from '../../components/Container/Container';
-import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
+import { BreadCrumbsComponent } from '../../components';
 
 export const FavoritesPage: React.FC = () => {
   const { favorites, favoritesQuantity } = useFavoritesContext();

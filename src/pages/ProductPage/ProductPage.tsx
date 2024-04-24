@@ -1,19 +1,30 @@
+/* #region IMPORTS */
 import { FC } from 'react';
-import useFetchData from '../../utils/useFetchData';
 import { useLocation } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { ProductExpanded } from '../../types/ProductExpanded';
-import './ProductPage.css';
-import { ImageSelector } from '../../components/ImageSelector';
-import { Box, Button, Typography } from '@mui/material';
-import Container from '../../components/Container/Container';
-import { About } from '../../components/AboutSection';
-import { ProductWrapper, StyledFlexWrapper } from './ProductPage.styles';
-import ChangeColorSizeBlock from '../../components/ChangeColorSizeBlock/ChangeColorSizeBlock';
-import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
-import { TechSpecs } from '../../components/TechSpecsSection';
-import Recommended from '../../components/RecommendedProducts/Recommended';
+import { Box, Button, Container, Typography } from '@mui/material';
 
+import './ProductPage.css';
+import {
+  ProductInfoWrapper,
+  ProductWrapper,
+  StyledFlexWrapper,
+} from './ProductPage.styles';
+
+import useFetchData from '../../utils/useFetchData';
+import { ProductExpanded } from '../../types/ProductExpanded';
+import {
+  About,
+  CartAndFavouriteBlock,
+  ChangeColorSizeBlock,
+  ImageSelector,
+  PriceBlock,
+  TechSpecs,
+  SmallSpecsBlock,
+  RecommendedProducts,
+  BreadCrumbsComponent,
+} from '../../components';
+/* #endregion */
 
 export const ProductPage: FC = () => {
   const location = useLocation();
@@ -26,10 +37,25 @@ export const ProductPage: FC = () => {
     `${category}.json`,
   );
 
-  const product = data.find(prod => prod.id === prodId) || null;
+  const selector = prodId.split('-').slice(0, 3).join('-');
+  const product = data.find(prod => prod.id === prodId) as ProductExpanded;
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
+
+  const {
+    namespaceId,
+    name,
+    priceRegular,
+    priceDiscount,
+    color,
+    images,
+    description,
+    resolution,
+    processor,
+    screen,
+    ram,
+  } = product || null;
 
   return (
     <>
@@ -49,21 +75,31 @@ export const ProductPage: FC = () => {
             Back
           </Button>
           <Typography variant="h1" pb={3}>
-            {product.name}
+            {name}
           </Typography>
           <ProductWrapper>
-            <ImageSelector images={product.images} />
-            <ChangeColorSizeBlock prodId={prodId} category={category} pathname={pathname}/>
+            <ImageSelector images={images} />
+            <ProductInfoWrapper>
+              <ChangeColorSizeBlock prodId={prodId} category={category} pathname={pathname}/>
+              <PriceBlock price={priceDiscount} fullPrice={priceRegular} />
+              <CartAndFavouriteBlock product={product} />
+              <SmallSpecsBlock
+                screen={screen}
+                resolution={resolution}
+                ram={ram}
+                processor={processor}
+              />
+            </ProductInfoWrapper>
           </ProductWrapper>
           <StyledFlexWrapper>
-            <About description={product.description} />
+            <About description={description} />
             <TechSpecs product={product} />
           </StyledFlexWrapper>
           <Box sx={{ pb: { xs: 3, sm: 6 } }}>
-            <Recommended
-              name={product.namespaceId}
-              color={product.color}
-            ></Recommended>
+            <RecommendedProducts
+              name={namespaceId}
+              color={color}
+            ></RecommendedProducts>
           </Box>
         </Container>
       )}
