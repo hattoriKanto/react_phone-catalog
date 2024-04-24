@@ -33,18 +33,19 @@ const ImageThumbnail = styled('img')(({ theme }) => ({
 const MainImage = styled('img')(({ theme }) => ({
   aspectRatio: '1 / 1',
   margin: '0 auto',
-  maxWidth: '464px',
-  minWidth: '288px',
   objectFit: 'contain',
   transition: 'transform 0.5s ease',
   '&:hover': {
     transform: 'scale(1.1)',
   },
   [theme.breakpoints.down('sm')]: {
-    maxWidth: '288px',
+    width: '288px',
   },
   [theme.breakpoints.up('sm')]: {
-    minWidth: '287px',
+    width: '288px',
+  },
+  [theme.breakpoints.up('lg')]: {
+    width: '484px',
   },
 }));
 
