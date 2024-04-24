@@ -18,4 +18,5 @@ export enum ColorsAvailable {
   graphite = '#736e6b',
   skyblue = '#cad7e5',
   starlight = '#dcd5ca',
+  black = '#000000',
 }
