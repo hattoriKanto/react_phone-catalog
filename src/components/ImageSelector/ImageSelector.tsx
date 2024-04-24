@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Paper, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { CustomGrid } from '../CustomGrid';
@@ -54,7 +54,11 @@ export const ImageSelector: React.FC<ImageGalleryProps> = ({ images }) => {
 
   const isMobile = useMediaQuery(theme.breakpoints.down(sm)); // up to 639p
 
-  const [selectedImage, setSelectedImage] = useState<string>(images[0]);
+  const [selectedImage, setSelectedImage] = useState<string>();
+
+  useEffect(() => {
+    setSelectedImage(images[0]);
+  }, [images]);
 
   return (
     <>
@@ -63,7 +67,7 @@ export const ImageSelector: React.FC<ImageGalleryProps> = ({ images }) => {
           <>
             <MainImage
               src={selectedImage}
-              alt={selectedImage.split('/')[2].split('-').join(' ')}
+              alt={selectedImage?.split('/')[2].split('-').join(' ')}
             />
             <ImageBox
               display={'flex'}
@@ -133,7 +137,7 @@ export const ImageSelector: React.FC<ImageGalleryProps> = ({ images }) => {
             </ImageBox>
             <MainImage
               src={selectedImage}
-              alt={selectedImage.split('/')[2].split('-').join(' ')}
+              alt={selectedImage?.split('/')[2].split('-').join(' ')}
             />
           </>
         )}
