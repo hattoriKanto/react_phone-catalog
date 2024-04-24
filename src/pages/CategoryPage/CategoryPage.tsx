@@ -68,7 +68,7 @@ export const CategoryPage = () => {
     },
   });
 
-  function handlePageChange(event: React.ChangeEvent<unknown>, value: number) {
+  function handlePageChange(_: React.ChangeEvent<unknown>, value: number) {
     const newSearchParams = getSearchWith(searchParams, {
       page: value.toString(),
     });
@@ -129,8 +129,8 @@ export const CategoryPage = () => {
           <CustomGrid>
             {isLoading ? (
               <>
-                {Array.from(new Array(20)).map(item => (
-                  <GridStyled item xs={1} md={1} key={item}>
+                {Array.from(new Array(20)).map((_, index) => (
+                  <GridStyled item xs={1} md={1} key={index}>
                     <CardSkeleton />
                   </GridStyled>
                 ))}

@@ -37,7 +37,7 @@ export const ProductPage: FC = () => {
     `${category}.json`,
   );
 
-  const selector = prodId.split('-').slice(0, 3).join('-');
+  // const selector = prodId.split('-').slice(0, 3).join('-');
   const product = data.find(prod => prod.id === prodId) as ProductExpanded;
 
   if (isLoading) return <p>Loading...</p>;
@@ -82,7 +82,11 @@ export const ProductPage: FC = () => {
               <ImageSelector images={images} />
             </Box>
             <ProductInfoWrapper>
-              <ChangeColorSizeBlock prodId={prodId} category={category} pathname={pathname}/>
+              <ChangeColorSizeBlock
+                prodId={prodId}
+                category={category}
+                pathname={pathname}
+              />
               <PriceBlock price={priceDiscount} fullPrice={priceRegular} />
               <CartAndFavouriteBlock product={product} />
               <SmallSpecsBlock

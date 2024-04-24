@@ -13,45 +13,30 @@ import useFetchData from '../../utils/useFetchData.ts';
 import { ProductExpanded } from '../../types';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { ColorsAvailable } from '../../types/Colors.ts';
+import { ColorsAvailable } from '../../types/Colors.ts';
 
 type Props = {
-  prodId: string,
-  category: string,
-  pathname: string,
-}
+  prodId: string;
+  category: string;
+  pathname: string;
+};
 
-const ColorsAvailable = {
-  gold: '#FCDBC1',
-  white: '#F0F0F0',
-  midnightgreen: '#5F7170',
-  mignight: '#545D75',
-  spacegray: '#4C4C4C',
-  rosegold: '#FCD3C1',
-  silver: '#DDDDDD',
-  green: '#a8dac5',
-  yellow: '#ffe681',
-  purple: '#cfcad9',
-  red: '#c9233b',
-  spaceblack: '#3b3937',
-  coral: '#fa604d',
-  pink: '#f8dbd5',
-  blue: '#1f5e7b',
-  sierrablue: '#93a8c0',
-  graphite: '#736e6b',
-  skyblue: '#cad7e5',
-  starlight: '#dcd5ca',
-  black: '#000000'
-}
-
-const ChangeColorSizeBlock: React.FC<Props> = ({ prodId, category, pathname }) => {
-  const { data} = useFetchData<ProductExpanded>(`${category}.json`);
+export const ChangeColorSizeBlock: React.FC<Props> = ({
+  prodId,
+  category,
+  pathname,
+}) => {
+  const { data } = useFetchData<ProductExpanded>(`${category}.json`);
   const selectedData = data.find(data => data.id === prodId);
 
-  console.log(selectedData)
+  console.log(selectedData);
 
   const initialColor = pathname.split('-').slice(-1).join();
-  const initialCapacity = pathname.split('-').slice(-2, -1).join().toUpperCase();
+  const initialCapacity = pathname
+    .split('-')
+    .slice(-2, -1)
+    .join()
+    .toUpperCase();
 
   const [selectedColor, setSelectedColor] = useState(initialColor);
   const [selectedCapacity, setSelectedCapacity] = useState(initialCapacity);
@@ -82,43 +67,39 @@ const ChangeColorSizeBlock: React.FC<Props> = ({ prodId, category, pathname }) =
     selectSpecifications(newCapacity, false);
   };
 
-  useEffect(() => {
-
-  })
+  useEffect(() => {});
   return (
     <Box>
       <Box>
         <OptionsTitle>Available colors</OptionsTitle>
         <Colors>
           {selectedData?.colorsAvailable.map(color => {
-
-              const tempColor = ColorsAvailable[color];
-              console.log(tempColor);
+            const tempColor =
+              ColorsAvailable[color as keyof typeof ColorsAvailable];
             return (
-                <ColWrapper
-                  onClick={() => {
-                    handleChangeColor(color)
-                    setSelectedColor(color)
-                  }}
-                  key={tempColor}
-                  className={selectedColor === color ? 'active' : ''}
-                >
-                  <Color style={{backgroundColor: tempColor}} />
-                </ColWrapper>
-              )
-          }
-          )}
+              <ColWrapper
+                onClick={() => {
+                  handleChangeColor(color);
+                  setSelectedColor(color);
+                }}
+                key={tempColor}
+                className={selectedColor === color ? 'active' : ''}
+              >
+                <Color style={{ backgroundColor: tempColor }} />
+              </ColWrapper>
+            );
+          })}
         </Colors>
       </Box>
-      <LineBox/>
+      <LineBox />
       <Box>
         <OptionsTitle>Select capacity</OptionsTitle>
         <Capacityes>
-          {selectedData?.capacityAvailable.map(item =>
+          {selectedData?.capacityAvailable.map(item => (
             <Capacity
               key={item}
               onClick={() => {
-                handleCapacity(item)
+                handleCapacity(item);
                 setSelectedCapacity(item);
               }}
               className={selectedCapacity === item ? 'active' : ''}
@@ -128,7 +109,7 @@ const ChangeColorSizeBlock: React.FC<Props> = ({ prodId, category, pathname }) =
           ))}
         </Capacityes>
       </Box>
-      <LineBox/>
+      <LineBox />
     </Box>
   );
 };
