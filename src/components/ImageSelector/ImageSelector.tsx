@@ -95,6 +95,7 @@ export const ImageSelector: React.FC<ImageGalleryProps> = ({ images }) => {
           flexDirection={'row'}
           flexWrap={'wrap'}
           gap={'16px'}
+          paddingBottom={'40px'}
         >
           <MainImage
             src={selectedImage}
