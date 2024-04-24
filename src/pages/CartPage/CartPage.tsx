@@ -14,10 +14,10 @@ import { useCartContext } from '../../hooks/useCartContext';
 import CartItem from '../../components/CartItem';
 import { useState } from 'react';
 import { CartModal } from '../../components/CartModal';
-import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
 import { TransitionProps } from '@mui/material/transitions';
 import { Toast } from '../../components/Toast';
 import { Transition } from '../../types';
+import { BreadCrumbsComponent } from '../../components';
 
 export const CartPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

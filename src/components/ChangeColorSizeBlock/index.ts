@@ -1,3 +1,2 @@
-import ChangeColorSizeBlock from './ChangeColorSizeBlock';
-
-export default ChangeColorSizeBlock;
+export * from './ChangeColorSizeBlock.styles';
+export * from './ChangeColorSizeBlock';

@@ -193,7 +193,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             sx={{ justifyContent: 'space-between', pt: 0.5 }}
           >
             <Typography variant="body1" sx={{ color: '#89939A' }}>
-              'RAM'
+              RAM
             </Typography>
             <Typography
               variant="body1"

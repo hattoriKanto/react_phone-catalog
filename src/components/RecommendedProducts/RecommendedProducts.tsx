@@ -21,7 +21,7 @@ interface RecommendedProps {
   color: string;
 }
 
-const Recommended: FC<RecommendedProps> = ({ name, color }) => {
+export const RecommendedProducts: FC<RecommendedProps> = ({ name, color }) => {
   const recommendedProducts = products
     .filter(item => {
       return name !== item.name && item.color === color;
@@ -110,4 +110,3 @@ const Recommended: FC<RecommendedProps> = ({ name, color }) => {
     </Box>
   );
 };
-export default Recommended;
