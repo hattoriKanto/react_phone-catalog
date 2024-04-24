@@ -14,7 +14,7 @@ interface TechSpecsProps {
   product: ProductExpanded;
 }
 
-interface TableRow {
+interface Row {
   name: string;
   stringValue: string;
 }
@@ -31,7 +31,7 @@ export const TechSpecs: React.FC<TechSpecsProps> = ({ product }) => {
     cell: product.cell,
   };
 
-  const createRow = (name: string, value: string | string[]): TableRow => {
+  const createRow = (name: string, value: string | string[]): Row => {
     let stringValue = '';
 
     if (Array.isArray(value)) {
@@ -49,7 +49,7 @@ export const TechSpecs: React.FC<TechSpecsProps> = ({ product }) => {
     }
 
     return accum;
-  }, [] as TableRow[]);
+  }, [] as Row[]);
 
   return (
     <Stack sx={{ flex: 1 }} spacing={4}>
