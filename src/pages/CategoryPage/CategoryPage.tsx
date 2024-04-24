@@ -6,13 +6,14 @@ import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
+import { CardSkeleton } from '../../components/ProductCard';
 import { useMemo } from 'react';
 import { getFilter } from '../../functions/getFilter';
 
 export const CategoryPage = () => {
   const location = useLocation();
   const categoryName = location.pathname.slice(1);
-  const { data, error } = useFetchData<Product>('products.json');
+  const { data, isLoading, error } = useFetchData<Product>('products.json');
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
@@ -54,11 +55,23 @@ export const CategoryPage = () => {
         </Stack>
         <Box display={'flex'} justifyContent={'center'}>
           <CustomGrid>
-            {filteredData?.map(phone => (
-              <GridStyled item xs={1} md={1} key={phone.id}>
-                <ProductCard product={phone} />
-              </GridStyled>
-            ))}
+            {isLoading ? (
+              <>
+                {Array.from(new Array(20)).map(item => (
+                  <GridStyled item xs={1} md={1} key={item}>
+                    <CardSkeleton />
+                  </GridStyled>
+                ))}
+              </>
+            ) : (
+              <>
+                {filteredData?.map(phone => (
+                  <GridStyled item xs={1} md={1} key={phone.id}>
+                    <ProductCard product={phone} />
+                  </GridStyled>
+                ))}
+              </>
+            )}
           </CustomGrid>
         </Box>
       </Container>

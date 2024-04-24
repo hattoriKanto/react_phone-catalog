@@ -8,12 +8,17 @@ import { ImageSelector } from '../../components/ImageSelector';
 import { Box, Button, Typography } from '@mui/material';
 import Container from '../../components/Container/Container';
 import { About } from '../../components/AboutSection';
-import { ProductWrapper, StyledFlexWrapper } from './ProductPage.styles';
+import {
+  ProductInfoWrapper,
+  ProductWrapper,
+  StyledFlexWrapper,
+} from './ProductPage.styles';
 import ChangeColorSizeBlock from '../../components/ChangeColorSizeBlock/ChangeColorSizeBlock';
 import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
 import { TechSpecs } from '../../components/TechSpecsSection';
 import Recommended from '../../components/RecommendedProducts/Recommended';
-
+import { CartAndFavouriteBlock } from '../../components/CartAndFavouriteBlock';
+import { PriceBlock } from '../../components/PriceBlock';
 
 export const ProductPage: FC = () => {
   const location = useLocation();
@@ -54,7 +59,14 @@ export const ProductPage: FC = () => {
           </Typography>
           <ProductWrapper>
             <ImageSelector images={product.images} />
-            <ChangeColorSizeBlock selector={selector}/>
+            <ProductInfoWrapper>
+              <ChangeColorSizeBlock selector={selector} />
+              <PriceBlock
+                price={product.priceDiscount}
+                fullPrice={product.priceRegular}
+              />
+              <CartAndFavouriteBlock product={product} />
+            </ProductInfoWrapper>
           </ProductWrapper>
           <StyledFlexWrapper>
             <About description={product.description} />
