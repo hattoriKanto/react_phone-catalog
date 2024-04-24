@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { getSearchWith } from '../../functions/getSearchWIth';
 import { Box, IconButton, TextField } from '@mui/material';
@@ -9,23 +10,14 @@ import { debounce } from 'lodash';
 export const Search = () => {
   const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get('query') || '');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [query, setQuery] = useState(searchParams.get('query') || '');
+  const applyQuery = useCallback(debounce(setQuery, 1000), []);
 
-  const debouncedHandleChangeQuery = useRef(
-    debounce(
-      (inputValue: string) => {
-        setQuery(inputValue);
-
-        setSearchParams(
-          getSearchWith(searchParams, {
-            query: inputValue || null,
-          }),
-        );
-      },
-      200
-    )
-  ).current;
+  useEffect(() => {
+    applyQuery(query);
+  }, [query, applyQuery]);
 
   useEffect(() => {
     setIsSearchOpen(false);
@@ -33,7 +25,12 @@ export const Search = () => {
   }, [pathname]);
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    debouncedHandleChangeQuery(event.target.value);
+    const inputValue = event.target.value;
+    setQuery(inputValue);
+
+    setSearchParams(getSearchWith(searchParams, {
+      query: inputValue || null,
+    }));
   };
 
   const handleClearSearch = () => {
@@ -50,6 +47,12 @@ export const Search = () => {
     setIsSearchOpen(previous => !previous);
   };
 
+  useEffect(() => {
+    if (isSearchOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
   return (
     <Box>
       {isSearchOpen ? (
@@ -58,6 +61,7 @@ export const Search = () => {
           variant="outlined"
           value={query}
           onChange={handleChangeQuery}
+          inputRef={inputRef}
         />
       ) : null}
 
