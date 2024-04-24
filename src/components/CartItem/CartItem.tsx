@@ -34,7 +34,8 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const CartItem: React.FC<Props> = ({ product }) => {
   const { deleteFromCart, increaseQuantity, decreaseQuantity, cart } =
     useCartContext();
-  const { prodId, name, price, img, category } = product;
+  const { name, price, img, category } = product.product;
+  const { prodId } = product;
 
   return (
     <Container>
