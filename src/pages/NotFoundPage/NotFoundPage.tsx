@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import Container from '../../components/Container/Container';
 import { Box, Button, Typography } from '@mui/material';
+import { DotLottiePlayer, Controls } from '@dotlottie/react-player';
 
 export const NotFoundPage: FC = () => {
   return (
@@ -14,9 +15,19 @@ export const NotFoundPage: FC = () => {
           py: 2,
         }}
       >
-        <Typography variant="h1" sx={{ pt: 2, alignSelf: 'center' }}>
-          404
-        </Typography>
+        <Box sx={{ alignSelf: 'center', width: '20vmax' }}>
+          <script
+            src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+            type="module"
+          ></script>{' '}
+          <DotLottiePlayer
+            src="https://lottie.host/28a4a784-d2a9-4a53-8df5-b0a782a0cd52/e6ZDyuv7H3.json"
+            background="transparent"
+            loop
+            autoplay
+          ></DotLottiePlayer>
+        </Box>
+
         <Typography variant="h2" sx={{ pt: 2, alignSelf: 'center' }}>
           UH OH! You're lost.
         </Typography>
