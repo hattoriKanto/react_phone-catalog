@@ -73,7 +73,7 @@ type Props = {
   product?: ProductExpanded | null;
 };
 
-const BreadCrumbsComponent: FC<Props> = ({ product }) => {
+export const BreadCrumbsComponent: FC<Props> = ({ product }) => {
   const location = useLocation();
   const currentPath = location.pathname.split('/');
   currentPath[0] = 'home';
@@ -111,5 +111,3 @@ const BreadCrumbsComponent: FC<Props> = ({ product }) => {
     </Breadcrumbs>
   );
 };
-
-export default BreadCrumbsComponent;

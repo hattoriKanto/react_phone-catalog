@@ -1,7 +1,8 @@
 import { Box } from '@mui/material';
 import {
   Capacity,
-  Capacityes, CapacityValue,
+  Capacityes,
+  CapacityValue,
   Color,
   Colors,
   ColWrapper,
@@ -12,17 +13,20 @@ import useFetchData from '../../utils/useFetchData.ts';
 import { Product } from '../../types';
 
 type Props = {
-  selector: string,
-}
+  selector: string;
+};
 
-const ChangeColorSizeBlock: React.FC<Props> = ({ selector}) => {
-  const { data} = useFetchData<Product>('products.json');
-  const filteredData = data?.filter(data => data.name.toLowerCase().split(' ').slice(0, 3).join('-') === selector);
+export const ChangeColorSizeBlock: React.FC<Props> = ({ selector }) => {
+  const { data } = useFetchData<Product>('products.json');
+  const filteredData = data?.filter(
+    data =>
+      data.name.toLowerCase().split(' ').slice(0, 3).join('-') === selector,
+  );
   const colorVariants = filteredData
     .map(item => item.color)
     .filter((value, i, arr) => {
-    return arr.indexOf(value) === i;
-  });
+      return arr.indexOf(value) === i;
+    });
 
   const capacityVariants = filteredData
     .map(item => item.capacity)
@@ -35,28 +39,25 @@ const ChangeColorSizeBlock: React.FC<Props> = ({ selector}) => {
       <Box>
         <OptionsTitle>Available colors</OptionsTitle>
         <Colors>
-          {colorVariants.map(color =>
-          <ColWrapper>
-            <Color style={{backgroundColor: color}}
-            ></Color>
-          </ColWrapper>
-          )}
+          {colorVariants.map(color => (
+            <ColWrapper>
+              <Color style={{ backgroundColor: color }}></Color>
+            </ColWrapper>
+          ))}
         </Colors>
       </Box>
       <LineBox></LineBox>
       <Box>
         <OptionsTitle>Select capacity</OptionsTitle>
         <Capacityes>
-          {capacityVariants.map(item =>
+          {capacityVariants.map(item => (
             <Capacity>
               <CapacityValue>{item}</CapacityValue>
             </Capacity>
-          )}
+          ))}
         </Capacityes>
       </Box>
       <LineBox></LineBox>
     </Box>
-  )
-}
-
-export default ChangeColorSizeBlock;
+  );
+};

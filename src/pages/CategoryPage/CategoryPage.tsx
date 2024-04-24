@@ -5,10 +5,10 @@ import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
-import BreadCrumbsComponent from '../../components/BreadCrumbs/BreadCrumbsComponent';
 import { CardSkeleton } from '../../components/ProductCard';
 import { useMemo } from 'react';
 import { getFilter } from '../../functions/getFilter';
+import { BreadCrumbsComponent } from '../../components';
 
 export const CategoryPage = () => {
   const location = useLocation();
