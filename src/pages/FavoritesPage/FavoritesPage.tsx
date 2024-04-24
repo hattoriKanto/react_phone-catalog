@@ -26,7 +26,7 @@ export const FavoritesPage: React.FC = () => {
   return (
     <Container>
       <BreadCrumbsComponent />
-      <Stack sx={{ px: '2rem' }}>
+      <Stack>
         <Typography variant="h1" sx={{ pt: 4 }}>
           Favorites
         </Typography>
