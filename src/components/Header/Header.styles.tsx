@@ -1,12 +1,4 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  List,
-  ListItem,
-  Theme,
-  styled,
-} from '@mui/material';
+import { AppBar, Box, Button, List, ListItem, styled } from '@mui/material';
 import { Link, NavLink } from 'react-router-dom';
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -16,16 +8,11 @@ export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.element.main}`,
 }));
 
-export const StyledFlexWrapper = styled(Box)(({ theme }) => ({
-  paddingInline: '10px',
+export const StyledFlexWrapper = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   width: '100%',
-  [`@media (min-width:${theme.breakpoints.values.lg}px)`]: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-  },
 }));
 
 export const StyledWrapper = styled(Box)(({ theme }) => ({
@@ -81,14 +68,19 @@ export const StyledItem = styled(ListItem)(() => ({
   padding: '0',
 }));
 
-export const StyledButton = styled(Button)(() => ({
+export const StyledButton = styled(Button)(({ theme }) => ({
   padding: '0',
   borderRadius: '0',
   fontWeight: '700',
   fontSize: '12px',
-  lineHeight: '11px',
+  height: '100%',
   '&:hover': {
     background: 'transparent',
+  },
+
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+    minWidth: '0',
   },
 }));
 
@@ -100,52 +92,57 @@ export const StyledBurgerButton = styled(Button)(({ theme }) => ({
   width: '48px',
 
   borderRadius: '0',
-  borderLeft: `1px solid ${theme.palette.element.main}`,
-  borderRight: `1px solid ${theme.palette.element.main}`,
-  borderBottom: '3px solid transparent',
 
-  transition: 'border-bottom 500ms',
-
-  '&:hover': {
-    background: 'transparent',
-    borderBottom: `3px solid ${theme.palette.primary.main}`,
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    right: '0',
+    bottom: '0',
+    display: 'block',
+    width: '100%',
+    height: '3px',
+    transform: 'scaleX(0)',
+    backgroundColor: theme.palette.primary.main,
+    transition: 'transform 500ms',
   },
 
-  [`@media (max-width:${theme.breakpoints.values.sm}px)`]: {
+  '&:hover::after, &.active::after': {
+    transform: 'scaleX(1)',
+  },
+
+  [theme.breakpoints.down('sm')]: {
     display: 'flex',
   },
 }));
 
-export const StyledLink = styled(NavLink)(({
-  theme,
-  issvg,
-}: {
-  theme: Theme;
-  issvg: string;
-}) => {
+export const StyledLink = styled(NavLink)(({ theme }) => {
   return {
+    position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '64px',
     textDecoration: 'none',
 
-    borderLeft: issvg === 'true' ? '1px solid #e2e6e9' : 'none',
-    borderBottom: '3px solid transparent',
-
-    transition: 'border-bottom 500ms',
-
-    '&:hover': {
-      borderBottom: '3px solid #0f0f11',
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      right: '0',
+      bottom: '0',
+      display: 'block',
+      width: '100%',
+      height: '3px',
+      transform: 'scaleX(0)',
+      backgroundColor: theme.palette.primary.main,
+      transition: 'transform 500ms',
     },
 
-    '&:last-child': {
-      borderRight: issvg === 'true' ? '1px solid #e2e6e9' : 'none',
+    '&:hover::after, &.active::after': {
+      transform: 'scaleX(1)',
     },
 
-    [`@media (max-width:${theme.breakpoints.values.md}px)`]: {
+    [theme.breakpoints.down('md')]: {
       minHeight: '48px',
-      width: issvg === 'true' ? '48px' : 'inherit',
     },
   };
 });

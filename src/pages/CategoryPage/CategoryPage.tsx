@@ -1,4 +1,5 @@
 import {
+  Box,
   FormControl,
   Grid,
   InputLabel,
@@ -107,14 +108,16 @@ export const CategoryPage = () => {
             </Select>
           </FormControl>
         </Stack>
+        <Box display={'flex'} justifyContent={'center'}>
+          <CustomGrid>
+            {slicedData?.map(phone => (
+              <GridStyled item xs={1} md={1} key={phone.id}>
+                <ProductCard product={phone} />
+              </GridStyled>
+            ))}
+          </CustomGrid>
+        </Box>
 
-        <CustomGrid>
-          {slicedData?.map(phone => (
-            <GridStyled item xs={1} md={1} key={phone.id}>
-              <ProductCard product={phone} />
-            </GridStyled>
-          ))}
-        </CustomGrid>
         <Pagination
           size="large"
           color="primary"

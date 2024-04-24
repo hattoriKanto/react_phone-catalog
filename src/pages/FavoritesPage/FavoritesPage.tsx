@@ -1,5 +1,5 @@
 import { useFavoritesContext } from '../../hooks/useFavoritesContext';
-import { Grid, Typography, styled } from '@mui/material';
+import { Box, Grid, Typography, styled } from '@mui/material';
 import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
@@ -31,13 +31,15 @@ export const FavoritesPage: React.FC = () => {
             : `${favoritesQuantity} items`}
         </Typography>
       )}
-      <CustomGrid>
-        {favorites?.map(product => (
-          <GridStyled item xs={1} md={1} key={product.id}>
-            <ProductCard product={product} />
-          </GridStyled>
-        ))}
-      </CustomGrid>
+      <Box display={'flex'} justifyContent={'center'}>
+        <CustomGrid>
+          {favorites?.map(product => (
+            <GridStyled item xs={1} md={1} key={product.id}>
+              <ProductCard product={product} />
+            </GridStyled>
+          ))}
+        </CustomGrid>
+      </Box>
     </Container>
   );
 };
