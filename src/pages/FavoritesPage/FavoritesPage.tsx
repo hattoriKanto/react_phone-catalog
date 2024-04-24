@@ -9,7 +9,11 @@ import { BreadCrumbsComponent } from '../../components';
 
 export const FavoritesPage: React.FC = () => {
   const { favorites, favoritesQuantity } = useFavoritesContext();
-  const { isLoading, error } = useFetchData<Product>('products.json');
+  const { isLoading, data, error } = useFetchData<Product>('products.json');
+
+  const visibleFavourites = data.filter(item =>
+    favorites.includes(item.itemId),
+  );
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -33,7 +37,7 @@ export const FavoritesPage: React.FC = () => {
       )}
       <Box display={'flex'} justifyContent={'center'}>
         <CustomGrid>
-          {favorites?.map(product => (
+          {visibleFavourites?.map(product => (
             <GridStyled item xs={1} md={1} key={product.id}>
               <ProductCard product={product} />
             </GridStyled>

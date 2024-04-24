@@ -1,6 +1,6 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { CartContextType } from './CartContextType';
-import { Product, ProductInCart } from '../../types';
+import { ProductInCart } from '../../types';
 
 export const CartContext = createContext<CartContextType>({
   cart: [],
@@ -49,11 +49,11 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     [cart],
   );
 
-  const addToCart = (product: Product) => {
-    if (!cart.some((item: ProductInCart) => item.prodId === product.id)) {
+  const addToCart = (product: Omit<ProductInCart, 'quantity'>) => {
+    if (!cart.some((item: ProductInCart) => item.prodId === product.prodId)) {
       const updatedCart = [
         ...cart,
-        { prodId: product.id, product, quantity: 1 },
+        { prodId: product.prodId, product, quantity: 1 },
       ];
 
       setCart(updatedCart);
@@ -61,7 +61,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  const deleteFromCart = (productId: number) => {
+  const deleteFromCart = (productId: string) => {
     const updatedCart = cart.filter(
       (product: ProductInCart) => product.prodId !== productId,
     );
@@ -75,11 +75,11 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     localStorage.removeItem(CART_KEY);
   };
 
-  const isProductInCart = (id: number) => {
+  const isProductInCart = (id: string) => {
     return cart.some((product: ProductInCart) => product.prodId === id);
   };
 
-  const increaseQuantity = (productId: number) => {
+  const increaseQuantity = (productId: string) => {
     const updatedCart = cart.map((product: ProductInCart) => {
       if (product.prodId === productId) {
         return {
@@ -95,7 +95,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     saveCartToLocalStorage(updatedCart);
   };
 
-  const decreaseQuantity = (productId: number) => {
+  const decreaseQuantity = (productId: string) => {
     if (
       cart.find((product: ProductInCart) => product.prodId === productId)
         .quantity === 1
