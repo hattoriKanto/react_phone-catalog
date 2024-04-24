@@ -43,20 +43,6 @@ export const ProductPage: FC = () => {
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const {
-    namespaceId,
-    name,
-    priceRegular,
-    priceDiscount,
-    color,
-    images,
-    description,
-    resolution,
-    processor,
-    screen,
-    ram,
-  } = product || null;
-
   return (
     <>
       {product && (
@@ -75,34 +61,38 @@ export const ProductPage: FC = () => {
             Back
           </Button>
           <Typography variant="h1" pb={3}>
-            {name}
+            {product?.name}
           </Typography>
           <ProductWrapper>
-            <Box m={'0 auto'}>
-              <ImageSelector images={images} />
-            </Box>
+            <ImageSelector images={product?.images} />
             <ProductInfoWrapper>
               <ChangeColorSizeBlock
                 prodId={prodId}
                 category={category}
                 pathname={pathname}
               />
-              <PriceBlock price={priceDiscount} fullPrice={priceRegular} />
+              <PriceBlock
+                price={product?.priceDiscount}
+                fullPrice={product?.priceRegular}
+              />
               <CartAndFavouriteBlock product={product} />
               <SmallSpecsBlock
-                screen={screen}
-                resolution={resolution}
-                ram={ram}
-                processor={processor}
+                screen={product?.screen}
+                resolution={product?.resolution}
+                ram={product?.ram}
+                processor={product?.processor}
               />
             </ProductInfoWrapper>
           </ProductWrapper>
           <StyledFlexWrapper>
-            <About description={description} />
+            <About description={product?.description} />
             <TechSpecs product={product} />
           </StyledFlexWrapper>
           <Box sx={{ pb: { xs: 3, sm: 6 } }}>
-            <RecommendedProducts name={namespaceId} color={color} />
+            <RecommendedProducts
+              name={product?.namespaceId}
+              color={product?.color}
+            />
           </Box>
         </Container>
       )}

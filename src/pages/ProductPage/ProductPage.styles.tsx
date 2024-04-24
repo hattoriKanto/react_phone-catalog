@@ -23,7 +23,8 @@ export const StyledFlexWrapper = styled(Stack)(({ theme }) => ({
 
 export const ProductWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  gap: '24px',
 
   [theme.breakpoints.up('xs')]: {
     flexDirection: 'column',
@@ -32,10 +33,19 @@ export const ProductWrapper = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     flexDirection: 'row',
   },
+
+  [theme.breakpoints.down('md')]: {
+    gap: '0',
+    justifyContent: 'space-between',
+  },
 }));
 
-export const ProductInfoWrapper = styled(Box)({
+export const ProductInfoWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-start',
   flexDirection: 'column',
-});
+
+  [theme.breakpoints.down('md')]: {
+    margin: '0 auto',
+  },
+}));

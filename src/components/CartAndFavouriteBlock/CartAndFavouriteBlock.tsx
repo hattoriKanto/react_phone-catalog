@@ -65,7 +65,8 @@ export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
         onClick={event => toggleAddToCard(product, event)}
         color="accent"
         sx={{
-          width: '260px',
+          width: '100%',
+          minWidth: '180px',
           height: '48px',
           py: 1,
           '&.MuiButton-contained': { color: '#fff' },
