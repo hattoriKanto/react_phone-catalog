@@ -60,7 +60,7 @@ export const CategoryPage = () => {
       page: '1',
     });
     setSearchParams(newSearchParams);
-  }, [perPage, searchParams, setSearchParams]);
+  }, [perPage]);
 
   const visibleProducts = useMemo(() => {
     return getFilter({ data, query });
