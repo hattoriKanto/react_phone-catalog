@@ -82,7 +82,7 @@ export const ProductPage: FC = () => {
               <ImageSelector images={images} />
             </Box>
             <ProductInfoWrapper>
-              <ChangeColorSizeBlock selector={selector} />
+              <ChangeColorSizeBlock prodId={prodId} category={category} pathname={pathname}/>
               <PriceBlock price={priceDiscount} fullPrice={priceRegular} />
               <CartAndFavouriteBlock product={product} />
               <SmallSpecsBlock
