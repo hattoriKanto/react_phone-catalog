@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Container from '../../components/Container/Container';
 import { Box, Button, Typography } from '@mui/material';
-import { DotLottiePlayer, Controls } from '@dotlottie/react-player';
+import { DotLottiePlayer } from '@dotlottie/react-player';
 
 export const NotFoundPage: FC = () => {
   return (
@@ -15,7 +15,7 @@ export const NotFoundPage: FC = () => {
           py: 2,
         }}
       >
-        <Box sx={{ alignSelf: 'center', width: '20vmax' }}>
+        <Box sx={{ alignSelf: 'center', width: '20vmax', height: '20vmax' }}>
           <script
             src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
             type="module"
