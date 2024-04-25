@@ -120,7 +120,7 @@ export const CategoryPage = () => {
       <Container>
         <BreadCrumbsComponent />
         <Stack>
-          <Slide in={true} direction="down">
+          <Slide in={true} direction="down" key={categoryName}>
             <Typography variant="h1" sx={{ pt: 4 }}>
               {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
             </Typography>
