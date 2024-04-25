@@ -19,6 +19,7 @@ import { getSearchWith } from '../../utils/searchHelper';
 import { BreadCrumbsComponent } from '../../components';
 import CategorySort from '../../components/CategorySort/CategorySort';
 import { SortBy } from '../../types/SortBy';
+import { CategoryPriceRange } from '../../components/CategoryPriceRange/CategoryPriceRange';
 
 function getSlicedData(data: Product[], page: number, perPage: string) {
   if (perPage === 'All') {
@@ -60,11 +61,24 @@ export const CategoryPage = () => {
       page: '1',
     });
     setSearchParams(newSearchParams);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [perPage]);
 
+  const pricesInCategory = data
+    .filter(product => product.category === categoryName)
+    .map(product => product.price);
+
+  const minPriceInCategory =
+    Math.floor(Math.min(...pricesInCategory) / 100) * 100;
+  const maxPriceInCategory =
+    Math.ceil(Math.max(...pricesInCategory) / 100) * 100;
+
+  const minPrice = searchParams.get('minPrice') || `${minPriceInCategory}`;
+  const maxPrice = searchParams.get('maxPrice') || `${maxPriceInCategory}`;
+
   const visibleProducts = useMemo(() => {
-    return getFilter({ data, query });
-  }, [data, query]);
+    return getFilter({ data, query, minPrice, maxPrice });
+  }, [data, query, minPrice, maxPrice]);
 
   const filteredData = visibleProducts?.filter(
     data => data.category === categoryName,
@@ -113,7 +127,15 @@ export const CategoryPage = () => {
             </Typography>
           )}
 
-          {!!filteredData.length && <CategorySort />}
+          {!!filteredData.length && (
+            <Stack direction={'column'}>
+              <CategorySort />
+              <CategoryPriceRange
+                maxPriceInCategory={maxPriceInCategory}
+                minPriceInCategory={minPriceInCategory}
+              />
+            </Stack>
+          )}
         </Stack>
         <Box display={'flex'} justifyContent={'center'}>
           <CustomGrid>
