@@ -67,13 +67,11 @@ export const ProductSliderFabric: React.FC<Props> = ({
   const newHotPrices: Product[] = products.filter(callback);
 
   const handleClickPrev = () => {
-    setStartIndex(Math.max(startIndex - productsPerRow, 0));
+    setStartIndex(Math.max(startIndex - 1, 0));
   };
 
   const handleClickNext = () => {
-    setStartIndex(
-      Math.min(startIndex + productsPerRow, products.length - productsPerRow),
-    );
+    setStartIndex(Math.min(startIndex + 1, products.length - productsPerRow));
   };
 
   const GridStyled = styled(Grid)({
