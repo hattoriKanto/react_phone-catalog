@@ -19,7 +19,7 @@ import { getSearchWith } from '../../utils/searchHelper';
 import { BreadCrumbsComponent } from '../../components';
 import CategorySort from '../../components/CategorySort/CategorySort';
 import { SortBy } from '../../types/SortBy';
-import { CategoryPriceFilter } from '../../components/CategoryPriceFilter/CategoryPriceFilter';
+import { PriceFilter } from '../../components/PriceFilter/PriceFilter';
 
 function getSlicedData(data: Product[], page: number, perPage: string) {
   if (perPage === 'All') {
@@ -130,7 +130,7 @@ export const CategoryPage = () => {
           {!!filteredData.length && (
             <Stack direction={'column'}>
               <CategorySort />
-              <CategoryPriceFilter
+              <PriceFilter
                 maxPriceInCategory={maxPriceInCategory}
                 minPriceInCategory={minPriceInCategory}
               />
