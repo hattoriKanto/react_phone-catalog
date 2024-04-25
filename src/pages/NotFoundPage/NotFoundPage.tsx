@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Container from '../../components/Container/Container';
 import { Box, Button, Typography } from '@mui/material';
-import { DotLottiePlayer, Controls } from '@dotlottie/react-player';
+import { DotLottiePlayer } from '@dotlottie/react-player';
 
 export const NotFoundPage: FC = () => {
   return (

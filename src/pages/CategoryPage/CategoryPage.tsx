@@ -1,6 +1,5 @@
 import {
   Box,
-  Fade,
   Grid,
   Grow,
   Pagination,
