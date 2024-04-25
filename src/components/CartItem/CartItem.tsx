@@ -34,8 +34,7 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const CartItem: React.FC<Props> = ({ product }) => {
   const { deleteFromCart, increaseQuantity, decreaseQuantity, cart } =
     useCartContext();
-  const { name, price, img, category } = product.product;
-  const { prodId } = product;
+  const { prodId, name, price, img, category } = product.product;
 
   return (
     <Container>
@@ -77,7 +76,7 @@ const CartItem: React.FC<Props> = ({ product }) => {
                 onClick={() => decreaseQuantity(prodId)}
               />
               <Typography variant="body1">
-                {cart.find(item => item.prodId === prodId)?.quantity}
+                {cart.find(item => item.product.prodId === prodId)?.quantity}
               </Typography>
               <IconButtonQuantityPlus
                 onClick={() => increaseQuantity(prodId)}
