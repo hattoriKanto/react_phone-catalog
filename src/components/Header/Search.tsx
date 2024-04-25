@@ -4,8 +4,15 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import { getSearchWith } from '../../functions/getSearchWIth';
 import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
+import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { debounce } from 'lodash';
-import { StyledSearchButton, StyledSearchInput, StyledSearchWrapper } from '.';
+import {
+  StyledButtonClear,
+  StyledSearchButton,
+  StyledSearchInput,
+  StyledSearchWrapper,
+} from '.';
+import { InputAdornment } from '@mui/material';
 
 interface SearchProps {
   isSearchOpen: boolean;
@@ -76,20 +83,50 @@ export const Search: React.FC<SearchProps> = ({
       })}
     >
       {isSearchOpen && (
-        <StyledSearchInput
-          placeholder={`Search in ${pathname.slice(1)}...`}
-          value={query}
-          onChange={handleChangeQuery}
-          inputRef={inputRef}
-        />
+        <>
+          <StyledSearchInput
+            placeholder={`Search in ${pathname.slice(1)}...`}
+            value={query}
+            onChange={handleChangeQuery}
+            inputRef={inputRef}
+            endAdornment={
+              <InputAdornment
+                sx={{
+                  cursor: 'pointer',
+                  margin: 0,
+                  maxHeight: 'none',
+                  height: '100%',
+                  scale: '1',
+                  transition: 'scale 300ms',
+
+                  '&:hover': {
+                    scale: '1.2',
+                  },
+                }}
+                position="end"
+              >
+                <StyledButtonClear onClick={handleClearSearch} disableRipple>
+                  <ClearIcon
+                    color="red"
+                    sx={{ width: '16px', height: '16px' }}
+                  />
+                </StyledButtonClear>
+              </InputAdornment>
+            }
+          />
+        </>
       )}
 
-      {query.length ? (
+      {isSearchOpen ? (
         <StyledSearchButton
           aria-label="clear search"
-          onClick={handleClearSearch}
+          disableRipple
+          onClick={() => {
+            handleClearSearch();
+            onSearchToggle(false);
+          }}
         >
-          <ClearIcon />
+          <SearchOffIcon color="primary" />
         </StyledSearchButton>
       ) : (
         <StyledSearchButton
