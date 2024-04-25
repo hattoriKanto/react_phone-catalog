@@ -29,7 +29,6 @@ export const BurgerMenu: React.FC<Props> = ({
                 <BurgerActiveLink
                   label={text}
                   to={link}
-                  activeStyle={{}}
                   isBurgerMenuShown={isBurgerMenuShown}
                   onBurgerToggle={onBurgerToggle}
                 />

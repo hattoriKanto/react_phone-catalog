@@ -2,7 +2,7 @@ export enum ColorsAvailable {
   gold = '#FCDBC1',
   white = '#F0F0F0',
   midnightgreen = '#5F7170',
-  mignight = '#545D75',
+  midnight = '#545D75',
   spacegray = '#4C4C4C',
   rosegold = '#FCD3C1',
   silver = '#DDDDDD',
