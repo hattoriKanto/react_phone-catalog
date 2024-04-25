@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Grid,
   Grow,
   Pagination,
@@ -110,6 +111,10 @@ export const CategoryPage = () => {
     setSearchParams(newSearchParams);
   }
 
+  const clearSearchParams = () => {
+    setSearchParams({});
+  };
+
   return (
     <>
       <Container>
@@ -127,15 +132,42 @@ export const CategoryPage = () => {
             </Typography>
           )}
           {filteredData.length === 0 && (
-            <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
-              There are no {categoryName} matching the query
-            </Typography>
+            <Stack direction={'column'}>
+              <Typography variant="body1" color="secondary" sx={{ pb: 2 }}>
+                There are no {categoryName} matching the query
+              </Typography>
+              <Button
+                variant={'contained'}
+                onClick={clearSearchParams}
+                color="accent"
+                sx={{
+                  width: '160px',
+                  py: 1.5,
+                  '&.MuiButton-contained': { color: '#fff' },
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                  },
+                }}
+              >
+                <Typography
+                  variant="button"
+                  color="white"
+                  sx={{ textTransform: 'none', textDecoration: 'none' }}
+                >
+                  Show ALL
+                </Typography>
+              </Button>
+            </Stack>
           )}
 
           {!!filteredData.length && (
             <Stack direction={'column'}>
               <CategorySort />
-              <CategoryPriceRange minPriceInCategory={minPriceInCategory} maxPriceInCategory={maxPriceInCategory} />
+              <CategoryPriceRange
+                minPriceInCategory={minPriceInCategory}
+                maxPriceInCategory={maxPriceInCategory}
+              />
             </Stack>
           )}
         </Stack>
