@@ -25,12 +25,12 @@ export const BurgerMenuButtons: React.FC<Props> = ({
       return locationPathname === HeaderOtherLinks.cart ? (
         <ShoppingCartIcon
           color="primary"
-          sx={{ width: '16px', height: '16px' }}
+          sx={{ width: '20px', height: '20px' }}
         ></ShoppingCartIcon>
       ) : (
         <ShoppingCartOutlinedIcon
           color="primary"
-          sx={{ width: '16px', height: '16px' }}
+          sx={{ width: '20px', height: '20px' }}
         ></ShoppingCartOutlinedIcon>
       );
     }
@@ -38,12 +38,12 @@ export const BurgerMenuButtons: React.FC<Props> = ({
     return locationPathname === HeaderOtherLinks.favorites ? (
       <FavoriteIcon
         color="primary"
-        sx={{ width: '16px', height: '16px' }}
+        sx={{ width: '20px', height: '20px' }}
       ></FavoriteIcon>
     ) : (
       <FavoriteBorderIcon
         color="primary"
-        sx={{ width: '16px', height: '16px' }}
+        sx={{ width: '20px', height: '20px' }}
       ></FavoriteBorderIcon>
     );
   };
@@ -56,9 +56,6 @@ export const BurgerMenuButtons: React.FC<Props> = ({
             key={text}
             label={handleChangeIcon(link)}
             to={link}
-            activeStyle={{
-              borderBottom: '3px solid #0f0f11',
-            }}
             isBurgerMenuShown={isBurgerMenuShown}
             onBurgerToggle={onBurgerToggle}
           />

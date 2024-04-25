@@ -1,34 +1,33 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-
 import {
   StyledAppBar,
   StyledFlexWrapper,
   StyledWrapper,
   StyledLogoLink,
-  StyledBurgerButton,
   StyledLogo,
 } from './Header.styles';
 import { NavMenu } from './NavMenu';
 
-import { NavBarButtons } from '.';
-import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';
 import Container from '../Container/Container';
-import { Search } from './Search';
+import { NavBarButtons } from '.';
 
 interface Props {
+  isSearchOpen: boolean;
   isBurgerMenuShown: boolean;
   onBurgerToggle: (isBurgerMenuShown: boolean) => void;
+  onSearchToggle: (isSearchOpen: boolean) => void;
+  handleSearchIconClick: () => void;
 }
 
 export const Header: React.FC<Props> = ({
+  isSearchOpen,
   isBurgerMenuShown,
   onBurgerToggle,
+  onSearchToggle,
+  handleSearchIconClick,
 }) => {
-  // new
   const { pathname } = useLocation();
   const searchField =
     pathname === '/phones' ||
@@ -40,34 +39,29 @@ export const Header: React.FC<Props> = ({
       <Container>
         <StyledFlexWrapper>
           <StyledWrapper>
-            <StyledLogoLink to="" onClick={() => onBurgerToggle(false)}>
+            <StyledLogoLink
+              sx={({ breakpoints }) => ({
+                [breakpoints.down('sm')]: {
+                  opacity: isSearchOpen ? 0 : 1,
+                },
+              })}
+              to=""
+              onClick={() => onBurgerToggle(false)}
+            >
               <StyledLogo src="img/header/logo.svg" alt="Nice Gadget Logo" />
             </StyledLogoLink>
 
             <NavMenu />
           </StyledWrapper>
 
-          {/* new */}
-          {searchField && <Search />}
-
-          <NavBarButtons />
-
-          <StyledBurgerButton
-            disableElevation
-            onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
-          >
-            {isBurgerMenuShown ? (
-              <MenuOpenIcon
-                color="primary"
-                sx={{ width: '16px', height: '16px' }}
-              ></MenuOpenIcon>
-            ) : (
-              <MenuIcon
-                color="primary"
-                sx={{ width: '16px', height: '16px' }}
-              ></MenuIcon>
-            )}
-          </StyledBurgerButton>
+          <NavBarButtons
+            searchField={searchField}
+            isSearchOpen={isSearchOpen}
+            isBurgerMenuShown={isBurgerMenuShown}
+            onBurgerToggle={onBurgerToggle}
+            onSearchToggle={onSearchToggle}
+            handleSearchIconClick={handleSearchIconClick}
+          />
         </StyledFlexWrapper>
       </Container>
     </StyledAppBar>

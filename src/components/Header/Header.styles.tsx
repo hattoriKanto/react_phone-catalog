@@ -1,4 +1,13 @@
-import { AppBar, Box, Button, List, ListItem, styled } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Input,
+  List,
+  ListItem,
+  styled,
+} from '@mui/material';
 import { Link, NavLink } from 'react-router-dom';
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -9,6 +18,7 @@ export const StyledAppBar = styled(AppBar)(({ theme }) => ({
 }));
 
 export const StyledFlexWrapper = styled(Box)(() => ({
+  position: 'relative',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -24,18 +34,17 @@ export const StyledWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const StyledWrapperButton = styled(Box)(({ theme }) => ({
+export const StyledWrapperButton = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
-  [`@media (max-width:${theme.breakpoints.values.sm}px)`]: {
-    display: 'none',
-  },
 }));
 
 export const StyledLogoLink = styled(Link)(({ theme }) => ({
+  position: 'relative',
   display: 'flex',
   alignItems: 'center',
   minHeight: '64px',
+  zIndex: 1,
   [`@media (max-width:${theme.breakpoints.values.md}px)`]: {
     minHeight: '48px',
   },
@@ -49,7 +58,7 @@ export const StyledLogo = styled('img')(({ theme }) => ({
 
 export const StyledNav = styled('nav')(({ theme }) => ({
   display: 'flex',
-  [`@media (max-width:${theme.breakpoints.values.sm}px)`]: {
+  [theme.breakpoints.down('lg')]: {
     display: 'none',
   },
 }));
@@ -68,7 +77,15 @@ export const StyledItem = styled(ListItem)(() => ({
   padding: '0',
 }));
 
-export const StyledButton = styled(Button)(({ theme }) => ({
+export const DesktopButtonsWrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  [theme.breakpoints.down('lg')]: {
+    display: 'none',
+  },
+}));
+
+export const StyledButton = styled(Button)(() => ({
   padding: '0',
   borderRadius: '0',
   fontWeight: '700',
@@ -77,21 +94,32 @@ export const StyledButton = styled(Button)(({ theme }) => ({
   '&:hover': {
     background: 'transparent',
   },
+}));
+
+export const StyledSearchWrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '12px',
 
   [theme.breakpoints.down('md')]: {
-    width: '100%',
-    minWidth: '0',
+    gap: '10px',
+  },
+
+  [theme.breakpoints.down('sm')]: {
+    gap: '6px',
   },
 }));
 
-export const StyledBurgerButton = styled(Button)(({ theme }) => ({
-  display: 'none',
-  padding: '0',
-  minWidth: 'unset',
-  minHeight: '48px',
-  width: '48px',
+export const StyledSearchButton = styled(IconButton)(({ theme }) => ({
+  padding: 0,
+  minHeight: '64px',
+  width: '64px',
 
-  borderRadius: '0',
+  svg: {
+    width: '24px',
+    height: '24px',
+  },
 
   '&:after': {
     content: '""',
@@ -106,12 +134,102 @@ export const StyledBurgerButton = styled(Button)(({ theme }) => ({
     transition: 'transform 500ms',
   },
 
+  '&:hover, &:active': {
+    background: 'transparent',
+  },
+
   '&:hover::after, &.active::after': {
     transform: 'scaleX(1)',
   },
 
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('md')]: {
+    width: '48px',
+    minHeight: '48px',
+    svg: {
+      width: '16px',
+      height: '16px',
+    },
+  },
+}));
+
+export const StyledSearchInput = styled(Input)(({ theme }) => ({
+  padding: '12px',
+  height: '40px',
+  width: '350px',
+  borderRadius: '10px',
+  border: `1px solid ${theme.palette.secondary.main}`,
+  outline: 'none',
+
+  input: {
+    padding: '0',
+  },
+
+  '&:before, &:after': {
+    display: 'none',
+  },
+
+  '&:hover, &:active, &:focus': {
+    border: `1px solid ${theme.palette.primary.main}`,
+  },
+
+  [theme.breakpoints.down('md')]: {
+    height: '32px',
+    padding: '8px',
+    fontSize: '12px',
+  },
+
+  [theme.breakpoints.down('md')]: {
+    height: '28px',
+    padding: '6px',
+    fontSize: '10px',
+  },
+}));
+
+export const StyledBurgerButton = styled(Button)(({ theme }) => ({
+  display: 'none',
+  padding: '0',
+  minWidth: 'unset',
+  minHeight: '64px',
+  width: '64px',
+  borderRadius: '0',
+
+  svg: {
+    width: '24px',
+    height: '24px',
+  },
+
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    right: '0',
+    bottom: '0',
+    display: 'block',
+    width: '100%',
+    height: '3px',
+    transform: 'scaleX(0)',
+    backgroundColor: theme.palette.primary.main,
+    transition: 'transform 500ms',
+  },
+
+  '&:hover': {
+    background: 'transparent',
+  },
+
+  '&:hover::after, &.active::after': {
+    transform: 'scaleX(1)',
+  },
+
+  [theme.breakpoints.down('lg')]: {
     display: 'flex',
+  },
+
+  [theme.breakpoints.down('md')]: {
+    width: '48px',
+    minHeight: '48px',
+    svg: {
+      width: '16px',
+      heigth: '16px',
+    },
   },
 }));
 
