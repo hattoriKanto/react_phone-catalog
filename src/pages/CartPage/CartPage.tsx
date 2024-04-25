@@ -4,8 +4,10 @@ import {
   Card,
   CardContent,
   Divider,
+  Fade,
   Grow,
   GrowProps,
+  Slide,
   Stack,
   Typography,
 } from '@mui/material';
@@ -65,57 +67,65 @@ export const CartPage = () => {
     <>
       <Container>
         <BreadCrumbsComponent />
-        <Typography variant="h1" component="h2" sx={{ py: 2 }}>
-          Cart
-        </Typography>
+        <Slide in={true} direction="down" timeout={1200}>
+          <Typography variant="h1" component="h2" sx={{ py: 2 }}>
+            Cart
+          </Typography>
+        </Slide>
         <script
           src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
           type="module"
         ></script>
 
         {cartQuantity === 0 && (
-          <Stack direction={'column'} spacing={2} sx={{ alignItems: 'center' }}>
-            <Typography variant="h4">
-              Looks like you have not added anything to your cart.
-            </Typography>
-            <Box
-              sx={{ alignSelf: 'center', width: '20vmax', height: '20vmax' }}
+          <Fade in={true} timeout={1000}>
+            <Stack
+              direction={'column'}
+              spacing={2}
+              sx={{ alignItems: 'center' }}
             >
-              <DotLottiePlayer
-                src="https://lottie.host/46ed7366-2fcd-4229-b1fd-6d9272c77c19/3AwlFQdV0q.json"
-                background="transparent"
-                loop
-                autoplay
-              ></DotLottiePlayer>
-            </Box>
-            <Typography variant="h4" sx={{}}>
-              Go ahead & explore top categories.
-            </Typography>
-            <Link to="/">
-              <Button
-                variant="contained"
-                color="accent"
-                sx={{
-                  width: '160px',
-                  alignSelf: 'center',
-                  py: 1,
-                  '&.MuiButton-contained': { color: '#fff' },
-                  transition: 'transform 0.3s ease-in-out',
-                  '&:hover': {
-                    transform: 'scale(1.1)',
-                  },
-                }}
+              <Typography variant="h4">
+                Looks like you have not added anything to your cart.
+              </Typography>
+              <Box
+                sx={{ alignSelf: 'center', width: '20vmax', height: '20vmax' }}
               >
-                <Typography
-                  variant="button"
-                  color="white"
-                  sx={{ textTransform: 'none', textDecoration: 'none' }}
+                <DotLottiePlayer
+                  src="https://lottie.host/46ed7366-2fcd-4229-b1fd-6d9272c77c19/3AwlFQdV0q.json"
+                  background="transparent"
+                  loop
+                  autoplay
+                ></DotLottiePlayer>
+              </Box>
+              <Typography variant="h4" sx={{}}>
+                Go ahead & explore top categories.
+              </Typography>
+              <Link to="/">
+                <Button
+                  variant="contained"
+                  color="accent"
+                  sx={{
+                    width: '160px',
+                    alignSelf: 'center',
+                    py: 1,
+                    '&.MuiButton-contained': { color: '#fff' },
+                    transition: 'transform 0.3s ease-in-out',
+                    '&:hover': {
+                      transform: 'scale(1.1)',
+                    },
+                  }}
                 >
-                  Return To Shop
-                </Typography>
-              </Button>
-            </Link>
-          </Stack>
+                  <Typography
+                    variant="button"
+                    color="white"
+                    sx={{ textTransform: 'none', textDecoration: 'none' }}
+                  >
+                    Return To Shop
+                  </Typography>
+                </Button>
+              </Link>
+            </Stack>
+          </Fade>
         )}
         {cartQuantity > 0 && (
           <Box
