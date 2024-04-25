@@ -9,7 +9,7 @@ export const StyledBurgerMenu = styled('aside')(({ theme }) => ({
   right: '0',
   zIndex: 30,
   paddingTop: '24px',
-  width: '30%',
+  width: '40vw',
   height: 'calc(100vh - 48px)',
   background: theme.palette.white.main,
   overflow: 'auto',
