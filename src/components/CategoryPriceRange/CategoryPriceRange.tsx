@@ -7,7 +7,7 @@ type Props = {
   minPriceInCategory: number;
 }
 
-export const PriceFilter: React.FC<Props> = ({ minPriceInCategory, maxPriceInCategory }) => {
+export const CategoryPriceRange: React.FC<Props> = ({ minPriceInCategory, maxPriceInCategory }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [priceRange, setPriceRange] = useState<number[]>([minPriceInCategory, maxPriceInCategory]);
 
