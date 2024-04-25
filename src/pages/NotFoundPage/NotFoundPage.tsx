@@ -15,7 +15,7 @@ export const NotFoundPage: FC = () => {
           py: 2,
         }}
       >
-        <Box sx={{ alignSelf: 'center', width: '20vmax' }}>
+        <Box sx={{ alignSelf: 'center', width: '20vmax', height: '20vmax' }}>
           <script
             src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
             type="module"

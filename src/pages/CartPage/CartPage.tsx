@@ -18,6 +18,8 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Toast } from '../../components/Toast';
 import { Transition } from '../../types';
 import { BreadCrumbsComponent } from '../../components';
+import { DotLottiePlayer } from '@dotlottie/react-player';
+import { Link } from 'react-router-dom';
 
 export const CartPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,69 +68,122 @@ export const CartPage = () => {
         <Typography variant="h1" component="h2" sx={{ py: 2 }}>
           Cart
         </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            flexDirection: { xs: 'column', md: 'row' },
-          }}
-        >
-          <Box sx={{ width: { md: '70%', xs: '100%' }, pr: { sm: 2, xs: 0 } }}>
-            {cartQuantity > 0 &&
-              cart.map(item => (
-                <Box key={item.prodId} sx={{ pb: 2 }}>
-                  <CartItem product={item} />{' '}
-                </Box>
-              ))}
-          </Box>
+        <script
+          src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+          type="module"
+        ></script>
+
+        {cartQuantity === 0 && (
+          <Stack direction={'column'} spacing={2} sx={{ alignItems: 'center' }}>
+            <Typography variant="h4">
+              Looks like you have not added anything to your cart.
+            </Typography>
+            <Box
+              sx={{ alignSelf: 'center', width: '20vmax', height: '20vmax' }}
+            >
+              <DotLottiePlayer
+                src="https://lottie.host/46ed7366-2fcd-4229-b1fd-6d9272c77c19/3AwlFQdV0q.json"
+                background="transparent"
+                loop
+                autoplay
+              ></DotLottiePlayer>
+            </Box>
+            <Typography variant="h4" sx={{}}>
+              Go ahead & explore top categories.
+            </Typography>
+            <Link to="/">
+              <Button
+                variant="contained"
+                color="accent"
+                sx={{
+                  width: '160px',
+                  alignSelf: 'center',
+                  py: 1,
+                  '&.MuiButton-contained': { color: '#fff' },
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                  },
+                }}
+              >
+                <Typography
+                  variant="button"
+                  color="white"
+                  sx={{ textTransform: 'none', textDecoration: 'none' }}
+                >
+                  Return To Shop
+                </Typography>
+              </Button>
+            </Link>
+          </Stack>
+        )}
+        {cartQuantity > 0 && (
           <Box
             sx={{
-              width: { md: '30%', xs: '100%' },
-              position: 'sticky',
-              top: '72px',
-              height: 'fit-content',
+              display: 'flex',
+              width: '100%',
+              flexDirection: { xs: 'column', md: 'row' },
             }}
           >
-            <Card>
-              <CardContent>
-                <Stack direction="column" spacing={2}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Typography variant="h2">{`$${totalPrice}`}</Typography>
-                    <Typography variant="body1" color="secondary">
-                      Total for {cartQuantity}{' '}
-                      {cartQuantity === 1 ? 'item' : 'items'}
-                    </Typography>
+            <Box
+              sx={{ width: { md: '70%', xs: '100%' }, pr: { sm: 2, xs: 0 } }}
+            >
+              {cartQuantity > 0 &&
+                cart.map(item => (
+                  <Box key={item.prodId} sx={{ pb: 2 }}>
+                    <CartItem product={item} />{' '}
                   </Box>
-                  <Divider variant="middle" />
-                  <Button
-                    variant="contained"
-                    color="accent"
-                    sx={{
-                      width: '100%',
-                      py: 1,
-                      '&.MuiButton-contained': { color: '#fff' },
-                      textTransform: 'none',
-                    }}
-                    onClick={() =>
-                      cart.length !== 0
-                        ? setIsModalOpen(true)
-                        : handleEmpty(GrowTransition)
-                    }
-                  >
-                    Checkout
-                  </Button>
-                </Stack>
-              </CardContent>
-            </Card>
+                ))}
+            </Box>
+            <Box
+              sx={{
+                width: { md: '30%', xs: '100%' },
+                position: 'sticky',
+                top: '72px',
+                height: 'fit-content',
+              }}
+            >
+              <Card>
+                <CardContent>
+                  <Stack direction="column" spacing={2}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Typography variant="h2">{`$${totalPrice}`}</Typography>
+                      <Typography variant="body1" color="secondary">
+                        Total for {cartQuantity}{' '}
+                        {cartQuantity === 1 ? 'item' : 'items'}
+                      </Typography>
+                    </Box>
+                    <Divider variant="middle" />
+                    <Button
+                      variant="contained"
+                      color="accent"
+                      sx={{
+                        width: '100%',
+                        py: 1,
+                        '&.MuiButton-contained': { color: '#fff' },
+                        textTransform: 'none',
+                      }}
+                      onClick={() =>
+                        cart.length !== 0
+                          ? setIsModalOpen(true)
+                          : handleEmpty(GrowTransition)
+                      }
+                    >
+                      Checkout
+                    </Button>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Box>
           </Box>
-        </Box>
+        )}
       </Container>
       <CartModal
         isModalOpen={isModalOpen}
