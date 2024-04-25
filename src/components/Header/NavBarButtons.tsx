@@ -24,6 +24,7 @@ import { Search } from './Search';
 import { toggleBurgerMenu } from '../../functions';
 import { useSearchContext } from '../../hooks/useSearchContext';
 import { useBurgerMenuContext } from '../../hooks/useBurgerMenuContext';
+import { Divider } from '@mui/material';
 
 interface Props {
   searchField: boolean;
@@ -86,6 +87,16 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
         })}
       </DesktopButtonsWrapper>
 
+      <Divider
+        orientation="vertical"
+        sx={({ breakpoints }) => ({
+          backgroundColor: 'secondary',
+          height: '64px',
+          [breakpoints.down('md')]: {
+            height: '48px',
+          },
+        })}
+      />
       <StyledBurgerButton
         disableElevation
         onClick={() => {

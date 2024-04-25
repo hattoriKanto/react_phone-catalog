@@ -11,7 +11,7 @@ import {
   StyledSearchInput,
   StyledSearchWrapper,
 } from '.';
-import { InputAdornment } from '@mui/material';
+import { Divider, InputAdornment } from '@mui/material';
 import { useSearchContext } from '../../hooks/useSearchContext';
 
 export const Search: React.FC = () => {
@@ -65,28 +65,29 @@ export const Search: React.FC = () => {
             onChange={handleChangeQuery}
             inputRef={inputRef}
             endAdornment={
-              <InputAdornment
-                sx={{
-                  cursor: 'pointer',
-                  margin: 0,
-                  maxHeight: 'none',
-                  height: '100%',
-                  scale: '1',
-                  transition: 'scale 300ms',
+              !!query.length && (
+                <InputAdornment
+                  sx={{
+                    cursor: 'pointer',
+                    margin: 0,
+                    maxHeight: 'none',
+                    scale: '1',
+                    transition: 'scale 300ms',
 
-                  '&:hover': {
-                    scale: '1.2',
-                  },
-                }}
-                position="end"
-              >
-                <StyledButtonClear onClick={handleClearSearch} disableRipple>
-                  <ClearIcon
-                    color="red"
-                    sx={{ width: '16px', height: '16px' }}
-                  />
-                </StyledButtonClear>
-              </InputAdornment>
+                    '&:hover': {
+                      scale: '1.1',
+                    },
+                  }}
+                  position="end"
+                >
+                  <StyledButtonClear disableRipple onClick={handleClearSearch}>
+                    <ClearIcon
+                      color="red"
+                      sx={{ width: '16px', height: '16px' }}
+                    />
+                  </StyledButtonClear>
+                </InputAdornment>
+              )
             }
           />
         </>
@@ -95,7 +96,6 @@ export const Search: React.FC = () => {
       {isSearchOpen ? (
         <StyledSearchButton
           aria-label="clear search"
-          disableRipple
           onClick={() => {
             handleClearSearch();
             setIsSearchOpen(false);
@@ -104,13 +104,24 @@ export const Search: React.FC = () => {
           <SearchOffIcon color="primary" />
         </StyledSearchButton>
       ) : (
-        <StyledSearchButton
-          aria-label="search"
-          disableRipple
-          onClick={handleSearchIconClick}
-        >
-          <SearchIcon color="primary" />
-        </StyledSearchButton>
+        <>
+          <Divider
+            orientation="vertical"
+            sx={({ breakpoints }) => ({
+              backgroundColor: 'secondary',
+              height: '64px',
+              [breakpoints.down('md')]: {
+                height: '48px',
+              },
+            })}
+          />
+          <StyledSearchButton
+            aria-label="search"
+            onClick={handleSearchIconClick}
+          >
+            <SearchIcon color="primary" />
+          </StyledSearchButton>
+        </>
       )}
     </StyledSearchWrapper>
   );
