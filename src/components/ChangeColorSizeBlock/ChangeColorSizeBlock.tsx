@@ -11,7 +11,7 @@ import {
 } from './ChangeColorSizeBlock.styles.tsx';
 import useFetchData from '../../utils/useFetchData.ts';
 import { ProductExpanded } from '../../types';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ColorsAvailable } from '../../types/Colors.ts';
 
@@ -65,7 +65,6 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({
     selectSpecifications(newCapacity, false);
   };
 
-  useEffect(() => {});
   return (
     <Box>
       <Box>
