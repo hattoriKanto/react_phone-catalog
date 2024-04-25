@@ -130,7 +130,7 @@ export const CartPage = () => {
             >
               {cartQuantity > 0 &&
                 cart.map(item => (
-                  <Box key={item.prodId} sx={{ pb: 2 }}>
+                  <Box key={item.product.prodId} sx={{ pb: 2 }}>
                     <CartItem product={item} />{' '}
                   </Box>
                 ))}

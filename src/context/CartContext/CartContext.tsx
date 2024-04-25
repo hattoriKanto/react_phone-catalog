@@ -1,6 +1,6 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { CartContextType } from './CartContextType';
-import { ProductInCart } from '../../types';
+import { ProductInCart, ProductTrimmed } from '../../types';
 
 export const CartContext = createContext<CartContextType>({
   cart: [],
@@ -49,8 +49,12 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     [cart],
   );
 
-  const addToCart = (product: ProductInCart) => {
-    if (!cart.some((item: ProductInCart) => item.prodId === product.prodId)) {
+  const addToCart = (product: ProductTrimmed) => {
+    if (
+      !cart.some(
+        (item: ProductInCart) => item.product.prodId === product.prodId,
+      )
+    ) {
       const updatedCart = [
         ...cart,
         { prodId: product.prodId, product, quantity: 1 },
@@ -63,7 +67,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
 
   const deleteFromCart = (productId: string) => {
     const updatedCart = cart.filter(
-      (product: ProductInCart) => product.prodId !== productId,
+      (product: ProductInCart) => product.product.prodId !== productId,
     );
 
     setCart(updatedCart);
@@ -76,12 +80,12 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   };
 
   const isProductInCart = (id: string) => {
-    return cart.some((product: ProductInCart) => product.prodId === id);
+    return cart.some((product: ProductInCart) => product.product.prodId === id);
   };
 
   const increaseQuantity = (productId: string) => {
     const updatedCart = cart.map((product: ProductInCart) => {
-      if (product.prodId === productId) {
+      if (product.product.prodId === productId) {
         return {
           ...product,
           quantity: product.quantity + 1,
@@ -97,15 +101,16 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
 
   const decreaseQuantity = (productId: string) => {
     if (
-      cart.find((product: ProductInCart) => product.prodId === productId)
-        .quantity === 1
+      cart.find(
+        (product: ProductInCart) => product.product.prodId === productId,
+      ).quantity === 1
     ) {
       deleteFromCart(productId);
       return;
     }
 
     const updatedCart = cart.map((product: ProductInCart) => {
-      if (product.prodId === productId) {
+      if (product.product.prodId === productId) {
         return {
           ...product,
           quantity: product.quantity - 1,

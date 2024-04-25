@@ -4,7 +4,7 @@ export enum ColorsAvailable {
   midnightgreen = '#5F7170',
   midnight = '#545D75',
   spacegray = '#4C4C4C',
-  rosegold = '#FCD3C1',
+  'rose gold' = '#FCD3C1',
   silver = '#DDDDDD',
   green = '#a8dac5',
   yellow = '#ffe681',

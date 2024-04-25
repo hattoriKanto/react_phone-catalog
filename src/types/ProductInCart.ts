@@ -1,10 +1,12 @@
-export type ProductInCart = {
+export type ProductTrimmed = {
   prodId: string;
-  product: {
-    img: string;
-    name: string;
-    category: string;
-    price: number;
-  };
+  img: string;
+  name: string;
+  category: string;
+  price: number;
+};
+
+export type ProductInCart = {
+  product: ProductTrimmed;
   quantity: number;
 };
