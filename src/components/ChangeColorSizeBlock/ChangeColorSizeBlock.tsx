@@ -4,15 +4,14 @@ import {
   Capacityes,
   CapacityValue,
   Color,
-  Colors,
-  ColWrapper,
+  Colors, ColorWrapper,
   LineBox,
   OptionsTitle,
 } from './ChangeColorSizeBlock.styles.tsx';
 import useFetchData from '../../utils/useFetchData.ts';
 import { ProductExpanded } from '../../types';
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { ColorsAvailable } from '../../types/Colors.ts';
 
 type Props = {
@@ -24,28 +23,15 @@ type Props = {
 export const ChangeColorSizeBlock: React.FC<Props> = ({
   prodId,
   category,
-  pathname,
 }) => {
   const { data } = useFetchData<ProductExpanded>(`${category}.json`);
   const selectedData = data.find(data => data.id === prodId);
 
-  const initialColor = pathname.split('-').slice(-1).join();
-  const initialCapacity = pathname
-    .split('-')
-    .slice(-2, -1)
-    .join()
-    .toUpperCase();
-
-  const [selectedColor, setSelectedColor] = useState(initialColor);
-  const [selectedCapacity, setSelectedCapacity] = useState(initialCapacity);
-
-  const navigate = useNavigate();
   const loc = useLocation();
 
-  const selectSpecifications = (specification: string, isColor: boolean) => {
+  const getProductUrl = (specification: string, isColor: boolean) => {
     const pathnameToArray = loc.pathname.split('-');
     let newPathName = loc.pathname;
-
     if (isColor) {
       pathnameToArray.splice(-1, 1, specification);
       newPathName = pathnameToArray.join('-');
@@ -54,15 +40,7 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({
       newPathName = pathnameToArray.join('-');
     }
 
-    navigate(newPathName, { replace: true });
-  };
-
-  const handleChangeColor = (newColor: string) => {
-    selectSpecifications(newColor, true);
-  };
-
-  const handleCapacity = (newCapacity: string) => {
-    selectSpecifications(newCapacity, false);
+    return newPathName;
   };
 
   return (
@@ -74,16 +52,13 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({
             const tempColor =
               ColorsAvailable[color as keyof typeof ColorsAvailable];
             return (
-              <ColWrapper
-                onClick={() => {
-                  handleChangeColor(color);
-                  setSelectedColor(color);
-                }}
+              <ColorWrapper
+                to={getProductUrl(color, true)}
                 key={i}
-                className={selectedColor === color ? 'active' : ''}
+                className={selectedData?.color === color ? 'active' : ''}
               >
                 <Color style={{ backgroundColor: tempColor }} />
-              </ColWrapper>
+              </ColorWrapper>
             );
           })}
         </Colors>
@@ -94,12 +69,9 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({
         <Capacityes>
           {selectedData?.capacityAvailable.map(item => (
             <Capacity
+              to={getProductUrl(item, false)}
               key={item}
-              onClick={() => {
-                handleCapacity(item);
-                setSelectedCapacity(item);
-              }}
-              className={selectedCapacity === item ? 'active' : ''}
+              className={selectedData?.capacity === item ? 'active' : ''}
             >
               <CapacityValue>{item}</CapacityValue>
             </Capacity>
