@@ -2,15 +2,26 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { getSearchWith } from '../../functions/getSearchWIth';
-import { Box, IconButton, TextField } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
 import { debounce } from 'lodash';
+import { StyledSearchButton, StyledSearchInput, StyledSearchWrapper } from '.';
 
-export const Search = () => {
+interface SearchProps {
+  isSearchOpen: boolean;
+  isBurgerMenuShown: boolean;
+  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
+  onSearchToggle: (isSearchOpen: boolean) => void;
+  handleSearchIconClick: () => void;
+}
+
+export const Search: React.FC<SearchProps> = ({
+  isSearchOpen,
+  onSearchToggle,
+  handleSearchIconClick,
+}) => {
   const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState(searchParams.get('query') || '');
   const applyQuery = useCallback(debounce(setQuery, 1000), []);
@@ -20,17 +31,19 @@ export const Search = () => {
   }, [query, applyQuery]);
 
   useEffect(() => {
-    setIsSearchOpen(false);
+    onSearchToggle(false);
     setQuery('');
-  }, [pathname]);
+  }, [pathname, onSearchToggle]);
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     setQuery(inputValue);
 
-    setSearchParams(getSearchWith(searchParams, {
-      query: inputValue || null,
-    }));
+    setSearchParams(
+      getSearchWith(searchParams, {
+        query: inputValue || null,
+      }),
+    );
   };
 
   const handleClearSearch = () => {
@@ -43,10 +56,6 @@ export const Search = () => {
     );
   };
 
-  const handleSearchIconClick = () => {
-    setIsSearchOpen(previous => !previous);
-  };
-
   useEffect(() => {
     if (isSearchOpen && inputRef.current) {
       inputRef.current.focus();
@@ -54,26 +63,43 @@ export const Search = () => {
   }, [isSearchOpen]);
 
   return (
-    <Box>
-      {isSearchOpen ? (
-        <TextField
-          label={`Search in ${pathname.slice(1)}...`}
-          variant="outlined"
+    <StyledSearchWrapper
+      sx={({ breakpoints }) => ({
+        [breakpoints.down('sm')]: {
+          position: isSearchOpen && 'absolute',
+          left: isSearchOpen && '0',
+          height: isSearchOpen ? '32px' : '100%',
+          width: isSearchOpen ? '70vw' : '48px',
+          fontSize: isSearchOpen && '12px',
+          zIndex: isSearchOpen && '2',
+        },
+      })}
+    >
+      {isSearchOpen && (
+        <StyledSearchInput
+          placeholder={`Search in ${pathname.slice(1)}...`}
           value={query}
           onChange={handleChangeQuery}
           inputRef={inputRef}
         />
-      ) : null}
+      )}
 
       {query.length ? (
-        <IconButton aria-label="clear search" onClick={handleClearSearch}>
+        <StyledSearchButton
+          aria-label="clear search"
+          onClick={handleClearSearch}
+        >
           <ClearIcon />
-        </IconButton>
+        </StyledSearchButton>
       ) : (
-        <IconButton aria-label="search" onClick={handleSearchIconClick}>
-          <SearchIcon />
-        </IconButton>
+        <StyledSearchButton
+          aria-label="search"
+          disableRipple
+          onClick={handleSearchIconClick}
+        >
+          <SearchIcon color="primary" />
+        </StyledSearchButton>
       )}
-    </Box>
+    </StyledSearchWrapper>
   );
 };

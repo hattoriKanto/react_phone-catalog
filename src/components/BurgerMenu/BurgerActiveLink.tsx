@@ -1,14 +1,14 @@
-import { CSSProperties } from 'react';
 import { StyledButton } from '../Header';
 import { useTheme } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import { StyledBurgerLink } from './BurgerMenu.styles';
 import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';
 
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
 interface ActiveLinkProps {
   label: string | JSX.Element;
   to: string;
-  activeStyle: CSSProperties;
   isBurgerMenuShown: boolean;
   onBurgerToggle: (isBurgerMenuShown: boolean) => void;
 }
@@ -16,7 +16,6 @@ interface ActiveLinkProps {
 export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
   label,
   to,
-  activeStyle,
   isBurgerMenuShown,
   onBurgerToggle,
 }) => {
@@ -29,7 +28,6 @@ export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
   return isJSXElem ? (
     <StyledBurgerLink
       to={to}
-      style={({ isActive }) => (isActive ? activeStyle : undefined)}
       theme={theme}
       issvg={isJSXElem.toString()}
       onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
@@ -46,12 +44,10 @@ export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
     <StyledBurgerLink
       to={to}
       sx={{
-        outline: 'none',
-        '&:focus, &:active': {
-          transform: 'scale(1.2)',
+        '&:hover svg': {
+          transform: 'rotate(360deg)',
         },
       }}
-      style={({ isActive }) => (isActive ? activeStyle : undefined)}
       theme={theme}
       issvg={isJSXElem.toString()}
       onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
@@ -61,17 +57,25 @@ export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
           <Typography
             variant="button"
             sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
               fontSize: '12px',
+              fontWeight: '700',
               color: isActive ? primary : secondary,
-              borderBottom: isActive
-                ? '2px solid #0f0f11'
-                : '2px solid transparent',
-              '&:hover': {
-                borderBottom: '2px solid #0f0f11',
-              },
             }}
           >
-            {label}
+            <>
+              <ArrowForwardIosIcon
+                sx={{
+                  width: '12px',
+                  height: '12px',
+                  transform: isActive ? 'rotate(360deg)' : 'rotate(180deg)',
+                  transition: 'transform 500ms',
+                }}
+              />
+              {label}
+            </>
           </Typography>
         );
       }}
