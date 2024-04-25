@@ -22,7 +22,7 @@ export const CategoryPriceRange: React.FC<Props> = ({ minPriceInCategory, maxPri
   const handlePriceChange = (_: Event, newValue: number | number[]) => {
     const params = new URLSearchParams(searchParams);
 
-    if (Array.isArray(newValue)) {
+    if (Array.isArray(newValue) && newValue[0] !== newValue[1]) {
       params.set('minPrice', newValue[0].toString());
       params.set('maxPrice', newValue[1].toString());
     }
