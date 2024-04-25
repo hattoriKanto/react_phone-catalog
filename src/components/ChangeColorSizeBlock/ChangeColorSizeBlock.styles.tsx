@@ -1,5 +1,6 @@
 import { styled } from '@mui/material';
 import { Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export const Colors = styled(Box)({
   display: 'flex',
@@ -33,11 +34,12 @@ export const Capacityes = styled(Box)({
   marginBottom: '24px',
 })
 
-export const Capacity = styled(Box)({
+export const Capacity = styled(Link)({
   padding: '8px',
   border: '1px solid #B4BDC3',
   borderRadius: '4px',
   color: '#0F0F11',
+  textDecoration: 'none',
   cursor: 'pointer',
 
   '&.active': {
@@ -54,7 +56,7 @@ export const CapacityValue = styled('p')({
   lineHeight: '10px',
 })
 
-export const ColWrapper = styled(Box)({
+export const ColorWrapper = styled(Link)({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
