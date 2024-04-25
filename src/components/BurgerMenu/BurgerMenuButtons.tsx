@@ -9,15 +9,7 @@ import { StyledBurgerWrapperButton } from './BurgerMenu.styles';
 import { BurgerActiveLink } from './BurgerActiveLink';
 import React from 'react';
 
-interface Props {
-  isBurgerMenuShown: boolean;
-  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
-}
-
-export const BurgerMenuButtons: React.FC<Props> = ({
-  isBurgerMenuShown,
-  onBurgerToggle,
-}) => {
+export const BurgerMenuButtons: React.FC = () => {
   const locationPathname = useLocation().pathname;
 
   const handleChangeIcon = (link: string) => {
@@ -56,8 +48,6 @@ export const BurgerMenuButtons: React.FC<Props> = ({
             key={text}
             label={handleChangeIcon(link)}
             to={link}
-            isBurgerMenuShown={isBurgerMenuShown}
-            onBurgerToggle={onBurgerToggle}
           />
         );
       })}

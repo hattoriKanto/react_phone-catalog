@@ -1,18 +1,12 @@
-import { CSSProperties } from 'react';
 import { StyledLink } from '.';
 import { Divider, Typography } from '@mui/material';
 
 interface ActiveLinkProps {
   label: string | JSX.Element;
   to: string;
-  activeStyle: CSSProperties;
 }
 
-export const ActiveLink: React.FC<ActiveLinkProps> = ({
-  label,
-  to,
-  activeStyle,
-}) => {
+export const ActiveLink: React.FC<ActiveLinkProps> = ({ label, to }) => {
   const isJSXElem = typeof label !== 'string';
 
   return isJSXElem ? (
@@ -29,7 +23,6 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
       />
       <StyledLink
         to={to}
-        style={({ isActive }) => (isActive ? activeStyle : undefined)}
         sx={({ breakpoints }) => ({
           width: '64px',
           [breakpoints.down('md')]: {

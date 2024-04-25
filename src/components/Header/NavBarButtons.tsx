@@ -22,27 +22,21 @@ import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 import Badge from '@mui/material/Badge';
 import { Search } from './Search';
 import { toggleBurgerMenu } from '../../functions';
+import { useSearchContext } from '../../hooks/useSearchContext';
+import { useBurgerMenuContext } from '../../hooks/useBurgerMenuContext';
 
 interface Props {
   searchField: boolean;
-  isSearchOpen: boolean;
-  isBurgerMenuShown: boolean;
-  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
-  onSearchToggle: (isSearchOpen: boolean) => void;
-  handleSearchIconClick: () => void;
 }
 
-export const NavBarButtons: React.FC<Props> = ({
-  searchField,
-  isSearchOpen,
-  isBurgerMenuShown,
-  onBurgerToggle,
-  onSearchToggle,
-  handleSearchIconClick,
-}) => {
+export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
   const locationPathname = useLocation().pathname;
   const { cartQuantity } = useCartContext();
   const { favoritesQuantity } = useFavoritesContext();
+
+  const { isSearchOpen, setIsSearchOpen, handleClearSearch } =
+    useSearchContext();
+  const { isBurgerMenuShown, setIsBurgerMenuShown } = useBurgerMenuContext();
 
   const handleChangeIcon = (link: string) => {
     if (link === HeaderOtherLinks.cart) {
@@ -82,25 +76,12 @@ export const NavBarButtons: React.FC<Props> = ({
 
   return (
     <StyledWrapperButton>
-      {searchField && (
-        <Search
-          isSearchOpen={isSearchOpen}
-          isBurgerMenuShown={isBurgerMenuShown}
-          onBurgerToggle={onBurgerToggle}
-          onSearchToggle={onSearchToggle}
-          handleSearchIconClick={handleSearchIconClick}
-        />
-      )}
+      {searchField && <Search />}
 
       <DesktopButtonsWrapper>
         {Object.entries(HeaderOtherLinks).map(([text, link]) => {
           return (
-            <ActiveLink
-              key={text}
-              label={handleChangeIcon(link)}
-              to={link}
-              activeStyle={{}}
-            />
+            <ActiveLink key={text} label={handleChangeIcon(link)} to={link} />
           );
         })}
       </DesktopButtonsWrapper>
@@ -108,9 +89,10 @@ export const NavBarButtons: React.FC<Props> = ({
       <StyledBurgerButton
         disableElevation
         onClick={() => {
-          toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown);
+          toggleBurgerMenu(setIsBurgerMenuShown, isBurgerMenuShown);
           if (isSearchOpen) {
-            onSearchToggle(false);
+            setIsSearchOpen(false);
+            handleClearSearch();
           }
         }}
       >

@@ -10,15 +10,7 @@ import { HeaderNavLinks } from '../../types/HeaderNavLinks.ts';
 import { BurgerMenuButtons } from './BurgerMenuButtons.tsx';
 import { BurgerActiveLink } from './BurgerActiveLink.tsx';
 
-interface Props {
-  isBurgerMenuShown: boolean;
-  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
-}
-
-export const BurgerMenu: React.FC<Props> = ({
-  isBurgerMenuShown,
-  onBurgerToggle,
-}) => {
+export const BurgerMenu: React.FC = () => {
   return (
     <StyledBurgerMenu>
       <StyledBurgerFlexWrapper>
@@ -26,20 +18,12 @@ export const BurgerMenu: React.FC<Props> = ({
           <StyledBurgerList>
             {Object.entries(HeaderNavLinks).map(([text, link]) => (
               <StyledBurgerItem key={text}>
-                <BurgerActiveLink
-                  label={text}
-                  to={link}
-                  isBurgerMenuShown={isBurgerMenuShown}
-                  onBurgerToggle={onBurgerToggle}
-                />
+                <BurgerActiveLink label={text} to={link} />
               </StyledBurgerItem>
             ))}
           </StyledBurgerList>
         </StyledBurgerNav>
-        <BurgerMenuButtons
-          isBurgerMenuShown={isBurgerMenuShown}
-          onBurgerToggle={onBurgerToggle}
-        />
+        <BurgerMenuButtons />
       </StyledBurgerFlexWrapper>
     </StyledBurgerMenu>
   );

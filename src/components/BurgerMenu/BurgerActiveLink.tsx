@@ -5,21 +5,16 @@ import { StyledBurgerLink } from './BurgerMenu.styles';
 import { toggleBurgerMenu } from '../../functions/toggleBurgerMenu';
 
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useBurgerMenuContext } from '../../hooks/useBurgerMenuContext';
 
 interface ActiveLinkProps {
   label: string | JSX.Element;
   to: string;
-  isBurgerMenuShown: boolean;
-  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
 }
 
-export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
-  label,
-  to,
-  isBurgerMenuShown,
-  onBurgerToggle,
-}) => {
+export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({ label, to }) => {
   const theme = useTheme();
+  const { isBurgerMenuShown, setIsBurgerMenuShown } = useBurgerMenuContext();
 
   const primary = theme.palette.primary.main;
   const secondary = theme.palette.secondary.main;
@@ -30,7 +25,7 @@ export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
       to={to}
       theme={theme}
       issvg={isJSXElem.toString()}
-      onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
+      onClick={() => toggleBurgerMenu(setIsBurgerMenuShown, isBurgerMenuShown)}
     >
       {() => {
         return (
@@ -50,7 +45,7 @@ export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({
       }}
       theme={theme}
       issvg={isJSXElem.toString()}
-      onClick={() => toggleBurgerMenu(onBurgerToggle, isBurgerMenuShown)}
+      onClick={() => toggleBurgerMenu(setIsBurgerMenuShown, isBurgerMenuShown)}
     >
       {({ isActive }) => {
         return (

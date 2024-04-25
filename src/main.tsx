@@ -6,15 +6,18 @@ import { CustomThemeProvider } from './theme/theme.tsx';
 import { CssBaseline } from '@mui/material';
 import { CartProvider } from './context/CartContext/CartContext.tsx';
 import { FavoritesProvider } from './context/FavoritesContext/FavoritesContext.tsx';
+import { BurgerMenuContextProvider } from './context/BurgerMenuContext/BurgerMenuContext.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <CustomThemeProvider>
       <CartProvider>
         <FavoritesProvider>
-          <CssBaseline />
+          <BurgerMenuContextProvider>
+            <CssBaseline />
 
-          <Root />
+            <Root />
+          </BurgerMenuContextProvider>
         </FavoritesProvider>
       </CartProvider>
     </CustomThemeProvider>
