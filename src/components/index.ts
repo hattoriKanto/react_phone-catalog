@@ -19,3 +19,4 @@ export * from './Slider';
 export * from './TechSpecsSection';
 export * from './Toast';
 export * from './SmallSpecsBlock';
+export * from './Overlay';

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
-import { getSearchWith } from '../../functions/getSearchWIth';
+import { useCallback, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
@@ -13,24 +12,21 @@ import {
   StyledSearchWrapper,
 } from '.';
 import { InputAdornment } from '@mui/material';
+import { useSearchContext } from '../../hooks/useSearchContext';
 
-interface SearchProps {
-  isSearchOpen: boolean;
-  isBurgerMenuShown: boolean;
-  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
-  onSearchToggle: (isSearchOpen: boolean) => void;
-  handleSearchIconClick: () => void;
-}
+export const Search: React.FC = () => {
+  const {
+    isSearchOpen,
+    query,
+    setIsSearchOpen,
+    setQuery,
+    handleSearchIconClick,
+    handleChangeQuery,
+    handleClearSearch,
+  } = useSearchContext();
 
-export const Search: React.FC<SearchProps> = ({
-  isSearchOpen,
-  onSearchToggle,
-  handleSearchIconClick,
-}) => {
   const { pathname } = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [query, setQuery] = useState(searchParams.get('query') || '');
   const applyQuery = useCallback(debounce(setQuery, 1000), []);
 
   useEffect(() => {
@@ -38,30 +34,9 @@ export const Search: React.FC<SearchProps> = ({
   }, [query, applyQuery]);
 
   useEffect(() => {
-    onSearchToggle(false);
+    setIsSearchOpen(false);
     setQuery('');
-  }, [pathname, onSearchToggle]);
-
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value;
-    setQuery(inputValue);
-
-    setSearchParams(
-      getSearchWith(searchParams, {
-        query: inputValue || null,
-      }),
-    );
-  };
-
-  const handleClearSearch = () => {
-    setQuery('');
-
-    setSearchParams(
-      getSearchWith(searchParams, {
-        query: null,
-      }),
-    );
-  };
+  }, [pathname, setIsSearchOpen]);
 
   useEffect(() => {
     if (isSearchOpen && inputRef.current) {
@@ -123,7 +98,7 @@ export const Search: React.FC<SearchProps> = ({
           disableRipple
           onClick={() => {
             handleClearSearch();
-            onSearchToggle(false);
+            setIsSearchOpen(false);
           }}
         >
           <SearchOffIcon color="primary" />
