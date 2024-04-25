@@ -1,7 +1,10 @@
 import {
   Box,
+  Fade,
   Grid,
+  Grow,
   Pagination,
+  Slide,
   Stack,
   Typography,
   styled,
@@ -99,9 +102,12 @@ export const CategoryPage = () => {
       <Container>
         <BreadCrumbsComponent />
         <Stack>
-          <Typography variant="h1" sx={{ pt: 4 }}>
-            {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
-          </Typography>
+          <Slide in={true} direction="down">
+            <Typography variant="h1" sx={{ pt: 4 }}>
+              {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
+            </Typography>
+          </Slide>
+
           {filteredData.length > 0 && (
             <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
               {filteredData.length} models
@@ -128,9 +134,11 @@ export const CategoryPage = () => {
             ) : (
               <>
                 {slicedData?.map(phone => (
-                  <GridStyled item xs={1} md={1} key={phone.id}>
-                    <ProductCard product={phone} />
-                  </GridStyled>
+                  <Grow key={phone.id} in={true} timeout={1000}>
+                    <GridStyled item xs={1} md={1}>
+                      <ProductCard product={phone} />
+                    </GridStyled>
+                  </Grow>
                 ))}
               </>
             )}
