@@ -64,17 +64,6 @@ export const CategoryPage = () => {
   const sortBy = searchParams.get('sortBy') || SortBy.Alphabetically;
   const prevCategoryName = useRef(categoryName);
 
-  useEffect(() => {
-    if (prevCategoryName.current !== categoryName) {
-      const newSearchParams = getSearchWith(searchParams, {
-        page: '1',
-      });
-      setSearchParams(newSearchParams);
-    }
-    prevCategoryName.current = categoryName;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [perPage, categoryName]);
-
   const pricesInCategory = data
     .filter(product => product.category === categoryName)
     .map(product => product.price);
@@ -97,20 +86,41 @@ export const CategoryPage = () => {
 
   const sortedData = getSortedData(filteredData, sortBy);
 
-  useEffect(() => {
-    const maxPage = Math.ceil(filteredData.length / Number(perPage));
-    if (Number(page) > maxPage) {
-      const newSearchParams = new URLSearchParams(searchParams);
-      newSearchParams.set('page', '1');
-      setSearchParams(newSearchParams, { replace: true });
-    }
-  }, [perPage, filteredData.length, page, searchParams, setSearchParams]);
-
   const slicedData = getSlicedData(
     sortedData,
     Number(page),
     perPage.toString(),
   );
+
+  useEffect(() => {
+    const maxPage = Math.ceil(filteredData.length / Number(perPage));
+    if (Number(page) > maxPage && maxPage !== 0) {
+      searchParams.set('page', '1');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [perPage, filteredData.length, page, setSearchParams]);
+
+  useEffect(() => {
+    let shouldResetPage = false;
+
+    if (prevCategoryName.current !== categoryName) {
+      shouldResetPage = true;
+    }
+
+    if (perPage === 'All') {
+      shouldResetPage = true;
+    }
+
+    if (shouldResetPage) {
+      const newSearchParams = getSearchWith(searchParams, {
+        page: '1',
+      });
+      setSearchParams(newSearchParams);
+    }
+
+    prevCategoryName.current = categoryName;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryName, perPage]);
 
   if (error) return <p>Error: {error.message}</p>;
 
