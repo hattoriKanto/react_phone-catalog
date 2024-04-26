@@ -16,7 +16,7 @@ import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import { CardSkeleton } from '../../components/ProductCard';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { getFilter } from '../../functions/getFilter';
 import { getSearchWith } from '../../utils/searchHelper';
 import { BreadCrumbsComponent } from '../../components';
@@ -60,14 +60,18 @@ export const CategoryPage = () => {
   const page = searchParams.get('page') || 1;
   const perPage = searchParams.get('perPage') || 4;
   const sortBy = searchParams.get('sortBy') || SortBy.Alphabetically;
+  const prevCategoryName = useRef(categoryName);
 
   useEffect(() => {
-    const newSearchParams = getSearchWith(searchParams, {
-      page: '1',
-    });
-    setSearchParams(newSearchParams);
+    if (prevCategoryName.current !== categoryName) {
+      const newSearchParams = getSearchWith(searchParams, {
+        page: '1',
+      });
+      setSearchParams(newSearchParams);
+    }
+    prevCategoryName.current = categoryName;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [perPage]);
+  }, [perPage, categoryName]);
 
   const pricesInCategory = data
     .filter(product => product.category === categoryName)
