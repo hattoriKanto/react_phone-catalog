@@ -9,6 +9,7 @@ import {
   Typography,
   styled,
   Fade,
+  useMediaQuery,
 } from '@mui/material';
 import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
@@ -26,6 +27,8 @@ import { SortBy } from '../../types/SortBy';
 import { CategoryPriceRange } from '../../components/CategoryPriceRange/CategoryPriceRange';
 import { useSearchContext } from '../../hooks/useSearchContext';
 import { DotLottiePlayer } from '@dotlottie/react-player';
+import { customBreakpoints } from '../../theme/breakpoints.config';
+import { useTheme } from '@mui/material/styles';
 
 function getSlicedData(data: Product[], page: number, perPage: string) {
   if (perPage === 'All') {
@@ -63,6 +66,10 @@ export const CategoryPage = () => {
   const perPage = searchParams.get('perPage') || 4;
   const sortBy = searchParams.get('sortBy') || SortBy.Alphabetically;
   const prevCategoryName = useRef(categoryName);
+
+  const { sm } = customBreakpoints.values;
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.up(sm));
 
   const pricesInCategory = data
     .filter(product => product.category === categoryName)
@@ -259,7 +266,7 @@ export const CategoryPage = () => {
 
         {!!filteredData.length && (
           <Pagination
-            size="large"
+            size={!isTablet ? 'small' : 'large'}
             color="primary"
             page={Number(page)}
             onChange={handlePageChange}
