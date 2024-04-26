@@ -75,16 +75,3 @@ export const customPalette = {
   green: { main: '#27AE60' },
   red: { main: '#EB5757' },
 };
-
-export const darkPalette = {
-  primary: { main: '#FFFFFF' },
-  secondary: { main: '#89939A' },
-  accent: { main: '#F86800' },
-  secondaryAccent: { main: '#476DF4' },
-  icon: { main: '#B4BDC3' },
-  element: { main: '#e2e6e9' },
-  hoverBg: { main: '#FAFBFC' },
-  white: { main: '#0F0F11' },
-  green: { main: '#27AE60' },
-  red: { main: '#EB5757' },
-};
