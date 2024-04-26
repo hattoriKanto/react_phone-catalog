@@ -266,7 +266,8 @@ export const CategoryPage = () => {
 
         {!!filteredData.length && (
           <Pagination
-            size={!isTablet ? 'small' : 'large'}
+            siblingCount={!isTablet ? 0 : 1}
+            size={!isTablet ? 'medium' : 'large'}
             color="primary"
             page={Number(page)}
             onChange={handlePageChange}
