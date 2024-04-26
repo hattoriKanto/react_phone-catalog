@@ -5,11 +5,17 @@ import { Box, Slider, Stack } from '@mui/material';
 type Props = {
   maxPriceInCategory: number;
   minPriceInCategory: number;
-}
+};
 
-export const CategoryPriceRange: React.FC<Props> = ({ minPriceInCategory, maxPriceInCategory }) => {
+export const CategoryPriceRange: React.FC<Props> = ({
+  minPriceInCategory,
+  maxPriceInCategory,
+}) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [priceRange, setPriceRange] = useState<number[]>([minPriceInCategory, maxPriceInCategory]);
+  const [priceRange, setPriceRange] = useState<number[]>([
+    minPriceInCategory,
+    maxPriceInCategory,
+  ]);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -31,27 +37,27 @@ export const CategoryPriceRange: React.FC<Props> = ({ minPriceInCategory, maxPri
   };
 
   return (
-      <Stack sx={{ width: 270, pb: 3, pr: 1 }} spacing={2} direction="column">
-        <Box sx={{ pl: 1 }}>
-          <Slider
-            aria-label="Price"
-            value={priceRange}
-            onChange={handlePriceChange}
-            min={minPriceInCategory}
-            max={maxPriceInCategory}
-            step={100}
-            valueLabelDisplay="auto"
-            color="warning"
-            sx={{
-              '& .MuiSlider-thumb': {
-                height: 18,
-                width: 18,
-                backgroundColor: '#fff',
-                border: '2px solid currentColor',
-              },
-            }}
-          />
-        </Box>
-      </Stack>
+    <Stack sx={{ width: 270, pb: 3, pr: 1 }} spacing={2} direction="column">
+      <Box sx={{ pl: 1 }}>
+        <Slider
+          aria-label="Price"
+          value={priceRange}
+          onChange={handlePriceChange}
+          min={minPriceInCategory}
+          max={maxPriceInCategory}
+          step={100}
+          valueLabelDisplay="auto"
+          color="warning"
+          sx={{
+            '& .MuiSlider-thumb': {
+              height: 18,
+              width: 18,
+              backgroundColor: 'background.paper',
+              border: '2px solid currentColor',
+            },
+          }}
+        />
+      </Box>
+    </Stack>
   );
 };

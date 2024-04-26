@@ -13,7 +13,7 @@ export const CardSkeleton = () => {
         justifyContent: 'center',
         alignItems: 'center',
         border: 1,
-        borderColor: '#E2E6E9',
+        borderColor: 'element.main',
       }}
     >
       <CardContent sx={{ m: 1, p: '32px' }}>

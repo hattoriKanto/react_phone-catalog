@@ -83,7 +83,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           justifyContent: 'center',
           alignItems: 'center',
           border: 1,
-          borderColor: '#E2E6E9',
+          borderColor: 'element.main',
         }}
       >
         <CardContent sx={{ width: '100%', m: 1, p: '32px' }}>
@@ -151,7 +151,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               variant="h5"
               sx={{
                 fontWeight: 'bold',
-                color: '#89939A',
+                color: 'secondary.main',
                 textDecoration: 'line-through',
               }}
             >
@@ -166,7 +166,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             spacing={2}
             sx={{ justifyContent: 'space-between', pt: 2 }}
           >
-            <Typography variant="body1" sx={{ color: '#89939A' }}>
+            <Typography variant="body1" sx={{ color: 'secondary.main' }}>
               Screen
             </Typography>
             <Typography
@@ -181,7 +181,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             spacing={2}
             sx={{ justifyContent: 'space-between', pt: 0.5 }}
           >
-            <Typography variant="body1" sx={{ color: '#89939A' }}>
+            <Typography variant="body1" sx={{ color: 'secondary.main' }}>
               Capacity
             </Typography>
             <Typography
@@ -196,7 +196,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             spacing={2}
             sx={{ justifyContent: 'space-between', pt: 0.5 }}
           >
-            <Typography variant="body1" sx={{ color: '#89939A' }}>
+            <Typography variant="body1" sx={{ color: 'secondary.main' }}>
               RAM
             </Typography>
             <Typography
@@ -223,7 +223,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               sx={{
                 width: '160px',
                 py: 1,
-                '&.MuiButton-contained': { color: '#fff' },
+                '&.MuiButton-contained': { color: 'white.main' },
                 transition: 'transform 0.3s ease-in-out',
                 '&:hover': {
                   transform: 'scale(1.1)',
@@ -239,7 +239,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               </Typography>
             </Button>
             <IconButton
-              sx={{ border: 1, borderColor: '#B4BDC3', color: 'black' }}
+              sx={{ border: 1, borderColor: 'icon.main', color: 'black' }}
               aria-label="add to favorites"
               onClick={event => toggleAddToFavorites(product, event)}
             >
