@@ -23,20 +23,24 @@ export const StyledFlexWrapper = styled(Stack)(({ theme }) => ({
 
 export const ProductWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
-  alignItems: 'flex-start',
   gap: '24px',
 
   [theme.breakpoints.up('xs')]: {
     flexDirection: 'column',
+    justifyContent: 'center'
   },
 
   [theme.breakpoints.up('sm')]: {
     flexDirection: 'row',
+    justifyContent: 'center'
   },
 
-  [theme.breakpoints.down('md')]: {
-    gap: '0',
-    justifyContent: 'space-between',
+  [theme.breakpoints.up('md')]: {
+    justifyContent: 'center'
+  },
+
+  [theme.breakpoints.up('lg')]: {
+    justifyContent: 'flex-start',
   },
 }));
 
