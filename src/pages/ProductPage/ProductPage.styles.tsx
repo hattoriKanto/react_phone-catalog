@@ -27,7 +27,7 @@ export const ProductWrapper = styled(Box)(({ theme }) => ({
 
   [theme.breakpoints.up('xs')]: {
     flexDirection: 'column',
-    justifyContent: 'center'
+    // justifyContent: 'center'
   },
 
   [theme.breakpoints.up('sm')]: {
@@ -44,12 +44,8 @@ export const ProductWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const ProductInfoWrapper = styled(Box)(({ theme }) => ({
+export const ProductInfoWrapper = styled(Box)({
   display: 'flex',
   justifyContent: 'flex-start',
   flexDirection: 'column',
-
-  [theme.breakpoints.down('md')]: {
-    margin: '0 auto',
-  },
-}));
+});
