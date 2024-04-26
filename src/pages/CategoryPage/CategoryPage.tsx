@@ -8,6 +8,7 @@ import {
   Stack,
   Typography,
   styled,
+  Fade,
 } from '@mui/material';
 import { Product } from '../../types';
 import useFetchData from '../../utils/useFetchData';
@@ -24,6 +25,7 @@ import CategorySort from '../../components/CategorySort/CategorySort';
 import { SortBy } from '../../types/SortBy';
 import { CategoryPriceRange } from '../../components/CategoryPriceRange/CategoryPriceRange';
 import { useSearchContext } from '../../hooks/useSearchContext';
+import { DotLottiePlayer } from '@dotlottie/react-player';
 
 function getSlicedData(data: Product[], page: number, perPage: string) {
   if (perPage === 'All') {
@@ -133,40 +135,69 @@ export const CategoryPage = () => {
               {filteredData.length} models
             </Typography>
           )}
+          <script
+            src="https://lottie.host/e89ed2b8-0df9-4829-a67e-c5e194a38103/J35UHBqEvn.json"
+            type="module"
+          ></script>
           {filteredData.length === 0 && (
-            <Stack direction={'column'}>
-              <Typography variant="body1" color="secondary" sx={{ pb: 2 }}>
-                There are no {categoryName} matching the query
-              </Typography>
-              <Button
-                variant={'contained'}
-                onClick={() => {
-                  clearSearchParams();
-                  if (isSearchOpen) {
-                    setIsSearchOpen(false);
-                    handleClearSearch();
-                  }
-                }}
-                color="accent"
-                sx={{
-                  width: '160px',
-                  py: 1.5,
-                  '&.MuiButton-contained': { color: '#fff' },
-                  transition: 'transform 0.3s ease-in-out',
-                  '&:hover': {
-                    transform: 'scale(1.1)',
-                  },
-                }}
+            <Fade in={true} timeout={1000}>
+              <Stack
+                direction={'column'}
+                spacing={2}
+                sx={{ alignItems: 'center', pt: 3 }}
               >
-                <Typography
-                  variant="button"
-                  color="white"
-                  sx={{ textTransform: 'none', textDecoration: 'none' }}
-                >
-                  Show ALL
+                <Typography variant="h4">
+                  There are no {categoryName} matching the query.
                 </Typography>
-              </Button>
-            </Stack>
+                <Box
+                  sx={{
+                    alignSelf: 'center',
+                    width: '20vmax',
+                    height: '20vmax',
+                  }}
+                >
+                  <DotLottiePlayer
+                    src="https://lottie.host/e89ed2b8-0df9-4829-a67e-c5e194a38103/J35UHBqEvn.json"
+                    background="transparent"
+                    loop
+                    autoplay
+                    speed={0.75}
+                  ></DotLottiePlayer>
+                </Box>
+                <Typography variant="h4" sx={{}}>
+                  Go ahead & explore {categoryName} full list.
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="accent"
+                  sx={{
+                    width: '160px',
+                    alignSelf: 'center',
+                    py: 1,
+                    '&.MuiButton-contained': { color: '#fff' },
+                    transition: 'transform 0.3s ease-in-out',
+                    '&:hover': {
+                      transform: 'scale(1.1)',
+                    },
+                  }}
+                  onClick={() => {
+                    clearSearchParams();
+                    if (isSearchOpen) {
+                      setIsSearchOpen(false);
+                      handleClearSearch();
+                    }
+                  }}
+                >
+                  <Typography
+                    variant="button"
+                    color="white"
+                    sx={{ textTransform: 'none', textDecoration: 'none' }}
+                  >
+                    Show ALL
+                  </Typography>
+                </Button>
+              </Stack>
+            </Fade>
           )}
 
           {!!filteredData.length && (
