@@ -97,6 +97,15 @@ export const CategoryPage = () => {
 
   const sortedData = getSortedData(filteredData, sortBy);
 
+  useEffect(() => {
+    const maxPage = Math.ceil(filteredData.length / Number(perPage));
+    if (Number(page) > maxPage) {
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set('page', '1');
+      setSearchParams(newSearchParams, { replace: true });
+    }
+  }, [perPage, filteredData.length, page, searchParams, setSearchParams]);
+
   const slicedData = getSlicedData(
     sortedData,
     Number(page),
