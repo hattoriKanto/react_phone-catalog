@@ -155,7 +155,7 @@ export const ImageSelector: React.FC<ImageGalleryProps> = ({ images }) => {
                 onClick={() => setSelectedImage(image)}
                 sx={{
                   ...(selectedImage === image && {
-                    borderColor: '#0F0F11',
+                    borderColor: 'primary.main',
                   }),
                 }}
               >

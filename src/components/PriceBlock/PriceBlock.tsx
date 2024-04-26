@@ -18,7 +18,7 @@ export const PriceBlock: React.FC<Props> = ({ price, fullPrice }) => {
           alignItems: 'center',
           fontWeight: '500',
           fontSize: '22px',
-          color: '#89939A',
+          color: 'secondary.main',
           textDecoration: 'line-through',
         }}
       >

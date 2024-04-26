@@ -43,7 +43,7 @@ export const NotFoundPage: FC = () => {
             width: '160px',
             alignSelf: 'center',
             py: 1,
-            '&.MuiButton-contained': { color: '#fff' },
+            '&.MuiButton-contained': { color: 'white.main' },
             transition: 'transform 0.3s ease-in-out',
             '&:hover': {
               transform: 'scale(1.1)',

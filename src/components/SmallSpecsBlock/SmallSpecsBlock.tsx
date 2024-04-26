@@ -8,7 +8,7 @@ type Props = {
 };
 
 const keyStyle = {
-  color: '#89939A',
+  color: 'secondary.main',
 };
 
 const valueStyle = {
