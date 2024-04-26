@@ -1,9 +1,14 @@
-import { Button, IconButton, Stack, Typography } from '@mui/material';
 import { ProductExpanded } from '../../types';
 import { useCartContext } from '../../hooks/useCartContext';
 import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import {
+  AddToCartAndFavStack,
+  AddToCartButton,
+  AddToCartTypography,
+  AddToFavouritesButton,
+} from './CartAndFavouriteBlock.styles';
 
 type Props = {
   product: ProductExpanded;
@@ -52,46 +57,17 @@ export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
   const isInFavorites = isProductInFavorites(product.id);
 
   return (
-    <Stack
-      direction="row"
-      spacing={2}
-      sx={{
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <Button
+    <AddToCartAndFavStack direction="row" spacing={2}>
+      <AddToCartButton
         variant={!isInCart ? 'contained' : 'outlined'}
         onClick={event => toggleAddToCard(product, event)}
         color="accent"
-        sx={{
-          width: '100%',
-          minWidth: '180px',
-          height: '48px',
-          py: 1,
-          '&.MuiButton-contained': { color: '#fff' },
-          transition: 'transform 0.3s ease-in-out',
-          '&:hover': {
-            transform: 'scale(1.1)',
-          },
-        }}
       >
-        <Typography
-          variant="button"
-          color="white"
-          sx={{ textTransform: 'none', textDecoration: 'none' }}
-        >
+        <AddToCartTypography variant="button" color="white">
           {!isInCart ? 'Add to cart' : 'Added'}
-        </Typography>
-      </Button>
-      <IconButton
-        sx={{
-          border: 1,
-          borderColor: '#B4BDC3',
-          color: 'black',
-          width: '48px',
-          height: '48px',
-        }}
+        </AddToCartTypography>
+      </AddToCartButton>
+      <AddToFavouritesButton
         aria-label="add to favorites"
         onClick={event => toggleAddToFavorites(product, event)}
       >
@@ -100,7 +76,7 @@ export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
         ) : (
           <FavoriteIcon color="secondaryAccent" />
         )}
-      </IconButton>
-    </Stack>
+      </AddToFavouritesButton>
+    </AddToCartAndFavStack>
   );
 };
