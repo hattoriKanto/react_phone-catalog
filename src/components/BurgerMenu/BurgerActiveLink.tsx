@@ -29,7 +29,12 @@ export const BurgerActiveLink: React.FC<ActiveLinkProps> = ({ label, to }) => {
     >
       {() => {
         return (
-          <StyledButton disableElevation sx={{ height: '100%' }}>
+          <StyledButton
+            sx={{
+              height: '100%',
+              width: '100%',
+            }}
+          >
             {label}
           </StyledButton>
         );

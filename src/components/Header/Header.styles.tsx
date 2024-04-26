@@ -103,11 +103,7 @@ export const StyledSearchWrapper = styled(Box)(({ theme }) => ({
   gap: '12px',
 
   [theme.breakpoints.down('md')]: {
-    gap: '10px',
-  },
-
-  [theme.breakpoints.down('sm')]: {
-    gap: '6px',
+    gap: '0',
   },
 }));
 

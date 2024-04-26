@@ -8,7 +8,6 @@ export const StyledBurgerMenu = styled('aside')(({ theme }) => ({
   top: '64px',
   right: '0',
   zIndex: 30,
-  paddingTop: '24px',
   width: '40vw',
   height: 'calc(100vh - 48px)',
   background: theme.palette.white.main,
@@ -26,9 +25,9 @@ export const StyledBurgerMenu = styled('aside')(({ theme }) => ({
 
 export const StyledBurgerFlexWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'column-reverse',
   alignItems: 'flex-start',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-end',
   gap: '30px',
   height: '100%',
   width: '100%',
@@ -50,7 +49,7 @@ export const StyledBurgerList = styled(List)(() => ({
   padding: 0,
   display: 'flex',
   flexDirection: 'column',
-  gap: '16px',
+  gap: '24px',
 }));
 
 export const StyledBurgerItem = styled(ListItem)(() => ({
@@ -71,13 +70,18 @@ export const StyledBurgerLink = styled(NavLink)(({
     alignItems: 'center',
     justifyContent: issvg === 'true' ? 'center' : 'flex-start',
     width: issvg === 'true' ? '50vw' : '80vw',
-    minHeight: issvg === 'true' ? '20vh' : '40px',
+    height: issvg === 'true' ? '10vh' : '40px',
     paddingLeft: issvg === 'true' ? '0' : '24px',
     textDecoration: 'none',
     fontWeight: '700',
+    borderBottom:
+      issvg === 'true' ? `3px solid ${theme.palette.element.main}` : 'none',
+    transition: 'border-top 500ms',
 
-    borderTop:
-      issvg === 'true' ? `1px solid ${theme.palette.element.main}` : 'none',
+    '&:hover': {
+      borderBottom:
+        issvg === 'true' ? `3px solid ${theme.palette.primary.main}` : 'none',
+    },
 
     '&:last-child': {
       borderLeft:
@@ -86,11 +90,22 @@ export const StyledBurgerLink = styled(NavLink)(({
 
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center',
-      minHeight: issvg === 'true' ? '14vh' : '80px',
+      height: issvg === 'true' ? '14vh' : '80px',
       paddingLeft: '0',
     },
+
+    [theme.breakpoints.down('sm')]: {
+      height: issvg === 'true' ? '10vh' : '60px',
+    }
   };
 });
+
+export const StyledBurgerIconWrapper = styled(Box)(() => ({
+  width: '30px',
+  height: '30px',
+  display: 'flex',
+  alignItems: 'center',
+}));
 
 export const StyledBurgerWrapperButton = styled(Box)(() => ({
   display: 'flex',
