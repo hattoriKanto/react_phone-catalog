@@ -4,7 +4,8 @@ import {
   Capacityes,
   CapacityValue,
   Color,
-  Colors, ColorWrapper,
+  Colors,
+  ColorWrapper,
   LineBox,
   OptionsTitle,
 } from './ChangeColorSizeBlock.styles.tsx';
@@ -20,10 +21,7 @@ type Props = {
   pathname: string;
 };
 
-export const ChangeColorSizeBlock: React.FC<Props> = ({
-  prodId,
-  category,
-}) => {
+export const ChangeColorSizeBlock: React.FC<Props> = ({ prodId, category }) => {
   const { data } = useFetchData<ProductExpanded>(`${category}.json`);
   const selectedData = data.find(data => data.id === prodId);
 
@@ -48,7 +46,7 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({
       <Box>
         <OptionsTitle>Available colors</OptionsTitle>
         <Colors>
-          {selectedData?.colorsAvailable.map((color, i) => {
+          {selectedData?.colorsAvailable.sort().map((color, i) => {
             const tempColor =
               ColorsAvailable[color as keyof typeof ColorsAvailable];
             return (
