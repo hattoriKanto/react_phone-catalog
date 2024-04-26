@@ -1,4 +1,4 @@
-import { Box, Typography, styled } from '@mui/material';
+import { Box, Slide, Typography, styled } from '@mui/material';
 import { FC } from 'react';
 import Container from '../../components/Container/Container';
 import { Category } from '../../types/Category';
@@ -51,26 +51,28 @@ export const HomePage: FC = () => {
   return (
     <>
       <Container>
-        <Box py={2}>
-          <Typography variant="h1" sx={{ pt: 2 }}>
-            Welcome to Nice Gadgets store!
-          </Typography>
-        </Box>
+        <Slide in={true} direction="down">
+          <Box py={2} id="1">
+            <Typography variant="h1" sx={{ pt: 2 }}>
+              Welcome to Nice Gadgets store!
+            </Typography>
+          </Box>
+        </Slide>
       </Container>
       <SliderOnPageContainer>
         <Slider />
       </SliderOnPageContainer>
       <Container>
-        <Box py={2}>
+        <Box py={2} id="2">
           <ProductSliderFabric
             title="New models"
             callback={FilterCallback.NewModels}
-          ></ProductSliderFabric>
+          />
         </Box>
-        <Box py={2}>
+        <Box py={2} id="3">
           <CategorySelector categories={categories} />
         </Box>
-        <Box py={2}>
+        <Box py={2} id="4">
           <ProductSliderFabric
             title="Hot prices"
             callback={FilterCallback.HotPrices}

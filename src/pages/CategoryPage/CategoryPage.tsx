@@ -23,6 +23,7 @@ import { BreadCrumbsComponent } from '../../components';
 import CategorySort from '../../components/CategorySort/CategorySort';
 import { SortBy } from '../../types/SortBy';
 import { CategoryPriceRange } from '../../components/CategoryPriceRange/CategoryPriceRange';
+import { useSearchContext } from '../../hooks/useSearchContext';
 
 function getSlicedData(data: Product[], page: number, perPage: string) {
   if (perPage === 'All') {
@@ -53,7 +54,8 @@ export const CategoryPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryName = location.pathname.slice(1);
   const { data, isLoading, error } = useFetchData<Product>('products.json');
-
+  const { isSearchOpen, setIsSearchOpen, handleClearSearch } =
+    useSearchContext();
   const query = searchParams.get('query');
   const page = searchParams.get('page') || 1;
   const perPage = searchParams.get('perPage') || 4;
@@ -138,7 +140,13 @@ export const CategoryPage = () => {
               </Typography>
               <Button
                 variant={'contained'}
-                onClick={clearSearchParams}
+                onClick={() => {
+                  clearSearchParams();
+                  if (isSearchOpen) {
+                    setIsSearchOpen(false);
+                    handleClearSearch();
+                  }
+                }}
                 color="accent"
                 sx={{
                   width: '160px',
