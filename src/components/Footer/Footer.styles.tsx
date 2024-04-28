@@ -41,7 +41,7 @@ export const Footer = styled(Box)(({ theme }) => ({
   paddingBottom: 32,
   marginTop: '20px',
   background: theme.palette.white.main,
-  boxShadow: '0px -1px 0px 0px #E2E6E9',
+  boxShadow: '0px -1px 0px 0px' + theme.palette.element.main,
 }));
 
 export const FooterLinks = styled(Stack)(({ theme }) => ({

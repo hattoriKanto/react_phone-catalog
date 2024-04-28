@@ -5,4 +5,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   base: '/react_phone-catalog/',
   plugins: [react()],
+  // resolve: {
+  //   alias: {
+  //     '@material-ui/icons': '@material-ui/icons/esm',
+  //   },
+  // },
 });

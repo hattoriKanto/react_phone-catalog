@@ -16,6 +16,7 @@ import { IconButton, Typography, styled } from '@mui/material';
 import React from 'react';
 import { useCartContext } from '../../hooks/useCartContext.ts';
 import { ProductInCart } from '../../types/ProductInCart.ts';
+import { Link } from 'react-router-dom';
 
 type Props = {
   product: ProductInCart;
@@ -34,8 +35,7 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const CartItem: React.FC<Props> = ({ product }) => {
   const { deleteFromCart, increaseQuantity, decreaseQuantity, cart } =
     useCartContext();
-  const { name, price, img, category } = product.product;
-  const { prodId } = product;
+  const { prodId, name, price, img, category } = product.product;
 
   return (
     <Container>
@@ -51,17 +51,18 @@ const CartItem: React.FC<Props> = ({ product }) => {
             <StyledIconButton onClick={() => deleteFromCart(prodId)}>
               <DeleteIcon />
             </StyledIconButton>
-
-            <ProductImage
-              sx={{
-                transition: 'transform 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'scale(1.1)',
-                },
-              }}
-            >
-              <Image src={img} />
-            </ProductImage>
+            <Link to={`/${category}/${prodId}`}>
+              <ProductImage
+                sx={{
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                  },
+                }}
+              >
+                <Image src={img} />
+              </ProductImage>
+            </Link>
 
             <ProductName
               to={`/${category}/${prodId}`}
@@ -77,7 +78,7 @@ const CartItem: React.FC<Props> = ({ product }) => {
                 onClick={() => decreaseQuantity(prodId)}
               />
               <Typography variant="body1">
-                {cart.find(item => item.prodId === prodId)?.quantity}
+                {cart.find(item => item.product.prodId === prodId)?.quantity}
               </Typography>
               <IconButtonQuantityPlus
                 onClick={() => increaseQuantity(prodId)}

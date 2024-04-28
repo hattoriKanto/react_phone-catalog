@@ -11,24 +11,25 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 
 import { customTypography } from '../../theme/typography.config';
-import { Button, Grow, GrowProps, TextField } from '@mui/material';
+import { Button, Grow, GrowProps, TextField, styled } from '@mui/material';
 import { useCartContext } from '../../hooks/useCartContext';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { StyledIconButton } from '../CartItem/CartItem';
 import { DeleteIcon } from '../CartItem/CartItem.styles';
 import { isToastOpen } from '../../types';
 
-const style = {
+export const ModalBox = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  border: '2px solid #E2E6E9',
+  backgroundColor: theme.palette.background.paper,
+  border: '2px solid',
+  borderColor: theme.palette.element.main,
   borderRadius: '16px',
-  boxShadow: 24,
-  p: 4,
-};
+  boxShadow: '24px',
+  padding: '32px',
+}));
 
 const textBoxStyle = {
   m: '0 auto',
@@ -184,12 +185,12 @@ export const CartModal: React.FC<Props> = ({
         slots={{ backdrop: Backdrop }}
         slotProps={{
           backdrop: {
-            timeout: 500,
+            timeout: 800,
           },
         }}
       >
         <Fade in={isModalOpen}>
-          <Box sx={style}>
+          <ModalBox>
             <form onSubmit={onConfirm} onInvalid={onConfirm}>
               <Box
                 position={'relative'}
@@ -353,7 +354,7 @@ export const CartModal: React.FC<Props> = ({
                   mt: '32px',
                   width: '100%',
                   py: 1,
-                  '&.MuiButton-contained': { color: '#fff' },
+                  '&.MuiButton-contained': { color: 'white.main' },
                   textTransform: 'none',
                 }}
                 type="submit"
@@ -361,7 +362,7 @@ export const CartModal: React.FC<Props> = ({
                 Confirm
               </Button>
             </form>
-          </Box>
+          </ModalBox>
         </Fade>
       </Modal>
     </div>

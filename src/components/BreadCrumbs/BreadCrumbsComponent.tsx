@@ -10,7 +10,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useLocation } from 'react-router-dom';
 import { FC } from 'react';
 import { ProductExpanded } from '../../types';
-import { StyledLink } from '.';
+import { StyledBreadCrumbs } from '.';
 
 enum Page {
   Home = 'home',
@@ -89,7 +89,7 @@ export const BreadCrumbsComponent: FC<Props> = ({ product }) => {
       }}
     >
       {currentPath.map((path, index) => (
-        <StyledLink
+        <StyledBreadCrumbs
           href={`/react_phone-catalog/#/${getFullPath(currentPath, path)}`}
           key={index}
         >
@@ -106,7 +106,7 @@ export const BreadCrumbsComponent: FC<Props> = ({ product }) => {
               {createPath(path) || product?.name}
             </Typography>
           )}
-        </StyledLink>
+        </StyledBreadCrumbs>
       ))}
     </Breadcrumbs>
   );

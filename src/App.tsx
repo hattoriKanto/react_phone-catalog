@@ -1,47 +1,25 @@
 import { Header } from './components/Header';
 import Footer from './components/Footer';
 import { Outlet } from 'react-router-dom';
-import { useState } from 'react';
 import { BurgerMenu } from './components/BurgerMenu/BurgerMenu';
 import { Box } from '@mui/material';
+import { toggleBurgerMenu } from './functions';
+import { useBurgerMenuContext } from './hooks/useBurgerMenuContext';
+import { Overlay } from './components';
 
 function App() {
-  const [isBurgerMenuShown, setIsBurgerMenuShown] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-
-  const handleSearchIconClick = () => {
-    setIsSearchOpen(!isSearchOpen);
-    if (isBurgerMenuShown) {
-      setIsBurgerMenuShown(false);
-    }
-  };
+  const { isBurgerMenuShown, setIsBurgerMenuShown } = useBurgerMenuContext();
 
   return (
     <>
-      <Header
-        isSearchOpen={isSearchOpen}
-        isBurgerMenuShown={isBurgerMenuShown}
-        onBurgerToggle={setIsBurgerMenuShown}
-        onSearchToggle={setIsSearchOpen}
-        handleSearchIconClick={handleSearchIconClick}
-      />
+      <Header />
       {isBurgerMenuShown && (
         <>
-          <BurgerMenu
-            isBurgerMenuShown={isBurgerMenuShown}
-            onBurgerToggle={setIsBurgerMenuShown}
-          />
-          <Box
-            sx={{
-              position: 'fixed',
-              top: '64px',
-              right: '0',
-              zIndex: '29',
-              width: '100vw',
-              height: '100vh',
-              backgroundColor: 'black',
-              opacity: 0.4,
-            }}
+          <BurgerMenu />
+          <Overlay
+            onClick={() =>
+              toggleBurgerMenu(setIsBurgerMenuShown, isBurgerMenuShown)
+            }
           />
         </>
       )}

@@ -1,6 +1,6 @@
 import { Link, styled } from '@mui/material';
 
-export const StyledLink = styled(Link)(({ theme }) => ({
+export const StyledBreadCrumbs = styled(Link)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   textDecoration: 'none',

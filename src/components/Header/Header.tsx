@@ -12,22 +12,12 @@ import { NavMenu } from './NavMenu';
 
 import Container from '../Container/Container';
 import { NavBarButtons } from '.';
+import { useSearchContext } from '../../hooks/useSearchContext';
+import { useBurgerMenuContext } from '../../hooks/useBurgerMenuContext';
 
-interface Props {
-  isSearchOpen: boolean;
-  isBurgerMenuShown: boolean;
-  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
-  onSearchToggle: (isSearchOpen: boolean) => void;
-  handleSearchIconClick: () => void;
-}
-
-export const Header: React.FC<Props> = ({
-  isSearchOpen,
-  isBurgerMenuShown,
-  onBurgerToggle,
-  onSearchToggle,
-  handleSearchIconClick,
-}) => {
+export const Header: React.FC = () => {
+  const { isSearchOpen } = useSearchContext();
+  const { setIsBurgerMenuShown } = useBurgerMenuContext();
   const { pathname } = useLocation();
   const searchField =
     pathname === '/phones' ||
@@ -46,7 +36,7 @@ export const Header: React.FC<Props> = ({
                 },
               })}
               to=""
-              onClick={() => onBurgerToggle(false)}
+              onClick={() => setIsBurgerMenuShown(false)}
             >
               <StyledLogo src="img/header/logo.svg" alt="Nice Gadget Logo" />
             </StyledLogoLink>
@@ -54,14 +44,7 @@ export const Header: React.FC<Props> = ({
             <NavMenu />
           </StyledWrapper>
 
-          <NavBarButtons
-            searchField={searchField}
-            isSearchOpen={isSearchOpen}
-            isBurgerMenuShown={isBurgerMenuShown}
-            onBurgerToggle={onBurgerToggle}
-            onSearchToggle={onSearchToggle}
-            handleSearchIconClick={handleSearchIconClick}
-          />
+          <NavBarButtons searchField={searchField} />
         </StyledFlexWrapper>
       </Container>
     </StyledAppBar>

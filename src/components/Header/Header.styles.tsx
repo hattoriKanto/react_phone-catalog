@@ -103,11 +103,7 @@ export const StyledSearchWrapper = styled(Box)(({ theme }) => ({
   gap: '12px',
 
   [theme.breakpoints.down('md')]: {
-    gap: '10px',
-  },
-
-  [theme.breakpoints.down('sm')]: {
-    gap: '6px',
+    gap: '0',
   },
 }));
 
@@ -153,35 +149,39 @@ export const StyledSearchButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export const StyledSearchInput = styled(Input)(({ theme }) => ({
-  padding: '12px',
+  paddingInline: '10px',
   height: '40px',
   width: '350px',
   borderRadius: '10px',
   border: `1px solid ${theme.palette.secondary.main}`,
   outline: 'none',
+  cursor: 'arrow',
 
   input: {
-    padding: '0',
+    padding: 0,
+    paddingBlock: '10px',
   },
 
   '&:before, &:after': {
     display: 'none',
   },
 
-  '&:hover, &:active, &:focus': {
-    border: `1px solid ${theme.palette.primary.main}`,
-  },
-
   [theme.breakpoints.down('md')]: {
+    paddingInline: '8px',
     height: '32px',
-    padding: '8px',
     fontSize: '12px',
+    input: {
+      paddingBlock: '8px',
+    },
   },
 
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('sm')]: {
+    paddingInline: '6px',
     height: '28px',
-    padding: '6px',
     fontSize: '10px',
+    input: {
+      paddingBlock: '6px',
+    },
   },
 }));
 
@@ -264,3 +264,30 @@ export const StyledLink = styled(NavLink)(({ theme }) => {
     },
   };
 });
+
+export const StyledButtonClear = styled(Button)(({ theme }) => ({
+  padding: 0,
+  paddingBlock: '10px',
+  paddingLeft: '10px',
+  width: '24px',
+  minWidth: '0',
+  height: '100%',
+  background: 'transparent',
+
+  svg: {
+    width: '16px',
+    height: '16px',
+  },
+
+  '&:hover': {
+    background: 'transparent',
+  },
+
+  [theme.breakpoints.down('md')]: {
+    paddingBlock: '8px',
+  },
+
+  [theme.breakpoints.down('sm')]: {
+    paddingBlock: '6px',
+  },
+}));

@@ -10,7 +10,7 @@ export const NavMenu: React.FC = () => {
       <StyledList>
         {Object.entries(HeaderNavLinks).map(([text, link]) => (
           <StyledItem key={text}>
-            <ActiveLink label={text} to={link} activeStyle={{}} />
+            <ActiveLink label={text} to={link} />
           </StyledItem>
         ))}
       </StyledList>

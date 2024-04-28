@@ -54,7 +54,8 @@ const ImagePaper = styled(Paper)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  border: `1.5px #E2E6E9 solid`,
+  border: `1.5px solid`,
+  borderColor: theme.palette.element.main,
   borderRadius: '4px',
   boxShadow: 'none',
   [theme.breakpoints.down('sm')]: {
@@ -118,7 +119,7 @@ export const ImageSelector: React.FC<ImageGalleryProps> = ({ images }) => {
                 onClick={() => setSelectedImage(image)}
                 sx={{
                   ...(selectedImage === image && {
-                    borderColor: '#0F0F11',
+                    borderColor: 'primary.main',
                   }),
                 }}
               >
@@ -154,7 +155,7 @@ export const ImageSelector: React.FC<ImageGalleryProps> = ({ images }) => {
                 onClick={() => setSelectedImage(image)}
                 sx={{
                   ...(selectedImage === image && {
-                    borderColor: '#0F0F11',
+                    borderColor: 'primary.main',
                   }),
                 }}
               >

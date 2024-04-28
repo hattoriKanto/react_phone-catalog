@@ -71,7 +71,7 @@ export const TechSpecs: React.FC<TechSpecsProps> = ({ product }) => {
                   display: 'flex',
                   justifyContent: 'space-between',
                   mt: '8px',
-                  '&:first-child': {
+                  '&:first-of-type': {
                     mt: 0,
                   },
                 }}

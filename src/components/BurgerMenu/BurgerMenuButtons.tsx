@@ -5,46 +5,62 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { StyledBurgerWrapperButton } from './BurgerMenu.styles';
+import {
+  StyledBurgerIconWrapper,
+  StyledBurgerWrapperButton,
+} from './BurgerMenu.styles';
 import { BurgerActiveLink } from './BurgerActiveLink';
 import React from 'react';
+import { Badge } from '@mui/material';
+import { useCartContext } from '../../hooks/useCartContext';
+import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 
-interface Props {
-  isBurgerMenuShown: boolean;
-  onBurgerToggle: (isBurgerMenuShown: boolean) => void;
-}
-
-export const BurgerMenuButtons: React.FC<Props> = ({
-  isBurgerMenuShown,
-  onBurgerToggle,
-}) => {
+export const BurgerMenuButtons: React.FC = () => {
+  const { cartQuantity } = useCartContext();
+  const { favoritesQuantity } = useFavoritesContext();
   const locationPathname = useLocation().pathname;
 
   const handleChangeIcon = (link: string) => {
     if (link === HeaderOtherLinks.cart) {
-      return locationPathname === HeaderOtherLinks.cart ? (
-        <ShoppingCartIcon
-          color="primary"
-          sx={{ width: '20px', height: '20px' }}
-        ></ShoppingCartIcon>
-      ) : (
-        <ShoppingCartOutlinedIcon
-          color="primary"
-          sx={{ width: '20px', height: '20px' }}
-        ></ShoppingCartOutlinedIcon>
+      return (
+        <Badge badgeContent={cartQuantity} color="info" max={99}>
+          {locationPathname === HeaderOtherLinks.cart ? (
+            <StyledBurgerIconWrapper>
+              <ShoppingCartIcon
+                sx={{ width: '100%', height: '100%' }}
+                color="primary"
+              />
+            </StyledBurgerIconWrapper>
+          ) : (
+            <StyledBurgerIconWrapper>
+              <ShoppingCartOutlinedIcon
+                sx={{ width: '100%', height: '100%' }}
+                color="primary"
+              />
+            </StyledBurgerIconWrapper>
+          )}
+        </Badge>
       );
     }
 
-    return locationPathname === HeaderOtherLinks.favorites ? (
-      <FavoriteIcon
-        color="primary"
-        sx={{ width: '20px', height: '20px' }}
-      ></FavoriteIcon>
-    ) : (
-      <FavoriteBorderIcon
-        color="primary"
-        sx={{ width: '20px', height: '20px' }}
-      ></FavoriteBorderIcon>
+    return (
+      <Badge badgeContent={favoritesQuantity} color="info" max={99}>
+        {locationPathname === HeaderOtherLinks.favorites ? (
+          <StyledBurgerIconWrapper>
+            <FavoriteIcon
+              sx={{ width: '100%', height: '100%' }}
+              color="primary"
+            />
+          </StyledBurgerIconWrapper>
+        ) : (
+          <StyledBurgerIconWrapper>
+            <FavoriteBorderIcon
+              sx={{ width: '100%', height: '100%' }}
+              color="primary"
+            />
+          </StyledBurgerIconWrapper>
+        )}
+      </Badge>
     );
   };
 
@@ -56,8 +72,6 @@ export const BurgerMenuButtons: React.FC<Props> = ({
             key={text}
             label={handleChangeIcon(link)}
             to={link}
-            isBurgerMenuShown={isBurgerMenuShown}
-            onBurgerToggle={onBurgerToggle}
           />
         );
       })}
