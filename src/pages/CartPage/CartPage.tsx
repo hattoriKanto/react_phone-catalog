@@ -67,7 +67,7 @@ export const CartPage = () => {
     <>
       <Container>
         <BreadCrumbsComponent />
-        <Slide in={true} direction="down" timeout={1200}>
+        <Slide in={true} direction="down" timeout={800}>
           <Typography variant="h1" component="h2" sx={{ py: 2 }}>
             Cart
           </Typography>
@@ -78,7 +78,7 @@ export const CartPage = () => {
         ></script>
 
         {cartQuantity === 0 && (
-          <Fade in={true} timeout={1000}>
+          <Fade in={true} timeout={800}>
             <Stack
               direction={'column'}
               spacing={2}

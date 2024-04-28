@@ -38,14 +38,14 @@ export const FavoritesPage: React.FC = () => {
     <Container>
       <BreadCrumbsComponent />
       <Stack>
-        <Slide in={true} direction="down" timeout={1200}>
+        <Slide in={true} direction="down" timeout={800}>
           <Typography variant="h1" sx={{ pt: 4 }}>
             Favorites
           </Typography>
         </Slide>
 
         {favoritesQuantity === 0 && (
-          <Fade in={true} timeout={1000}>
+          <Fade in={true} timeout={800}>
             <Stack
               direction={'column'}
               spacing={2}

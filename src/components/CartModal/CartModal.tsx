@@ -185,7 +185,7 @@ export const CartModal: React.FC<Props> = ({
         slots={{ backdrop: Backdrop }}
         slotProps={{
           backdrop: {
-            timeout: 500,
+            timeout: 800,
           },
         }}
       >

@@ -40,7 +40,9 @@ export const CategoryPriceRange: React.FC<Props> = ({
     <Stack sx={{ width: 270, pb: 3, pr: 1 }} spacing={2} direction="column">
       <Box sx={{ pl: 1 }}>
         <Slider
-          aria-label="Price"
+          getAriaLabel={index =>
+            index === 0 ? 'Minimum price' : 'Maximum price'
+          }
           value={priceRange}
           onChange={handlePriceChange}
           min={minPriceInCategory}

@@ -170,7 +170,7 @@ export const CategoryPage = () => {
             type="module"
           ></script>
           {filteredData.length === 0 && (
-            <Fade in={true} timeout={1000}>
+            <Fade in={true} timeout={800}>
               <Stack
                 direction={'column'}
                 spacing={2}
@@ -253,7 +253,7 @@ export const CategoryPage = () => {
             ) : (
               <>
                 {slicedData?.map(phone => (
-                  <Grow key={phone.id} in={true} timeout={1000}>
+                  <Grow key={phone.id} in={true} timeout={800}>
                     <GridStyled item xs={1} md={1}>
                       <ProductCard product={phone} />
                     </GridStyled>
