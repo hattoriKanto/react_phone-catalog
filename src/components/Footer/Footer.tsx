@@ -22,32 +22,24 @@ const Footer = () => {
             spacing={{ xs: 2, md: 13 }}
             direction={{ xs: 'column', sm: 'row' }}
           >
-            <FooterLink to="/" >
-             <Typography variant="button">
-               Github
-             </Typography>
+            <FooterLink to="https://github.com/fs-jan24-midnight-coup/react_phone-catalog">
+              <Typography variant="button">Github</Typography>
             </FooterLink>
-            <FooterLink to="/contacts" >
-              <Typography variant="button">
-                Contacts
-              </Typography>
+            <FooterLink to="/contacts">
+              <Typography variant="button">Contacts</Typography>
             </FooterLink>
-            <FooterLink to="/rights" >
-              <Typography variant="button">
-                Rights
-              </Typography>
+            <FooterLink to="/rights">
+              <Typography variant="button">Rights</Typography>
             </FooterLink>
           </FooterLinks>
-          <BackToTopButton to="#root" >
-            <Typography variant="caption">
-              Back to top
-            </Typography>
+          <BackToTopButton to="#root">
+            <Typography variant="caption">Back to top</Typography>
             <ButtonToTopIcon src="img/back-to-top-button.svg" />
           </BackToTopButton>
         </FooterContent>
       </Container>
     </StyledFooter>
-  )
+  );
 };
 
 export default Footer;
