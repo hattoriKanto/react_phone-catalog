@@ -105,7 +105,7 @@ export const CategoryPage = () => {
       searchParams.set('page', '1');
       setSearchParams(searchParams, { replace: true });
     }
-  }, [perPage, filteredData.length, page, setSearchParams]);
+  }, [perPage, filteredData.length, page, setSearchParams, searchParams]);
 
   useEffect(() => {
     let shouldResetPage = false;
