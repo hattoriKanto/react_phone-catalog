@@ -9,11 +9,13 @@ import {
   CategoryPage,
 } from './pages';
 import { SearchContextProvider } from './context/SearchContext';
+import { ScrollToTop } from './utils/ScrollToTop';
 
 export const Root = () => {
   return (
     <Router>
       <SearchContextProvider>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<HomePage />} />
