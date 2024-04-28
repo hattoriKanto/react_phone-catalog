@@ -8,8 +8,11 @@ import {
   FavoritesPage,
   CategoryPage,
 } from './pages';
+import { ContactsPage } from './pages/ContactsPage';
+import { RightsPage } from './pages/RightsPage';
 import { SearchContextProvider } from './context/SearchContext';
 import { ScrollToTop } from './utils/ScrollToTop';
+
 
 export const Root = () => {
   return (
@@ -34,6 +37,8 @@ export const Root = () => {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="*" element={<NotFoundPage />} />
+            <Route path="/contacts" element={<ContactsPage />} />
+            <Route path="/rights" element={<RightsPage />} />
           </Route>
         </Routes>
       </SearchContextProvider>

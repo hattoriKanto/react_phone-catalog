@@ -6,7 +6,6 @@ export const CartItemWrapper = styled(Box)(({ theme }) => ({
   boxSizing: 'border-box',
   // maxWidth: '756px',
   border: '1px solid',
-  borderColor: theme.palette.element.main,
   borderRadius: '16px',
   background: theme.palette.white.main,
 }));
