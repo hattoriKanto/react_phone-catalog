@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 export const CartItemWrapper = styled(Box)(({ theme }) => ({
   boxSizing: 'border-box',
-  // maxWidth: '756px',
   border: '1px solid #E2E6E9',
   borderRadius: '16px',
   background: theme.palette.white.main,

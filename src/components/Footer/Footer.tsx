@@ -27,12 +27,12 @@ const Footer = () => {
                Github
              </Typography>
             </FooterLink>
-            <FooterLink to="/" >
+            <FooterLink to="/contacts" >
               <Typography variant="button">
-                Contact
+                Contacts
               </Typography>
             </FooterLink>
-            <FooterLink to="/" >
+            <FooterLink to="/rights" >
               <Typography variant="button">
                 Rights
               </Typography>
