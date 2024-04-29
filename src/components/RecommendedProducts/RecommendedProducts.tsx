@@ -17,14 +17,14 @@ import { CustomGrid } from '../CustomGrid';
 import { ProductCard } from '../ProductCard/ProductCard';
 
 interface RecommendedProps {
-  name: string;
+  id: string;
   color: string;
 }
 
-export const RecommendedProducts: FC<RecommendedProps> = ({ name, color }) => {
+export const RecommendedProducts: FC<RecommendedProps> = ({ id, color }) => {
   const recommendedProducts = products
     .filter(item => {
-      return name !== item.name && item.color === color;
+      return id !== item.itemId && item.color === color;
     })
     .sort((a, b) => a.price - b.price);
 
@@ -54,16 +54,11 @@ export const RecommendedProducts: FC<RecommendedProps> = ({ name, color }) => {
   }
 
   const handleClickPrev = () => {
-    setStartIndex(Math.max(startIndex - productsPerRow, 0));
+    setStartIndex(Math.max(startIndex - 1, 0));
   };
 
   const handleClickNext = () => {
-    setStartIndex(
-      Math.min(
-        startIndex + productsPerRow,
-        recommendedProducts.length - productsPerRow,
-      ),
-    );
+    setStartIndex(Math.min(startIndex + 1, products.length - productsPerRow));
   };
 
   const GridStyled = styled(Grid)({

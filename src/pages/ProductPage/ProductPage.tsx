@@ -89,10 +89,7 @@ export const ProductPage: FC = () => {
             <TechSpecs product={product} />
           </StyledFlexWrapper>
           <Box sx={{ pb: { xs: 3, sm: 6 } }}>
-            <RecommendedProducts
-              name={product?.namespaceId}
-              color={product?.color}
-            />
+            <RecommendedProducts id={product?.id} color={product?.color} />
           </Box>
         </Container>
       )}
