@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-
+import { apiDBurl } from './config';
 type FetchState<T> = {
   data: T[];
   isLoading: boolean;
@@ -8,7 +8,8 @@ type FetchState<T> = {
 };
 
 function useFetchData<T>(url: string): FetchState<T> {
-  const BASE_URL = '/react_phone-catalog/api/';
+  const BASE_URL = apiDBurl;
+  console.log(BASE_URL);
 
   const [data, setData] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
