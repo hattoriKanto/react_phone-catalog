@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 import { HeaderOtherLinks } from '../../types';
 import {
   ActiveLink,
   DesktopButtonsWrapper,
   StyledBurgerButton,
+  StyledHeaderIconButton,
   StyledWrapperButton,
 } from '.';
 
@@ -24,7 +26,10 @@ import { Search } from './Search';
 import { toggleBurgerMenu } from '../../functions';
 import { useSearchContext } from '../../hooks/useSearchContext';
 import { useBurgerMenuContext } from '../../hooks/useBurgerMenuContext';
-import { Divider } from '@mui/material';
+import { Divider, Grow } from '@mui/material';
+import { AuthModal } from '../AuthModal/AuthModal';
+import { TransitionProps } from '@mui/material/transitions';
+import { Toast } from '../Toast';
 
 interface Props {
   searchField: boolean;
@@ -34,6 +39,25 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
   const locationPathname = useLocation().pathname;
   const { cartQuantity } = useCartContext();
   const { favoritesQuantity } = useFavoritesContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isToastOpen, setIsToastOpen] = useState<{
+    open: boolean;
+    Transition: React.ComponentType<
+      TransitionProps & {
+        children: React.ReactElement<
+          React.ReactNode,
+          string | React.JSXElementConstructor<React.ReactNode>
+        >;
+      }
+    >;
+    message: string;
+    status: 'warning' | 'success' | null;
+  }>({
+    open: false,
+    Transition: Grow,
+    message: '',
+    status: null,
+  });
 
   const { isSearchOpen, setIsSearchOpen, handleClearSearch } =
     useSearchContext();
@@ -77,9 +101,30 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
 
   return (
     <StyledWrapperButton>
+      <Toast isToastOpen={isToastOpen} setIsToastOpen={setIsToastOpen} />
       {searchField && <Search />}
 
       <DesktopButtonsWrapper>
+        <Divider
+          orientation="vertical"
+          sx={({ breakpoints }) => ({
+            backgroundColor: 'secondary',
+            height: '64px',
+            [breakpoints.down('md')]: {
+              height: '48px',
+            },
+          })}
+        />
+        <StyledHeaderIconButton onClick={() => setIsModalOpen(!isModalOpen)}>
+          <PersonOutlineIcon />
+        </StyledHeaderIconButton>
+
+        <AuthModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          setIsToastOpen={setIsToastOpen}
+        ></AuthModal>
+
         {Object.entries(HeaderOtherLinks).map(([text, link]) => {
           return (
             <ActiveLink key={text} label={handleChangeIcon(link)} to={link} />
