@@ -1,4 +1,3 @@
-import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 import {
   Box,
   Button,
@@ -10,23 +9,53 @@ import {
   styled,
 } from '@mui/material';
 import { Product } from '../../types';
-import useFetchData from '../../utils/useFetchData';
+import { getUserFavorites } from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import Container from '../../components/Container/Container';
 import { BreadCrumbsComponent, CardSkeleton } from '../../components';
 import { DotLottiePlayer } from '@dotlottie/react-player';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
+interface Favorite {
+  id: number;
+  userId: number;
+  productId: number;
+  product: Product;
+}
 
 export const FavoritesPage: React.FC = () => {
-  const { favorites, favoritesQuantity } = useFavoritesContext();
-  const { isLoading, data, error } = useFetchData<Product>('products.json');
+  //c
+  const { userId } = useParams<{ userId?: string }>();
+  const normalizedUserId = userId ? Number(userId) : 1;
 
-  const visibleFavourites = data.filter(item =>
-    favorites.includes(item.itemId),
-  );
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (error) return <p>Error: {error.message}</p>;
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const data = await getUserFavorites(normalizedUserId);
+
+        setFavorites(data);
+      } catch (error) {
+        throw new Error('Failed to fetch favorites');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFavorites();
+
+    // const intervalId = setInterval(fetchFavorites, 1000);
+
+    // return () => clearInterval(intervalId);
+  }, [normalizedUserId]);
+
+  const favoritesQuantity = useMemo(() => favorites.length, [favorites]);
+  const visibleProducts = favorites.map((favorite: Favorite) => favorite.product);
 
   const GridStyled = styled(Grid)({
     '&.MuiGrid-root': {
@@ -112,17 +141,17 @@ export const FavoritesPage: React.FC = () => {
         <CustomGrid>
           {isLoading ? (
             <>
-              {Array.from(new Array(4)).map((_, index) => (
-                <GridStyled item xs={1} md={1} key={index}>
+              {Array.from(new Array(4)).map(() => (
+                <GridStyled item xs={1} md={1} key={uuidv4()}>
                   <CardSkeleton />
                 </GridStyled>
               ))}
             </>
           ) : (
             <>
-              {visibleFavourites?.map(product => (
+              {visibleProducts?.map((product: Product) => (
                 <GridStyled item xs={1} md={1} key={product.id}>
-                  <ProductCard product={product} />
+                  <ProductCard product={product} setFavorites={setFavorites} />
                 </GridStyled>
               ))}
             </>
