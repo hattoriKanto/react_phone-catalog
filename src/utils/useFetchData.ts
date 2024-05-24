@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { Product } from '../types';
+
+const BASE_URL = 'http://localhost:3000';
 
 type FetchState<T> = {
   data: T[];
@@ -7,9 +10,15 @@ type FetchState<T> = {
   error: Error | null;
 };
 
-function useFetchData<T>(url: string): FetchState<T> {
-  const BASE_URL = '/react_phone-catalog/api/';
+//c
+interface Favorite {
+  id: number;
+  userId: number;
+  productId: number;
+  product: Product;
+}
 
+function useFetchData<T>(url: string): FetchState<T> {
   const [data, setData] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -36,4 +45,49 @@ function useFetchData<T>(url: string): FetchState<T> {
   return { data, isLoading, error };
 }
 
+//c
+async function addToFavorites(userId: number, productId: number): Promise<void> {
+  try {
+    if(!userId) {
+      userId = 1;
+    }
+    const response = await axios.post(`${BASE_URL}/favorites`, { userId, productId });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to add to favorites');
+  }
+}
+
+//c
+async function removeFromFavorites(userId: number, productId: number): Promise<void> {
+  try {
+    const response = await axios.delete(`${BASE_URL}/favorites`, { data: { userId, productId } });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to remove from favorites');
+  }
+}
+
+//c
+async function getUserFavorites (userId: number) {
+  try {
+    const response = await axios.get(`${BASE_URL}/favorites/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to upload favorites');
+  }
+};
+
+//c
+async function isProductInFavorites(userId: number, productId: number): Promise<boolean> {
+  try {
+    const favorites = await getUserFavorites(userId);
+    
+    return favorites.some((favorite: Favorite) => favorite.productId === productId);
+  } catch (error) {
+    throw new Error('Failed to check if product is in favorites');
+  }
+}
+
 export default useFetchData;
+export { addToFavorites, removeFromFavorites, getUserFavorites, isProductInFavorites };
