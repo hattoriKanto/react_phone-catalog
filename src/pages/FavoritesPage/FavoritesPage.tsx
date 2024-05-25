@@ -1,4 +1,3 @@
-import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 import {
   Box,
   Button,
@@ -10,23 +9,20 @@ import {
   styled,
 } from '@mui/material';
 import { Product } from '../../types';
-import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import Container from '../../components/Container/Container';
 import { BreadCrumbsComponent, CardSkeleton } from '../../components';
 import { DotLottiePlayer } from '@dotlottie/react-player';
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import { Favorite } from '../../types/Favorites';
+import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 
 export const FavoritesPage: React.FC = () => {
-  const { favorites, favoritesQuantity } = useFavoritesContext();
-  const { isLoading, data, error } = useFetchData<Product>('products.json');
+  const { favorites, favoritesQuantity, isLoading } = useFavoritesContext();
 
-  const visibleFavourites = data.filter(item =>
-    favorites.includes(item.itemId),
-  );
-
-  if (error) return <p>Error: {error.message}</p>;
+  const visibleProducts = favorites.map((favorite: Favorite) => favorite.product);
 
   const GridStyled = styled(Grid)({
     '&.MuiGrid-root': {
@@ -112,15 +108,15 @@ export const FavoritesPage: React.FC = () => {
         <CustomGrid>
           {isLoading ? (
             <>
-              {Array.from(new Array(4)).map((_, index) => (
-                <GridStyled item xs={1} md={1} key={index}>
+              {Array.from(new Array(4)).map(() => (
+                <GridStyled item xs={1} md={1} key={uuidv4()}>
                   <CardSkeleton />
                 </GridStyled>
               ))}
             </>
           ) : (
             <>
-              {visibleFavourites?.map(product => (
+              {visibleProducts?.map((product: Product) => (
                 <GridStyled item xs={1} md={1} key={product.id}>
                   <ProductCard product={product} />
                 </GridStyled>

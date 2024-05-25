@@ -265,6 +265,38 @@ export const StyledLink = styled(NavLink)(({ theme }) => {
   };
 });
 
+export const StyledHeaderIconButton = styled(Button)(({ theme }) => {
+  return {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '64px',
+    textDecoration: 'none',
+
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      right: '0',
+      bottom: '0',
+      display: 'block',
+      width: '100%',
+      height: '3px',
+      transform: 'scaleX(0)',
+      backgroundColor: theme.palette.primary.main,
+      transition: 'transform 500ms',
+    },
+
+    '&:hover::after, &.active::after': {
+      transform: 'scaleX(1)',
+    },
+
+    [theme.breakpoints.down('md')]: {
+      minHeight: '48px',
+    },
+  };
+});
+
 export const StyledButtonClear = styled(Button)(({ theme }) => ({
   padding: 0,
   paddingBlock: '10px',

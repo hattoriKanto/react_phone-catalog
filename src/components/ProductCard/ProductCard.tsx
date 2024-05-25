@@ -14,8 +14,16 @@ import {
   Typography,
 } from '@mui/material';
 import { useCartContext } from '../../hooks/useCartContext';
-import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {
+  addToFavorites,
+  removeFromFavorites,
+  isProductInFavorites,
+  getOneFavorite,
+} from '../../utils/useFetchData';
+import { Favorite } from '../../types/Favorites';
+import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 
 type Props = {
   product: Product;
@@ -33,9 +41,22 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     category,
     itemId,
   } = product;
+
+  const { setFavorites, normalizedUserId } = useFavoritesContext();
   const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
-  const { addToFavorites, deleteFromFavorites, isProductInFavorites } =
-    useFavoritesContext();
+ 
+  //
+  const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
+
+  //
+  useEffect(() => {
+    const checkFavorites = async () => {
+      const result = await isProductInFavorites(normalizedUserId, product.id);
+      setIsInFavorites(result);
+    };
+
+    checkFavorites();
+  }, [normalizedUserId, product.id]);
 
   const toggleAddToCard = (product: Product, event: React.MouseEvent) => {
     event.stopPropagation();
@@ -54,19 +75,46 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     }
   };
 
-  const toggleAddToFavorites = (product: Product, event: React.MouseEvent) => {
+  //
+  const toggleAddToFavorites = async (
+    product: Product,
+    event: React.MouseEvent
+  ) => {
     event.stopPropagation();
     event.preventDefault();
-
-    if (!isInFavorites) {
-      addToFavorites(product.itemId);
-    } else {
-      deleteFromFavorites(product.itemId);
+  
+    try {
+      if (!isInFavorites) {
+        await addToFavorites(normalizedUserId, product.id);
+  
+        const newFavorite = await getOneFavorite(normalizedUserId, product.id);
+  
+        if (newFavorite) {
+          setFavorites((currentFavorites: Favorite[]) => [
+            ...currentFavorites,
+            newFavorite,
+          ]);
+        }
+      } else {
+        await removeFromFavorites(normalizedUserId, product.id);
+  
+        setFavorites((currentFavorites: Favorite[]) =>
+          currentFavorites.filter(
+            (favorite) => favorite.product.id !== product.id
+          )
+        );
+      }
+  
+      const result = await isProductInFavorites(normalizedUserId, product.id);
+  
+      setIsInFavorites(result);
+    } catch (error) {
+      throw new Error('Failed to toggle favorites');
     }
   };
+  
 
   const isInCart = isProductInCart(product.itemId);
-  const isInFavorites = isProductInFavorites(product.itemId);
 
   return (
     <Link
