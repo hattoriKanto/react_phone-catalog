@@ -14,27 +14,22 @@ import {
   Typography,
 } from '@mui/material';
 import { useCartContext } from '../../hooks/useCartContext';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
   addToFavorites,
   removeFromFavorites,
   isProductInFavorites,
+  getOneFavorite,
 } from '../../utils/useFetchData';
-
-interface Favorite {
-  id: number;
-  userId: number;
-  productId: number;
-  product: Product;
-}
+import { Favorite } from '../../types/Favorites';
+import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 
 type Props = {
   product: Product;
-  setFavorites?: React.Dispatch<React.SetStateAction<Favorite[]>>;
 };
 
-export const ProductCard: React.FC<Props> = ({ product, setFavorites = () => {} }) => {
+export const ProductCard: React.FC<Props> = ({ product }) => {
   const {
     name,
     price,
@@ -46,15 +41,12 @@ export const ProductCard: React.FC<Props> = ({ product, setFavorites = () => {} 
     category,
     itemId,
   } = product;
+
+  const { setFavorites, normalizedUserId } = useFavoritesContext();
+  const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
  
   //
   const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
-
-  //
-  const { userId } = useParams<{ userId?: string }>();
-  const normalizedUserId = userId ? Number(userId) : 1;
-
-  const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
 
   //
   useEffect(() => {
@@ -86,29 +78,41 @@ export const ProductCard: React.FC<Props> = ({ product, setFavorites = () => {} 
   //
   const toggleAddToFavorites = async (
     product: Product,
-    event: React.MouseEvent,
+    event: React.MouseEvent
   ) => {
     event.stopPropagation();
     event.preventDefault();
-
+  
     try {
       if (!isInFavorites) {
         await addToFavorites(normalizedUserId, product.id);
+  
+        const newFavorite = await getOneFavorite(normalizedUserId, product.id);
+  
+        if (newFavorite) {
+          setFavorites((currentFavorites: Favorite[]) => [
+            ...currentFavorites,
+            newFavorite,
+          ]);
+        }
       } else {
         await removeFromFavorites(normalizedUserId, product.id);
-
+  
         setFavorites((currentFavorites: Favorite[]) =>
-          currentFavorites.filter(favorite => favorite.product.id !== product.id),
+          currentFavorites.filter(
+            (favorite) => favorite.product.id !== product.id
+          )
         );
       }
-
+  
       const result = await isProductInFavorites(normalizedUserId, product.id);
-
+  
       setIsInFavorites(result);
     } catch (error) {
       throw new Error('Failed to toggle favorites');
     }
   };
+  
 
   const isInCart = isProductInCart(product.itemId);
 

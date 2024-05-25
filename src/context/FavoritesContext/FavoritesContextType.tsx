@@ -1,7 +1,10 @@
+import { Favorite } from "../../types/Favorites";
+
 export type FavoritesContextType = {
-  favorites: string[];
+  normalizedUserId: number;
+  favorites: Favorite[];
+  setFavorites: React.Dispatch<React.SetStateAction<Favorite[]>>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   favoritesQuantity: number;
-  addToFavorites: (product: string) => void;
-  deleteFromFavorites: (productId: string) => void;
-  isProductInFavorites: (id: string) => boolean;
 };

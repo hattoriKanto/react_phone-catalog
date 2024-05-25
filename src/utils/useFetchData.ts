@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Product } from '../types';
+import { Favorite } from '../types/Favorites';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -9,14 +9,6 @@ type FetchState<T> = {
   isLoading: boolean;
   error: Error | null;
 };
-
-//c
-interface Favorite {
-  id: number;
-  userId: number;
-  productId: number;
-  product: Product;
-}
 
 function useFetchData<T>(url: string): FetchState<T> {
   const [data, setData] = useState<T[]>([]);
@@ -89,5 +81,16 @@ async function isProductInFavorites(userId: number, productId: number): Promise<
   }
 }
 
+async function getOneFavorite(userId: number, productId: number): Promise<Favorite | null> {
+  try {
+    const favorites = await getUserFavorites(userId);
+    const favorite = favorites.find((favorite: Favorite) => favorite.productId === productId);
+
+    return favorite || null;
+  } catch (error) {
+    throw new Error('Failed to find the favorite');
+  }
+}
+
 export default useFetchData;
-export { addToFavorites, removeFromFavorites, getUserFavorites, isProductInFavorites };
+export { addToFavorites, removeFromFavorites, getUserFavorites, isProductInFavorites, getOneFavorite };
