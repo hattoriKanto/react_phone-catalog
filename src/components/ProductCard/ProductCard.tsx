@@ -37,14 +37,14 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     screen,
     capacity,
     ram,
-    image,
+    images,
     category,
     itemId,
   } = product;
 
   const { setFavorites, normalizedUserId } = useFavoritesContext();
   const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
- 
+
   //
   const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
 
@@ -65,7 +65,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     if (!isInCart) {
       addToCart({
         prodId: product.itemId,
-        img: product.image,
+        img: product.images,
         name: product.name,
         category: product.category,
         price: product.price,
@@ -78,17 +78,17 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   //
   const toggleAddToFavorites = async (
     product: Product,
-    event: React.MouseEvent
+    event: React.MouseEvent,
   ) => {
     event.stopPropagation();
     event.preventDefault();
-  
+
     try {
       if (!isInFavorites) {
         await addToFavorites(normalizedUserId, product.id);
-  
+
         const newFavorite = await getOneFavorite(normalizedUserId, product.id);
-  
+
         if (newFavorite) {
           setFavorites((currentFavorites: Favorite[]) => [
             ...currentFavorites,
@@ -97,22 +97,21 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         }
       } else {
         await removeFromFavorites(normalizedUserId, product.id);
-  
+
         setFavorites((currentFavorites: Favorite[]) =>
           currentFavorites.filter(
-            (favorite) => favorite.product.id !== product.id
-          )
+            favorite => favorite.product.id !== product.id,
+          ),
         );
       }
-  
+
       const result = await isProductInFavorites(normalizedUserId, product.id);
-  
+
       setIsInFavorites(result);
     } catch (error) {
       throw new Error('Failed to toggle favorites');
     }
   };
-  
 
   const isInCart = isProductInCart(product.itemId);
 
@@ -138,7 +137,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           <CardMedia
             component="img"
             height="50%"
-            image={image}
+            image={images[0]}
             sx={{
               height: 196,
               maxWidth: 208,
