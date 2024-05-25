@@ -17,10 +17,13 @@ function useFetchData<T>(url: string): FetchState<T> {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
+  console.log(BASE_URL + url);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get<T[]>(BASE_URL + url);
+
         setData(response.data);
         setIsLoading(false);
       } catch (error) {

@@ -58,7 +58,9 @@ export const CategoryPage = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryName = location.pathname.slice(1);
-  const { data, isLoading, error } = useFetchData<Product>(`${categoryName}`);
+  const { data, isLoading, error } = useFetchData<Product>(
+    `/products/${categoryName}`,
+  );
   const { isSearchOpen, setIsSearchOpen, handleClearSearch } =
     useSearchContext();
   const query = searchParams.get('query');
@@ -67,11 +69,11 @@ export const CategoryPage = () => {
   const sortBy = searchParams.get('sortBy') || SortBy.Alphabetically;
   const prevCategoryName = useRef(categoryName);
 
+  console.log(data);
+
   const { sm } = customBreakpoints.values;
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.up(sm));
-
-  console.log(data);
 
   const pricesInCategory = data
     .filter(product => product.category === categoryName)
