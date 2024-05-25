@@ -9,52 +9,19 @@ import {
   styled,
 } from '@mui/material';
 import { Product } from '../../types';
-import { getUserFavorites } from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import Container from '../../components/Container/Container';
 import { BreadCrumbsComponent, CardSkeleton } from '../../components';
 import { DotLottiePlayer } from '@dotlottie/react-player';
-import { Link, useParams } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-
-interface Favorite {
-  id: number;
-  userId: number;
-  productId: number;
-  product: Product;
-}
+import { Favorite } from '../../types/Favorites';
+import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 
 export const FavoritesPage: React.FC = () => {
-  //c
-  const { userId } = useParams<{ userId?: string }>();
-  const normalizedUserId = userId ? Number(userId) : 1;
+  const { favorites, favoritesQuantity, isLoading } = useFavoritesContext();
 
-  const [favorites, setFavorites] = useState<Favorite[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const data = await getUserFavorites(normalizedUserId);
-
-        setFavorites(data);
-      } catch (error) {
-        throw new Error('Failed to fetch favorites');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchFavorites();
-
-    // const intervalId = setInterval(fetchFavorites, 1000);
-
-    // return () => clearInterval(intervalId);
-  }, [normalizedUserId]);
-
-  const favoritesQuantity = useMemo(() => favorites.length, [favorites]);
   const visibleProducts = favorites.map((favorite: Favorite) => favorite.product);
 
   const GridStyled = styled(Grid)({
@@ -151,7 +118,7 @@ export const FavoritesPage: React.FC = () => {
             <>
               {visibleProducts?.map((product: Product) => (
                 <GridStyled item xs={1} md={1} key={product.id}>
-                  <ProductCard product={product} setFavorites={setFavorites} />
+                  <ProductCard product={product} />
                 </GridStyled>
               ))}
             </>
