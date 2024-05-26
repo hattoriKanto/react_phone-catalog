@@ -19,6 +19,7 @@ function useFetchData<T>(url: string): FetchState<T> {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(url);
         const response = await axios.get<T[]>(BASE_URL + url);
 
         console.log(response.data);
