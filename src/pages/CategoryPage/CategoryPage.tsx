@@ -18,59 +18,38 @@ import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import { CardSkeleton } from '../../components/ProductCard';
-import React, { useEffect, useMemo, useRef } from 'react';
-import { getFilter } from '../../functions/getFilter';
+import React, { useEffect } from 'react';
 import { getSearchWith } from '../../utils/searchHelper';
 import { BreadCrumbsComponent } from '../../components';
 import CategorySort from '../../components/CategorySort/CategorySort';
-import { SortBy } from '../../types/SortBy';
 import { CategoryPriceRange } from '../../components/CategoryPriceRange/CategoryPriceRange';
 import { useSearchContext } from '../../hooks/useSearchContext';
 import { DotLottiePlayer } from '@dotlottie/react-player';
 import { customBreakpoints } from '../../theme/breakpoints.config';
 import { useTheme } from '@mui/material/styles';
 
-function getSlicedData(data: Product[], page: number, perPage: string) {
-  if (perPage === 'All') {
-    return data;
-  }
-
-  const startIndex = (page - 1) * Number(perPage);
-  const endIndex = startIndex + Number(perPage);
-
-  return data.slice(startIndex, endIndex);
-}
-
-function getSortedData(data: Product[], sortBy: string) {
-  switch (sortBy) {
-    case 'alphabetically':
-      return data.sort((a, b) => a.name.localeCompare(b.name));
-    case 'cheapest':
-      return data.sort((a, b) => a.price - b.price);
-    case 'newest':
-      return data.sort((a, b) => b.id - a.id);
-    default:
-      return data;
-  }
-}
-
 export const CategoryPage = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryName = location.pathname.slice(1);
+  const search = location.search;
+  console.log(search);
   const { data, isLoading, error } = useFetchData<Product>(
-    `products/${categoryName}`,
+    `products/${categoryName}${search}`,
   );
+
+  const [visibleData, setVisibleData] = React.useState<Product[]>(data);
+
+  useEffect(() => {
+    setVisibleData(data);
+  }, [data, searchParams]);
 
   console.log(data);
 
   const { isSearchOpen, setIsSearchOpen, handleClearSearch } =
     useSearchContext();
-  const query = searchParams.get('query');
   const page = searchParams.get('page') || 1;
   const perPage = searchParams.get('perPage') || 4;
-  const sortBy = searchParams.get('sortBy') || SortBy.Alphabetically;
-  const prevCategoryName = useRef(categoryName);
 
   const { sm } = customBreakpoints.values;
   const theme = useTheme();
@@ -84,55 +63,6 @@ export const CategoryPage = () => {
     Math.floor(Math.min(...pricesInCategory) / 100) * 100;
   const maxPriceInCategory =
     Math.ceil(Math.max(...pricesInCategory) / 100) * 100;
-
-  const minPrice = searchParams.get('minPrice') || `${minPriceInCategory}`;
-  const maxPrice = searchParams.get('maxPrice') || `${maxPriceInCategory}`;
-
-  const visibleProducts = useMemo(() => {
-    return getFilter({ data, query, minPrice, maxPrice });
-  }, [data, query, minPrice, maxPrice]);
-
-  const filteredData = visibleProducts?.filter(
-    data => data.category === categoryName,
-  );
-
-  const sortedData = getSortedData(filteredData, sortBy);
-
-  const slicedData = getSlicedData(
-    sortedData,
-    Number(page),
-    perPage.toString(),
-  );
-
-  useEffect(() => {
-    const maxPage = Math.ceil(filteredData.length / Number(perPage));
-    if (Number(page) > maxPage && maxPage !== 0) {
-      searchParams.set('page', '1');
-      setSearchParams(searchParams, { replace: true });
-    }
-  }, [perPage, filteredData.length, page, setSearchParams, searchParams]);
-
-  useEffect(() => {
-    let shouldResetPage = false;
-
-    if (prevCategoryName.current !== categoryName) {
-      shouldResetPage = true;
-    }
-
-    if (perPage === 'All') {
-      shouldResetPage = true;
-    }
-
-    if (shouldResetPage) {
-      const newSearchParams = getSearchWith(searchParams, {
-        page: '1',
-      });
-      setSearchParams(newSearchParams);
-    }
-
-    prevCategoryName.current = categoryName;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryName, perPage]);
 
   if (error) return <p>Error: {error.message}</p>;
 
@@ -165,16 +95,16 @@ export const CategoryPage = () => {
             </Typography>
           </Slide>
 
-          {filteredData.length > 0 && (
+          {visibleData.length > 0 && (
             <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
-              {filteredData.length} models
+              {visibleData.length} models
             </Typography>
           )}
           <script
             src="https://lottie.host/e89ed2b8-0df9-4829-a67e-c5e194a38103/J35UHBqEvn.json"
             type="module"
           ></script>
-          {filteredData.length === 0 && (
+          {visibleData.length === 0 && (
             <Fade in={true} timeout={800}>
               <Stack
                 direction={'column'}
@@ -235,7 +165,7 @@ export const CategoryPage = () => {
             </Fade>
           )}
 
-          {!!filteredData.length && (
+          {!!visibleData.length && (
             <Stack direction={'column'}>
               <CategorySort />
               <CategoryPriceRange
@@ -257,7 +187,7 @@ export const CategoryPage = () => {
               </>
             ) : (
               <>
-                {slicedData?.map(phone => (
+                {visibleData?.map(phone => (
                   <Grow key={phone.id} in={true} timeout={800}>
                     <GridStyled item xs={1} md={1}>
                       <ProductCard product={phone} />
@@ -269,7 +199,7 @@ export const CategoryPage = () => {
           </CustomGrid>
         </Box>
 
-        {!!filteredData.length && (
+        {!!visibleData.length && (
           <Pagination
             siblingCount={!isTablet ? 0 : 1}
             size={!isTablet ? 'medium' : 'large'}
@@ -279,7 +209,7 @@ export const CategoryPage = () => {
             count={
               perPage === 'All'
                 ? 1
-                : Math.ceil(filteredData.length / Number(perPage))
+                : Math.ceil(visibleData.length / Number(perPage))
             }
             sx={{
               py: 4,
