@@ -47,6 +47,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
   //
   const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
+  console.log(images[0]);
+  const currentImg = images[0];
 
   //
   useEffect(() => {
@@ -65,7 +67,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     if (!isInCart) {
       addToCart({
         prodId: product.itemId,
-        img: product.images,
+        img: product.images[0],
         name: product.name,
         category: product.category,
         price: product.price,
@@ -137,7 +139,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           <CardMedia
             component="img"
             height="50%"
-            image={images[0]}
+            image={currentImg}
             sx={{
               height: 196,
               maxWidth: 208,

@@ -59,8 +59,11 @@ export const CategoryPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryName = location.pathname.slice(1);
   const { data, isLoading, error } = useFetchData<Product>(
-    `/products/${categoryName}`,
+    `products/${categoryName}`,
   );
+
+  console.log(data);
+
   const { isSearchOpen, setIsSearchOpen, handleClearSearch } =
     useSearchContext();
   const query = searchParams.get('query');
@@ -68,8 +71,6 @@ export const CategoryPage = () => {
   const perPage = searchParams.get('perPage') || 4;
   const sortBy = searchParams.get('sortBy') || SortBy.Alphabetically;
   const prevCategoryName = useRef(categoryName);
-
-  console.log(data);
 
   const { sm } = customBreakpoints.values;
   const theme = useTheme();
