@@ -19,7 +19,7 @@ const SliderOnPageContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const HomePage: FC = () => {
-  const { data } = useFetchData<Product>('products.json');
+  const { data } = useFetchData<Product>('products');
 
   const categories: Category[] = [
     {
