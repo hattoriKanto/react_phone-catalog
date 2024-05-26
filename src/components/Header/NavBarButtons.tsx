@@ -102,9 +102,9 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
   return (
     <StyledWrapperButton>
       {searchField && <Search />}
-      <Toast isToastOpen={isToastOpen} setIsToastOpen={setIsToastOpen} />
 
       <DesktopButtonsWrapper>
+        <Toast isToastOpen={isToastOpen} setIsToastOpen={setIsToastOpen} />
         <Divider
           orientation="vertical"
           sx={({ breakpoints }) => ({

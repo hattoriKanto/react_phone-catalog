@@ -14,7 +14,7 @@ import { StyledIconButton } from '../CartItem/CartItem';
 import { DeleteIcon } from '../CartItem/CartItem.styles';
 import { isToastOpen } from '../../types';
 import { ModalBox } from '../CartModal';
-import { registerUser } from '../../utils';
+import { loginUser, registerUser } from '../../utils';
 
 const textBoxStyle = {
   m: '0 auto',
@@ -110,19 +110,42 @@ export const AuthModal: React.FC<Props> = ({
       let message = 'Success!';
       let isError = false;
 
-      try {
-        await registerUser(name, email, password);
-      } catch (error) {
-        message = 'User already exist';
-        isError = true;
+      if (isRegistered) {
+        try {
+          await loginUser(name, password);
+          setIsModalOpen(false);
+          setName('');
+          setEmail('');
+          setPassword('');
+        } catch (error) {
+          message = 'Password or username is uncorrect';
+          isError = true;
+        }
+        setIsToastOpen({
+          open: true,
+          Transition: GrowTransition,
+          message: message,
+          status: isError ? 'error' : 'success',
+        });
+      } else if (!isRegistered) {
+        try {
+          await registerUser(name, email, password);
+        } catch (error) {
+          message = 'User already exist';
+          isError = true;
+        }
+        isRegistered
+          ? setIsModalOpen(false)
+          : !isError
+            ? setIsRegistered(true)
+            : null;
+        setIsToastOpen({
+          open: true,
+          Transition: GrowTransition,
+          message: message,
+          status: isError ? 'error' : 'success',
+        });
       }
-      isRegistered ? setIsModalOpen(false) : !isError ? setIsRegistered(true) : null;
-      setIsToastOpen({
-        open: true,
-        Transition: GrowTransition,
-        message: message,
-        status: isError ? 'error' : 'success',
-      });
     }
   };
 
@@ -186,49 +209,49 @@ export const AuthModal: React.FC<Props> = ({
                 flexWrap={'wrap'}
                 rowGap={'8px'}
               >
+                <Box sx={textBoxStyle}>
+                  <PersonIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                  <TextField
+                    error={error.includes('name')}
+                    helperText={
+                      error.includes('name') && 'Name must be correct'
+                    }
+                    autoComplete="name"
+                    fullWidth
+                    label="Name"
+                    type="text"
+                    id="fullWidth"
+                    variant="standard"
+                    required
+                    value={name}
+                    name="name"
+                    onBlur={e => validateField(e.target.name)}
+                    onChange={e => handleChange(e)}
+                  />
+                </Box>
                 {!isRegistered && (
                   <Box sx={textBoxStyle}>
-                    <PersonIcon
+                    <EmailIcon
                       sx={{ color: 'action.active', mr: 1, my: 0.5 }}
                     />
                     <TextField
-                      error={error.includes('name')}
+                      error={error.includes('email')}
                       helperText={
-                        error.includes('name') && 'Name must be correct'
+                        error.includes('email') && 'Email must be correct'
                       }
-                      autoComplete="name"
                       fullWidth
-                      label="Name"
-                      type="text"
-                      id="fullWidth"
+                      label="Email"
+                      type="email"
+                      id="fullWidth-error"
                       variant="standard"
                       required
-                      value={name}
-                      name="name"
+                      value={email}
+                      name="email"
                       onBlur={e => validateField(e.target.name)}
                       onChange={e => handleChange(e)}
                     />
                   </Box>
                 )}
-                <Box sx={textBoxStyle}>
-                  <EmailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                  <TextField
-                    error={error.includes('email')}
-                    helperText={
-                      error.includes('email') && 'Email must be correct'
-                    }
-                    fullWidth
-                    label="Email"
-                    type="email"
-                    id="fullWidth-error"
-                    variant="standard"
-                    required
-                    value={email}
-                    name="email"
-                    onBlur={e => validateField(e.target.name)}
-                    onChange={e => handleChange(e)}
-                  />
-                </Box>
                 <Box sx={textBoxStyle}>
                   <HttpsIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
                   <TextField

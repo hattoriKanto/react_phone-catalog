@@ -135,6 +135,18 @@ async function registerUser(
   }
 }
 
+async function loginUser(username: string, password: string): Promise<void> {
+  try {
+    const response = await axios.post(`${BASE_URL}/login`, {
+      username,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to login');
+  }
+}
+
 export default useFetchData;
 export {
   addToFavorites,
@@ -143,4 +155,5 @@ export {
   isProductInFavorites,
   getOneFavorite,
   registerUser,
+  loginUser,
 };
