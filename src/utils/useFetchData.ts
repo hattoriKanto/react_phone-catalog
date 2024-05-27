@@ -4,7 +4,6 @@ import { Favorite } from '../types/Favorites';
 import { apiDBurl } from './config';
 
 const BASE_URL = apiDBurl;
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJDaHJpc3RpbmEyIiwiaWF0IjoxNzE2ODIxNjU5LCJleHAiOjE3MTk0MTM2NTl9.tHE6xxlPtvgo59vmBlpTLyQZaBhr5pb_8ffU3HH98Ow';
 
 type FetchState<T> = {
   data: T[];
@@ -54,10 +53,6 @@ async function addToFavorites(
     const response = await axios.post(`${BASE_URL}users/favorites`, {
       userId,
       productId,
-    }, {
-      headers: {
-        Authorization: `Bearer ${TOKEN}`
-      }
     });
     return response.data;
   } catch (error) {
@@ -65,6 +60,7 @@ async function addToFavorites(
   }
 }
 
+//c
 async function removeFromFavorites(
   userId: number,
   productId: number,
@@ -72,9 +68,6 @@ async function removeFromFavorites(
   try {
     const response = await axios.delete(`${BASE_URL}users/favorites`, {
       data: { userId, productId },
-      headers: {
-        Authorization: `Bearer ${TOKEN}`
-      }
     });
     return response.data;
   } catch (error) {
@@ -82,16 +75,13 @@ async function removeFromFavorites(
   }
 }
 
+//c
 async function getUserFavorites(userId: number) {
   try {
-    const response = await axios.get(`${BASE_URL}users/${userId}/favorites`, {
-      headers: {
-        Authorization: `Bearer ${TOKEN}`
-      }
-    });
+    const response = await axios.get(`${BASE_URL}users/${userId}/favorites`);
     return response.data;
   } catch (error) {
-    throw new Error('Failed to fetch favorites');
+    throw new Error('Failed to upload favorites');
   }
 }
 
