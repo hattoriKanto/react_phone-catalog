@@ -29,6 +29,7 @@ export const LogoutModal: React.FC<Props> = ({
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('userName');
+    window.dispatchEvent(new Event('storage'));
 
     setIsToastOpen({
       open: true,

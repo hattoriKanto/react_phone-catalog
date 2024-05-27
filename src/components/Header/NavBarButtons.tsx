@@ -134,6 +134,7 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
 
         {!localStorage.getItem('token') ? (
           <StyledHeaderIconButton
+            disableRipple
             onClick={() => setIsAuthModalOpen(!isAuthModalOpen)}
           >
             <PersonOutlineIcon />
@@ -162,6 +163,7 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
             />
 
             <StyledHeaderIconButton
+              disableRipple
               onClick={() => setIsLogoutModalOpen(!isLogoutModalOpen)}
             >
               <LogoutIcon />
@@ -182,6 +184,7 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
       />
 
       <StyledBurgerButton
+        disableRipple
         disableElevation
         onClick={() => {
           toggleBurgerMenu(setIsBurgerMenuShown, isBurgerMenuShown);

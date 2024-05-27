@@ -27,7 +27,7 @@ export const FavoritesProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const data = await getUserFavorites(1);
+        const data = await getUserFavorites(normalizedUserId);
 
         setFavorites(data);
       } catch (error) {
@@ -42,14 +42,24 @@ export const FavoritesProvider: React.FC<Props> = ({ children }) => {
 
   const favoritesQuantity = useMemo(() => favorites.length, [favorites]);
 
-  const favoritesState = useMemo(() => ({
-    normalizedUserId,
-    favorites,
-    setFavorites,
-    isLoading,
-    setIsLoading,
-    favoritesQuantity,
-  }), [normalizedUserId, favorites, setFavorites, isLoading, setIsLoading, favoritesQuantity]);
+  const favoritesState = useMemo(
+    () => ({
+      normalizedUserId,
+      favorites,
+      setFavorites,
+      isLoading,
+      setIsLoading,
+      favoritesQuantity,
+    }),
+    [
+      normalizedUserId,
+      favorites,
+      setFavorites,
+      isLoading,
+      setIsLoading,
+      favoritesQuantity,
+    ],
+  );
 
   return (
     <FavoritesContext.Provider value={favoritesState}>
