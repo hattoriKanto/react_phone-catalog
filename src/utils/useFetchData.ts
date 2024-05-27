@@ -6,8 +6,8 @@ import { apiDBurl } from './config';
 const BASE_URL = apiDBurl;
 
 //test data token
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJDaHJpc3RpbmEyIiwiaWF0IjoxNzE2ODIxNjU5LCJleHAiOjE3MTk0MTM2NTl9.tHE6xxlPtvgo59vmBlpTLyQZaBhr5pb_8ffU3HH98Ow';
-
+const TOKEN =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJDaHJpc3RpbmEyIiwiaWF0IjoxNzE2ODIxNjU5LCJleHAiOjE3MTk0MTM2NTl9.tHE6xxlPtvgo59vmBlpTLyQZaBhr5pb_8ffU3HH98Ow';
 
 type FetchState<T> = {
   data: T[];
@@ -54,14 +54,18 @@ async function addToFavorites(
     if (!userId) {
       userId = 1;
     }
-    const response = await axios.post(`${BASE_URL}users/favorites`, {
-      userId,
-      productId,
-    }, {
-      headers: {
-        Authorization: `Bearer ${TOKEN}`
-      }
-    });
+    const response = await axios.post(
+      `${BASE_URL}users/favorites`,
+      {
+        userId,
+        productId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      },
+    );
     return response.data;
   } catch (error) {
     throw new Error('Failed to add to favorites');
@@ -76,8 +80,8 @@ async function removeFromFavorites(
     const response = await axios.delete(`${BASE_URL}users/favorites`, {
       data: { userId, productId },
       headers: {
-        Authorization: `Bearer ${TOKEN}`
-      }
+        Authorization: `Bearer ${TOKEN}`,
+      },
     });
     return response.data;
   } catch (error) {
@@ -89,12 +93,33 @@ async function getUserFavorites(userId: number) {
   try {
     const response = await axios.get(`${BASE_URL}users/${userId}/favorites`, {
       headers: {
-        Authorization: `Bearer ${TOKEN}`
-      }
+        Authorization: `Bearer ${TOKEN}`,
+      },
     });
     return response.data;
   } catch (error) {
     throw new Error('Failed to fetch favorites');
+  }
+}
+
+//c
+
+async function getDiscounts() {
+  try {
+    const response = await axios.get(`${BASE_URL}discount`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch discounts');
+  }
+}
+
+//c
+async function getNewProducts() {
+  try {
+    const response = await axios.get(`${BASE_URL}products/new`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch new products');
   }
 }
 
@@ -159,10 +184,6 @@ async function loginUser(username: string, password: string): Promise<void> {
   }
 }
 
-
-
-
-
 export default useFetchData;
 export {
   addToFavorites,
@@ -172,4 +193,6 @@ export {
   getOneFavorite,
   registerUser,
   loginUser,
+  getDiscounts,
+  getNewProducts,
 };
