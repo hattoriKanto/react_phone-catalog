@@ -9,36 +9,31 @@ import {
   LineBox,
   OptionsTitle,
 } from './ChangeColorSizeBlock.styles.tsx';
-import useFetchData from '../../utils/useFetchData.ts';
 import { ProductExpanded } from '../../types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ColorsAvailable } from '../../types/Colors.ts';
+import { getProductsByNamespaceId } from '../../utils/useFetchData.ts';
 
 type Props = {
-  prodId: string;
-  category: string;
-  pathname: string;
+  currentProduct: ProductExpanded;
 };
 
-export const ChangeColorSizeBlock: React.FC<Props> = ({ prodId, category }) => {
-  const { data } = useFetchData<ProductExpanded>(`${category}.json`);
-  const selectedData = data.find(data => data.id === prodId);
+export const ChangeColorSizeBlock: React.FC<Props> = ({ currentProduct }) => {
+  const location = useLocation();
+  const pathname = location.pathname;
+  const { namespaceId, colorsAvailable, capacityAvailable } = currentProduct;
+  const [products, setProducts] = useState<ProductExpanded[]>([]);
 
-  const loc = useLocation();
+  useEffect(() => {
+    getProductsByNamespaceId('products', namespaceId).then(setProducts);
+  }, [namespaceId]);
 
-  const getProductUrl = (specification: string, isColor: boolean) => {
-    const pathnameToArray = loc.pathname.split('-');
-    let newPathName = loc.pathname;
-    if (isColor) {
-      pathnameToArray.splice(-1, 1, specification);
-      newPathName = pathnameToArray.join('-');
-    } else {
-      pathnameToArray.splice(-2, 1, specification.toLowerCase());
-      newPathName = pathnameToArray.join('-');
-    }
+  const getProductUrl = (id: string) => {
+    const rootPath = pathname.split('/').slice(0, -1).join('/');
+    const newPath = rootPath + '/' + id;
 
-    return newPathName;
+    return newPath;
   };
 
   return (
@@ -46,14 +41,20 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({ prodId, category }) => {
       <Box>
         <OptionsTitle>Available colors</OptionsTitle>
         <Colors>
-          {selectedData?.colorsAvailable.sort().map((color, i) => {
+          {colorsAvailable.map(color => {
+            const productMatchColor =
+              products.find(
+                product =>
+                  product.color === color &&
+                  product.capacity === currentProduct.capacity,
+              ) || null;
             const tempColor =
               ColorsAvailable[color as keyof typeof ColorsAvailable];
             return (
               <ColorWrapper
-                to={getProductUrl(color, true)}
-                key={i}
-                className={selectedData?.color === color ? 'active' : ''}
+                to={getProductUrl(productMatchColor?.slug as string)}
+                key={color}
+                className={color === currentProduct.color ? 'active' : ''}
               >
                 <Color style={{ backgroundColor: tempColor }} />
               </ColorWrapper>
@@ -65,15 +66,23 @@ export const ChangeColorSizeBlock: React.FC<Props> = ({ prodId, category }) => {
       <Box>
         <OptionsTitle>Select capacity</OptionsTitle>
         <Capacityes>
-          {selectedData?.capacityAvailable.map(item => (
-            <Capacity
-              to={getProductUrl(item, false)}
-              key={item}
-              className={selectedData?.capacity === item ? 'active' : ''}
-            >
-              <CapacityValue>{item}</CapacityValue>
-            </Capacity>
-          ))}
+          {capacityAvailable.map(capacity => {
+            const productMatchCapacity =
+              products.find(
+                product =>
+                  product.capacity === capacity &&
+                  product.color === currentProduct.color,
+              ) || null;
+            return (
+              <Capacity
+                to={getProductUrl(productMatchCapacity?.slug as string)}
+                key={capacity}
+                className={capacity === currentProduct.capacity ? 'active' : ''}
+              >
+                <CapacityValue>{capacity}</CapacityValue>
+              </Capacity>
+            );
+          })}
         </Capacityes>
       </Box>
       <LineBox />
