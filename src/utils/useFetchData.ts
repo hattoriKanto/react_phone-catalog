@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Favorite } from '../types/Favorites';
 import { apiDBurl } from './config';
+import { ProductExpanded } from '../types';
 
 const BASE_URL = apiDBurl;
 
@@ -24,9 +25,7 @@ function useFetchData<T>(url: string): FetchState<T> {
     const fetchData = async () => {
       try {
         const response = await axios.get<T[]>(BASE_URL + url);
-
-        console.log(response.data);
-
+        
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -43,6 +42,36 @@ function useFetchData<T>(url: string): FetchState<T> {
   }, [url]);
 
   return { data, isLoading, error };
+}
+
+async function getOneProductBySlug(url: string) {
+  try {
+    const response = await axios.get<ProductExpanded>(BASE_URL + url);
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error('Failed to fetch data');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+}
+
+async function getProductsByNamespaceId(url: string, namespaceId: string) {
+  try {
+    const response = await axios.get<ProductExpanded[]>(BASE_URL + url, {
+      params: { namespaceId },
+    });
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error('Failed to fetch data');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
 }
 
 //c
@@ -178,6 +207,10 @@ async function loginUser(username: string, password: string): Promise<void> {
       username,
       password,
     });
+
+    localStorage.setItem('token', response.data.accessToken);
+    localStorage.setItem('userId', response.data.user.id);
+    localStorage.setItem('userName', response.data.user.username);
     return response.data;
   } catch (error) {
     throw new Error('Failed to login');
@@ -186,6 +219,8 @@ async function loginUser(username: string, password: string): Promise<void> {
 
 export default useFetchData;
 export {
+  getOneProductBySlug,
+  getProductsByNamespaceId,
   addToFavorites,
   removeFromFavorites,
   getUserFavorites,

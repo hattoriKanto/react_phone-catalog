@@ -1,5 +1,5 @@
 /* #region IMPORTS */
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Box, Button, Container, Typography } from '@mui/material';
@@ -11,37 +11,29 @@ import {
   StyledFlexWrapper,
 } from './ProductPage.styles';
 
-import useFetchData from '../../utils/useFetchData';
-import { ProductExpanded } from '../../types/ProductExpanded';
 import {
   About,
-  CartAndFavouriteBlock,
   ChangeColorSizeBlock,
   ImageSelector,
   PriceBlock,
   TechSpecs,
   SmallSpecsBlock,
-  RecommendedProducts,
   BreadCrumbsComponent,
+  // RecommendedProducts,
+  // CartAndFavouriteBlock,
 } from '../../components';
+import { getOneProductBySlug } from '../../utils/useFetchData';
+import { ProductExpanded } from '../../types';
 /* #endregion */
 
 export const ProductPage: FC = () => {
+  const [product, setProduct] = useState<ProductExpanded | null>(null);
   const location = useLocation();
   const { pathname } = location;
 
-  const category = pathname.split('/')[1];
-  const prodId = pathname.split('/')[2];
-
-  const { data, isLoading, error } = useFetchData<ProductExpanded>(
-    `${category}.json`,
-  );
-
-  // const selector = prodId.split('-').slice(0, 3).join('-');
-  const product = data.find(prod => prod.id === prodId) as ProductExpanded;
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  useEffect(() => {
+    getOneProductBySlug('products' + pathname).then(setProduct);
+  }, [pathname]);
 
   return (
     <>
@@ -61,35 +53,28 @@ export const ProductPage: FC = () => {
             Back
           </Button>
           <Typography variant="h1" pb={3}>
-            {product?.name}
+            {product.name}
           </Typography>
           <ProductWrapper>
-            <ImageSelector images={product?.images} />
+            <ImageSelector images={product.images} />
             <ProductInfoWrapper>
-              <ChangeColorSizeBlock
-                prodId={prodId}
-                category={category}
-                pathname={pathname}
-              />
-              <PriceBlock
-                price={product?.priceDiscount}
-                fullPrice={product?.priceRegular}
-              />
-              <CartAndFavouriteBlock product={product} />
+              <ChangeColorSizeBlock currentProduct={product} />
+              <PriceBlock price={product.price} fullPrice={product.fullPrice} />
+              {/* <CartAndFavouriteBlock product={product} /> */}
               <SmallSpecsBlock
-                screen={product?.screen}
-                resolution={product?.resolution}
-                ram={product?.ram}
-                processor={product?.processor}
+                screen={product.screen}
+                resolution={product.resolution}
+                ram={product.ram}
+                processor={product.processor}
               />
             </ProductInfoWrapper>
           </ProductWrapper>
           <StyledFlexWrapper>
-            <About description={product?.description} />
+            <About description={product.description} />
             <TechSpecs product={product} />
           </StyledFlexWrapper>
           <Box sx={{ pb: { xs: 3, sm: 6 } }}>
-            <RecommendedProducts id={product?.id} color={product?.color} />
+            {/* <RecommendedProducts id={product.id} color={product.color} /> */}
           </Box>
         </Container>
       )}

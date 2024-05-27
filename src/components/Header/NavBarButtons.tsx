@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 import { HeaderOtherLinks } from '../../types';
 import {
@@ -30,6 +31,7 @@ import { Divider, Grow } from '@mui/material';
 import { AuthModal } from '../AuthModal';
 import { TransitionProps } from '@mui/material/transitions';
 import { Toast } from '../Toast';
+import { LogoutModal } from '../LogoutModal';
 
 interface Props {
   searchField: boolean;
@@ -39,7 +41,8 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
   const locationPathname = useLocation().pathname;
   const { cartQuantity } = useCartContext();
   const { favoritesQuantity } = useFavoritesContext();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState<{
     open: boolean;
     Transition: React.ComponentType<
@@ -105,6 +108,7 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
 
       <DesktopButtonsWrapper>
         <Toast isToastOpen={isToastOpen} setIsToastOpen={setIsToastOpen} />
+
         <Divider
           orientation="vertical"
           sx={({ breakpoints }) => ({
@@ -115,21 +119,55 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
             },
           })}
         />
-        <StyledHeaderIconButton onClick={() => setIsModalOpen(!isModalOpen)}>
-          <PersonOutlineIcon />
-        </StyledHeaderIconButton>
 
         <AuthModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isAuthModalOpen}
+          setIsModalOpen={setIsAuthModalOpen}
           setIsToastOpen={setIsToastOpen}
         ></AuthModal>
 
-        {Object.entries(HeaderOtherLinks).map(([text, link]) => {
-          return (
-            <ActiveLink key={text} label={handleChangeIcon(link)} to={link} />
-          );
-        })}
+        <LogoutModal
+          isModalOpen={isLogoutModalOpen}
+          setIsModalOpen={setIsLogoutModalOpen}
+          setIsToastOpen={setIsToastOpen}
+        ></LogoutModal>
+
+        {!localStorage.getItem('token') ? (
+          <StyledHeaderIconButton
+            onClick={() => setIsAuthModalOpen(!isAuthModalOpen)}
+          >
+            <PersonOutlineIcon />
+          </StyledHeaderIconButton>
+        ) : (
+          <>
+            {Object.entries(HeaderOtherLinks).map(([text, link]) => {
+              return (
+                <ActiveLink
+                  key={text}
+                  label={handleChangeIcon(link)}
+                  to={link}
+                />
+              );
+            })}
+
+            <Divider
+              orientation="vertical"
+              sx={({ breakpoints }) => ({
+                backgroundColor: 'secondary',
+                height: '64px',
+                [breakpoints.down('md')]: {
+                  height: '48px',
+                },
+              })}
+            />
+
+            <StyledHeaderIconButton
+              onClick={() => setIsLogoutModalOpen(!isLogoutModalOpen)}
+            >
+              <LogoutIcon />
+            </StyledHeaderIconButton>
+          </>
+        )}
       </DesktopButtonsWrapper>
 
       <Divider
@@ -142,6 +180,7 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
           },
         })}
       />
+
       <StyledBurgerButton
         disableElevation
         onClick={() => {
