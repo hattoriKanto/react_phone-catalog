@@ -50,7 +50,7 @@ async function addToFavorites(
     if (!userId) {
       userId = 1;
     }
-    const response = await axios.post(`${BASE_URL}favorites`, {
+    const response = await axios.post(`${BASE_URL}users/favorites`, {
       userId,
       productId,
     });
@@ -66,7 +66,7 @@ async function removeFromFavorites(
   productId: number,
 ): Promise<void> {
   try {
-    const response = await axios.delete(`${BASE_URL}favorites`, {
+    const response = await axios.delete(`${BASE_URL}users/favorites`, {
       data: { userId, productId },
     });
     return response.data;
@@ -78,7 +78,7 @@ async function removeFromFavorites(
 //c
 async function getUserFavorites(userId: number) {
   try {
-    const response = await axios.get(`${BASE_URL}favorites/${userId}`);
+    const response = await axios.get(`${BASE_URL}users/${userId}/favorites`);
     return response.data;
   } catch (error) {
     throw new Error('Failed to upload favorites');
@@ -145,6 +145,10 @@ async function loginUser(username: string, password: string): Promise<void> {
     throw new Error('Failed to login');
   }
 }
+
+
+
+
 
 export default useFetchData;
 export {
