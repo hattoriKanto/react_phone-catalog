@@ -33,7 +33,6 @@ export const CategoryPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryName = location.pathname.slice(1);
   const search = location.search;
-  console.log(search);
   const { data, isLoading, error } = useFetchData<Product>(
     `products/${categoryName}${search}`,
   );

@@ -19,7 +19,6 @@ function useFetchData<T>(url: string): FetchState<T> {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(url);
         const response = await axios.get<T[]>(BASE_URL + url);
 
         console.log(response.data);
@@ -51,7 +50,7 @@ async function addToFavorites(
     if (!userId) {
       userId = 1;
     }
-    const response = await axios.post(`${BASE_URL}/favorites`, {
+    const response = await axios.post(`${BASE_URL}favorites`, {
       userId,
       productId,
     });
@@ -67,7 +66,7 @@ async function removeFromFavorites(
   productId: number,
 ): Promise<void> {
   try {
-    const response = await axios.delete(`${BASE_URL}/favorites`, {
+    const response = await axios.delete(`${BASE_URL}favorites`, {
       data: { userId, productId },
     });
     return response.data;
@@ -79,7 +78,7 @@ async function removeFromFavorites(
 //c
 async function getUserFavorites(userId: number) {
   try {
-    const response = await axios.get(`${BASE_URL}/favorites/${userId}`);
+    const response = await axios.get(`${BASE_URL}favorites/${userId}`);
     return response.data;
   } catch (error) {
     throw new Error('Failed to upload favorites');

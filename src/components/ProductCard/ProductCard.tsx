@@ -47,7 +47,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
   //
   const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
-  console.log(images[0]);
+
   const currentImg = images[0];
 
   //
