@@ -9,12 +9,12 @@ import PersonIcon from '@mui/icons-material/Person';
 
 import { customTypography } from '../../theme/typography.config';
 import { Button, Grow, GrowProps, TextField } from '@mui/material';
-import { useCartContext } from '../../hooks/useCartContext';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { StyledIconButton } from '../CartItem/CartItem';
 import { DeleteIcon } from '../CartItem/CartItem.styles';
 import { isToastOpen } from '../../types';
 import { ModalBox } from '../CartModal';
+import { loginUser, registerUser } from '../../utils';
 
 const textBoxStyle = {
   m: '0 auto',
@@ -38,6 +38,7 @@ export const AuthModal: React.FC<Props> = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   let isValid = true;
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const [error, setError] = useState<string[]>([]);
   function GrowTransition(props: GrowProps) {
@@ -48,7 +49,6 @@ export const AuthModal: React.FC<Props> = ({
     setIsModalOpen(false);
     setError([]);
   };
-  const { clearCart } = useCartContext();
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -102,20 +102,56 @@ export const AuthModal: React.FC<Props> = ({
     }
   };
 
-  const onConfirm = (e: FormEvent<HTMLFormElement>) => {
+  const onConfirm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     validateField('confimation');
 
     if (isValid === true) {
-      clearCart();
-      setIsModalOpen(false);
-      setIsToastOpen({
-        open: true,
-        Transition: GrowTransition,
-        message: 'Success!',
-        status: 'success',
-      });
+      let message = 'Success!';
+      let isError = false;
+
+      if (isRegistered) {
+        try {
+          await loginUser(name, password);
+          setIsModalOpen(false);
+          setName('');
+          setEmail('');
+          setPassword('');
+        } catch (error) {
+          message = 'Password or username is uncorrect';
+          isError = true;
+        }
+        setIsToastOpen({
+          open: true,
+          Transition: GrowTransition,
+          message: message,
+          status: isError ? 'error' : 'success',
+        });
+      } else if (!isRegistered) {
+        try {
+          await registerUser(name, email, password);
+        } catch (error) {
+          message = 'User already exist';
+          isError = true;
+        }
+        isRegistered
+          ? setIsModalOpen(false)
+          : !isError
+            ? setIsRegistered(true)
+            : null;
+        setIsToastOpen({
+          open: true,
+          Transition: GrowTransition,
+          message: message,
+          status: isError ? 'error' : 'success',
+        });
+      }
     }
+  };
+
+  const onSignStatus = () => {
+    setIsRegistered(!isRegistered);
+    setError([]);
   };
 
   return (
@@ -134,7 +170,12 @@ export const AuthModal: React.FC<Props> = ({
         }}
       >
         <Fade in={isModalOpen}>
-          <ModalBox>
+          <ModalBox
+            display={'flex'}
+            flexDirection={'column'}
+            justifyContent={'center'}
+            gap={'16px'}
+          >
             <form onSubmit={onConfirm} onInvalid={onConfirm}>
               <Box
                 position={'relative'}
@@ -159,7 +200,7 @@ export const AuthModal: React.FC<Props> = ({
                   gutterBottom
                   sx={customTypography.h2}
                 >
-                  Enter your info
+                  {isRegistered ? 'Sign in' : 'Sign up'}
                 </Typography>
               </Box>
               <Box
@@ -188,25 +229,29 @@ export const AuthModal: React.FC<Props> = ({
                     onChange={e => handleChange(e)}
                   />
                 </Box>
-                <Box sx={textBoxStyle}>
-                  <EmailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                  <TextField
-                    error={error.includes('email')}
-                    helperText={
-                      error.includes('email') && 'Email must be correct'
-                    }
-                    fullWidth
-                    label="Email"
-                    type="email"
-                    id="fullWidth-error"
-                    variant="standard"
-                    required
-                    value={email}
-                    name="email"
-                    onBlur={e => validateField(e.target.name)}
-                    onChange={e => handleChange(e)}
-                  />
-                </Box>
+                {!isRegistered && (
+                  <Box sx={textBoxStyle}>
+                    <EmailIcon
+                      sx={{ color: 'action.active', mr: 1, my: 0.5 }}
+                    />
+                    <TextField
+                      error={error.includes('email')}
+                      helperText={
+                        error.includes('email') && 'Email must be correct'
+                      }
+                      fullWidth
+                      label="Email"
+                      type="email"
+                      id="fullWidth-error"
+                      variant="standard"
+                      required
+                      value={email}
+                      name="email"
+                      onBlur={e => validateField(e.target.name)}
+                      onChange={e => handleChange(e)}
+                    />
+                  </Box>
+                )}
                 <Box sx={textBoxStyle}>
                   <HttpsIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
                   <TextField
@@ -242,6 +287,15 @@ export const AuthModal: React.FC<Props> = ({
                 Confirm
               </Button>
             </form>
+            <Button
+              onClick={onSignStatus}
+              sx={{
+                margin: '0 auto',
+                width: '100px',
+              }}
+            >
+              {isRegistered ? 'Or sign up' : 'Or sign in'}
+            </Button>
           </ModalBox>
         </Fade>
       </Modal>

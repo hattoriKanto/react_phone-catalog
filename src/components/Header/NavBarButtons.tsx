@@ -27,7 +27,7 @@ import { toggleBurgerMenu } from '../../functions';
 import { useSearchContext } from '../../hooks/useSearchContext';
 import { useBurgerMenuContext } from '../../hooks/useBurgerMenuContext';
 import { Divider, Grow } from '@mui/material';
-import { AuthModal } from '../AuthModal/AuthModal';
+import { AuthModal } from '../AuthModal';
 import { TransitionProps } from '@mui/material/transitions';
 import { Toast } from '../Toast';
 
@@ -51,7 +51,7 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
       }
     >;
     message: string;
-    status: 'warning' | 'success' | null;
+    status: 'warning' | 'success' | 'error' | null;
   }>({
     open: false,
     Transition: Grow,
@@ -101,10 +101,10 @@ export const NavBarButtons: React.FC<Props> = ({ searchField }) => {
 
   return (
     <StyledWrapperButton>
-      <Toast isToastOpen={isToastOpen} setIsToastOpen={setIsToastOpen} />
       {searchField && <Search />}
 
       <DesktopButtonsWrapper>
+        <Toast isToastOpen={isToastOpen} setIsToastOpen={setIsToastOpen} />
         <Divider
           orientation="vertical"
           sx={({ breakpoints }) => ({

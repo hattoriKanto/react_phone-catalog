@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import { Alert } from '@mui/material';
+import { Alert, Portal } from '@mui/material';
 import { isToastOpen } from '../../types';
 
 type Props = {
@@ -17,7 +17,7 @@ export const Toast: React.FC<Props> = ({ isToastOpen, setIsToastOpen }) => {
   };
 
   return (
-    <div>
+    <Portal>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={isToastOpen.open}
@@ -35,6 +35,6 @@ export const Toast: React.FC<Props> = ({ isToastOpen, setIsToastOpen }) => {
           {isToastOpen.message}
         </Alert>
       </Snackbar>
-    </div>
+    </Portal>
   );
 };

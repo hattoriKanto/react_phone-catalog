@@ -118,6 +118,35 @@ async function getOneFavorite(
   }
 }
 
+async function registerUser(
+  username: string,
+  email: string,
+  password: string,
+): Promise<void> {
+  try {
+    const response = await axios.post(`${BASE_URL}/registration`, {
+      username,
+      password,
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to register');
+  }
+}
+
+async function loginUser(username: string, password: string): Promise<void> {
+  try {
+    const response = await axios.post(`${BASE_URL}/login`, {
+      username,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to login');
+  }
+}
+
 export default useFetchData;
 export {
   addToFavorites,
@@ -125,4 +154,6 @@ export {
   getUserFavorites,
   isProductInFavorites,
   getOneFavorite,
+  registerUser,
+  loginUser,
 };

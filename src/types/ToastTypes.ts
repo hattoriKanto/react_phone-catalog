@@ -13,5 +13,5 @@ export type isToastOpen = {
   open: boolean;
   Transition: Transition;
   message: string;
-  status: 'warning' | 'success' | null;
+  status: 'warning' | 'success' | 'error' | null;
 };
