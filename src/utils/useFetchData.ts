@@ -211,6 +211,7 @@ async function loginUser(username: string, password: string): Promise<void> {
     localStorage.setItem('token', response.data.accessToken);
     localStorage.setItem('userId', response.data.user.id);
     localStorage.setItem('userName', response.data.user.username);
+    window.dispatchEvent(new Event('storage'));
     return response.data;
   } catch (error) {
     throw new Error('Failed to login');

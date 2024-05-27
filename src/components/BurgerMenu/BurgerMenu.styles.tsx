@@ -96,7 +96,7 @@ export const StyledBurgerLink = styled(NavLink)(({
 
     [theme.breakpoints.down('sm')]: {
       height: issvg === 'true' ? '10vh' : '60px',
-    }
+    },
   };
 });
 

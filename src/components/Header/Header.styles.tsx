@@ -287,6 +287,10 @@ export const StyledHeaderIconButton = styled(Button)(({ theme }) => {
       transition: 'transform 500ms',
     },
 
+    '&:hover, &:active': {
+      backgroundColor: 'transparent',
+    },
+
     '&:hover::after, &.active::after': {
       transform: 'scaleX(1)',
     },
