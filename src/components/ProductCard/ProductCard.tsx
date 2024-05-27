@@ -39,7 +39,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     ram,
     images,
     category,
-    itemId,
+    slug,
   } = product;
 
   const { setFavorites, normalizedUserId } = useFavoritesContext();
@@ -66,14 +66,14 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
     if (!isInCart) {
       addToCart({
-        prodId: product.itemId,
+        prodId: product.slug,
         img: product.images[0],
         name: product.name,
         category: product.category,
         price: product.price,
       });
     } else {
-      deleteFromCart(product.itemId);
+      deleteFromCart(product.slug);
     }
   };
 
@@ -115,11 +115,11 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     }
   };
 
-  const isInCart = isProductInCart(product.itemId);
+  const isInCart = isProductInCart(product.slug);
 
   return (
     <Link
-      to={`/${category}/${itemId}`}
+      to={`/${category}/${slug}`}
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
       <Card

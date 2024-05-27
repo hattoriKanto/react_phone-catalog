@@ -42,14 +42,14 @@ export const FavoritesProvider: React.FC<Props> = ({ children }) => {
 
   const favoritesQuantity = useMemo(() => favorites.length, [favorites]);
 
-  const favoritesState: FavoritesContextType = {
+  const favoritesState = useMemo(() => ({
     normalizedUserId,
     favorites,
     setFavorites,
     isLoading,
     setIsLoading,
     favoritesQuantity,
-  };
+  }), [normalizedUserId, favorites, setFavorites, isLoading, setIsLoading, favoritesQuantity]);
 
   return (
     <FavoritesContext.Provider value={favoritesState}>
