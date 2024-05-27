@@ -1,14 +1,30 @@
-export type Product = {
+export type Description = {
+  title: string;
+  text: string[];
+};
+
+export interface Product {
   id: number;
   category: string;
-  itemId: string;
+  slug: string;
   name: string;
-  fullPrice: number;
+  color: string;
   price: number;
+  fullPrice: number;
   screen: string;
   capacity: string;
-  color: string;
   ram: string;
-  year: number;
   images: string[];
-};
+}
+
+export interface ProductExpanded extends Product {
+  namespaceId: string;
+  capacityAvailable: string[];
+  colorsAvailable: string[];
+  description: Description[];
+  resolution: string;
+  processor: string;
+  camera?: string | null;
+  zoom?: string | null;
+  cell: string[];
+}

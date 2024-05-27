@@ -186,10 +186,10 @@ export const CategoryPage = () => {
               </>
             ) : (
               <>
-                {visibleData?.map(phone => (
-                  <Grow key={phone.id} in={true} timeout={800}>
+                {visibleData?.map(product => (
+                  <Grow key={product.id} in={true} timeout={800}>
                     <GridStyled item xs={1} md={1}>
-                      <ProductCard product={phone} />
+                      <ProductCard product={product} />
                     </GridStyled>
                   </Grow>
                 ))}
