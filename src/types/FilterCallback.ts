@@ -6,5 +6,5 @@ export const FilterCallback = {
     const percent = Math.round(((fullPrice - price) / price) * 100);
     return percent > 15;
   },
-  NewModels: ({ year }: Product) => year === 2022,
+  NewModels: ({ ram }: Product) => ram === '8GB',
 };
