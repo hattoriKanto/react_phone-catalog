@@ -124,7 +124,7 @@ async function registerUser(
   password: string,
 ): Promise<void> {
   try {
-    const response = await axios.post(`${BASE_URL}/registration`, {
+    const response = await axios.post(`${BASE_URL}registration`, {
       username,
       password,
       email,
@@ -137,7 +137,7 @@ async function registerUser(
 
 async function loginUser(username: string, password: string): Promise<void> {
   try {
-    const response = await axios.post(`${BASE_URL}/login`, {
+    const response = await axios.post(`${BASE_URL}login`, {
       username,
       password,
     });
