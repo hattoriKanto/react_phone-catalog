@@ -27,8 +27,8 @@ export const FavoritesProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const data = await getUserFavorites(normalizedUserId);
-  
+        const data = await getUserFavorites(1);
+
         setFavorites(data);
       } catch (error) {
         throw new Error('Failed to fetch favorites');

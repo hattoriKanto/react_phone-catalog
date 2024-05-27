@@ -39,6 +39,7 @@ export const AuthModal: React.FC<Props> = ({
   const [password, setPassword] = useState('');
   let isValid = true;
   const [isRegistered, setIsRegistered] = useState(false);
+  const emailRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const [error, setError] = useState<string[]>([]);
   function GrowTransition(props: GrowProps) {
@@ -82,17 +83,22 @@ export const AuthModal: React.FC<Props> = ({
       case 'name':
         return name.length === 0 && setError(prev => [...prev, fieldName]);
       case 'email':
-        return email.length === 0 && setError(prev => [...prev, fieldName]);
+        return (
+          (emailRegExp.test(email) === false || email.length === 0) &&
+          setError(prev => [...prev, fieldName])
+        );
       case 'password':
-        return password.length === 0 && setError(prev => [...prev, fieldName]);
+        return password.length < 6 && setError(prev => [...prev, fieldName]);
       case 'confimation':
         name.length === 0
           ? (setError(prev => [...prev, 'name']), (isValid = false))
           : null;
-        email.length === 0
-          ? (setError(prev => [...prev, 'email']), (isValid = false))
-          : null;
-        password.length === 0
+        if (!isRegistered) {
+          email.length === 0 || !emailRegExp.test(email)
+            ? (setError(prev => [...prev, 'email']), (isValid = false))
+            : null;
+        }
+        password.length < 6
           ? (setError(prev => [...prev, 'password']), (isValid = false))
           : null;
 
@@ -130,6 +136,7 @@ export const AuthModal: React.FC<Props> = ({
       } else if (!isRegistered) {
         try {
           await registerUser(name, email, password);
+          setIsRegistered(false);
         } catch (error) {
           message = 'User already exist';
           isError = true;

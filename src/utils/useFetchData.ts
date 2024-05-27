@@ -153,6 +153,10 @@ async function loginUser(username: string, password: string): Promise<void> {
       username,
       password,
     });
+
+    localStorage.setItem('token', response.data.accessToken);
+    localStorage.setItem('userId', response.data.user.id);
+    localStorage.setItem('userName', response.data.user.username);
     return response.data;
   } catch (error) {
     throw new Error('Failed to login');
