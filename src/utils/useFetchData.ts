@@ -4,7 +4,6 @@ import { Favorite } from '../types/Favorites';
 import { apiDBurl } from './config';
 
 const BASE_URL = apiDBurl;
-console.log(BASE_URL);
 
 type FetchState<T> = {
   data: T[];
@@ -17,12 +16,13 @@ function useFetchData<T>(url: string): FetchState<T> {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  console.log(BASE_URL + url);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(url);
         const response = await axios.get<T[]>(BASE_URL + url);
+
+        console.log(response.data);
 
         setData(response.data);
         setIsLoading(false);
