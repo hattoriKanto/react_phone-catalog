@@ -18,7 +18,7 @@ import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import { CardSkeleton } from '../../components/ProductCard';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getSearchWith } from '../../utils/searchHelper';
 import { BreadCrumbsComponent } from '../../components';
 import CategorySort from '../../components/CategorySort/CategorySort';
@@ -27,43 +27,87 @@ import { useSearchContext } from '../../hooks/useSearchContext';
 import { DotLottiePlayer } from '@dotlottie/react-player';
 import { customBreakpoints } from '../../theme/breakpoints.config';
 import { useTheme } from '@mui/material/styles';
+import axios from 'axios';
+import { apiDBurl } from '../../utils/config';
+import { error } from 'console';
 
 export const CategoryPage = () => {
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const categoryName = location.pathname.slice(1);
-  const search = location.search;
-  const { data, isLoading, error } = useFetchData<Product>(
-    `products/${categoryName}${search}`,
-  );
+  const searchParams = new URLSearchParams(location.search);
+  const filters = {};
+  searchParams.forEach((value, key) => (filters[key] = value));
+  console.log(filters);
+  const categoryName = location.pathname;
 
-  const [visibleData, setVisibleData] = React.useState<Product[]>(data);
+  const [maxPrice, setMaxPrice] = useState(Number.MAX_SAFE_INTEGER);
+  const [minPrice, setMinPrice] = useState(0);
+
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
+  //const [];
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [visibleData, setVisibleData] = React.useState<Product[]>([]);
+
+  const fetchProducts = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get(`${apiDBurl}products${categoryName}`, {
+        params: filters,
+      });
+
+      console.log(data);
+
+      setVisibleData(data.products);
+      // setProductCount(data.productCount);
+      setMaxPrice(data.maxPrice);
+      setMinPrice(data.minPrice);
+      setPageCount(data.pageCount);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setVisibleData(data);
-  }, [data, searchParams]);
-
-  console.log(data);
+    fetchProducts();
+  }, []);
 
   const { isSearchOpen, setIsSearchOpen, handleClearSearch } =
     useSearchContext();
   const page = searchParams.get('page') || 1;
   const perPage = searchParams.get('perPage') || 4;
+  const querySearch = searchParams.get('query') || '';
+  const sortBySearch = searchParams.get('sortBy') || '';
+  const minPriceSearch = searchParams.get('minPrice') || 0;
+  const maxPriceSearch = searchParams.get('maxPrice') || maxPrice;
+
+  useEffect(() => {
+    fetchProducts();
+  }, [
+    page,
+    perPage,
+    minPriceSearch,
+    maxPriceSearch,
+    querySearch,
+    sortBySearch,
+  ]);
 
   const { sm } = customBreakpoints.values;
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.up(sm));
 
-  const pricesInCategory = data
-    .filter(product => product.category === categoryName)
-    .map(product => product.price);
+  // const pricesInCategory = data
+  //   .filter(product => product.category === categoryName)
+  //   .map(product => product.price);
 
-  const minPriceInCategory =
-    Math.floor(Math.min(...pricesInCategory) / 100) * 100;
-  const maxPriceInCategory =
-    Math.ceil(Math.max(...pricesInCategory) / 100) * 100;
+  // const minPriceInCategory =
+  //   Math.floor(Math.min(...pricesInCategory) / 100) * 100;
+  // const maxPriceInCategory =
+  //   Math.ceil(Math.max(...pricesInCategory) / 100) * 100;
 
-  if (error) return <p>Error: {error.message}</p>;
+  // if (error) return <p>Error: {error.message}</p>;
 
   const GridStyled = styled(Grid)({
     '&.MuiGrid-root': {
@@ -88,9 +132,10 @@ export const CategoryPage = () => {
       <Container>
         <BreadCrumbsComponent />
         <Stack>
-          <Slide in={true} direction="down" key={categoryName}>
+          <Slide in={true} direction="down" key={categoryName.slice(2)}>
             <Typography variant="h1" sx={{ pt: 4 }}>
-              {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
+              {categoryName.slice(1).charAt(0).toUpperCase() +
+                categoryName.slice(2)}
             </Typography>
           </Slide>
 
@@ -168,8 +213,8 @@ export const CategoryPage = () => {
             <Stack direction={'column'}>
               <CategorySort />
               <CategoryPriceRange
-                minPriceInCategory={minPriceInCategory}
-                maxPriceInCategory={maxPriceInCategory}
+                minPriceInCategory={minPrice}
+                maxPriceInCategory={maxPrice}
               />
             </Stack>
           )}
@@ -205,11 +250,7 @@ export const CategoryPage = () => {
             color="primary"
             page={Number(page)}
             onChange={handlePageChange}
-            count={
-              perPage === 'All'
-                ? 1
-                : Math.ceil(visibleData.length / Number(perPage))
-            }
+            count={perPage === 'All' ? 1 : pageCount}
             sx={{
               py: 4,
               display: 'flex',
