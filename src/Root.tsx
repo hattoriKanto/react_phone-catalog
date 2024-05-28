@@ -12,9 +12,20 @@ import { ContactsPage } from './pages/ContactsPage';
 import { RightsPage } from './pages/RightsPage';
 import { SearchContextProvider } from './context/SearchContext';
 import { ScrollToTop } from './utils/ScrollToTop';
-
+import { useEffect, useState } from 'react';
 
 export const Root = () => {
+  const [hasToken, setHasToken] = useState(!!localStorage.getItem('token'));
+
+  useEffect(() => {
+    const handleStorage = () => {
+      setHasToken(!!localStorage.getItem('token'));
+    };
+
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
   return (
     <Router>
       <SearchContextProvider>
@@ -34,8 +45,12 @@ export const Root = () => {
               <Route path="/accessories" element={<CategoryPage />} />
               <Route path="/accessories/:prodId?" element={<ProductPage />} />
             </Route>
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
+            {hasToken && (
+              <>
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/favorites" element={<FavoritesPage />} />
+              </>
+            )}
             <Route path="*" element={<NotFoundPage />} />
             <Route path="/contacts" element={<ContactsPage />} />
             <Route path="/rights" element={<RightsPage />} />
