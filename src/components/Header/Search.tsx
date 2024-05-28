@@ -22,7 +22,6 @@ export const Search: React.FC = () => {
     setIsSearchOpen,
     setQuery,
     handleSearchIconClick,
-    //handleChangeQuery,
     handleInputChange,
     handleClearSearch,
   } = useSearchContext();
@@ -30,10 +29,6 @@ export const Search: React.FC = () => {
   const { pathname } = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  // const applyQuery = useCallback(
-  //   debounce(setQuery => setQuery(query), 1000),
-  //   [],
-  // );
 
   const debouncedSetQuery = useCallback(
     debounce(newQuery => {
@@ -45,11 +40,6 @@ export const Search: React.FC = () => {
     }, 600),
     [],
   );
-
-  // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setQuery(event.target.value);
-  //   debouncedSetQuery(query);
-  // };
 
   useEffect(() => {
     debouncedSetQuery(query);
