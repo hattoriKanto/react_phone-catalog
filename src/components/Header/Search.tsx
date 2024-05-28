@@ -22,7 +22,6 @@ export const Search: React.FC = () => {
     setIsSearchOpen,
     setQuery,
     handleSearchIconClick,
-    handleInputChange,
     handleClearSearch,
   } = useSearchContext();
 
@@ -40,6 +39,11 @@ export const Search: React.FC = () => {
     }, 600),
     [],
   );
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+    debouncedSetQuery(query);
+  };
 
   useEffect(() => {
     debouncedSetQuery(query);
