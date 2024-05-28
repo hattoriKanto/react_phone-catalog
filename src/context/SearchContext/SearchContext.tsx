@@ -10,7 +10,6 @@ export const SearchContext = React.createContext<SearchContextProps>({
   setIsSearchOpen: () => {},
   setQuery: () => {},
   handleSearchIconClick: () => {},
-  handleChangeQuery: () => {},
   handleClearSearch: () => {},
 });
 
@@ -31,17 +30,6 @@ export const SearchContextProvider: React.FC<SearchProviderProps> = ({
     }
   };
 
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value;
-    setQuery(inputValue);
-
-    setSearchParams(
-      getSearchWith(searchParams, {
-        query: inputValue || null,
-      }),
-    );
-  };
-
   const handleClearSearch = () => {
     setQuery('');
 
@@ -58,8 +46,8 @@ export const SearchContextProvider: React.FC<SearchProviderProps> = ({
     setIsSearchOpen,
     setQuery,
     handleSearchIconClick,
-    handleChangeQuery,
     handleClearSearch,
+    handleInputChange,
   };
 
   return (
