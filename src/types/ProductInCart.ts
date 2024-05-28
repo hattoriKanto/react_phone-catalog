@@ -1,12 +1,9 @@
-export type ProductTrimmed = {
-  prodId: string;
-  img: string;
-  name: string;
-  category: string;
-  price: number;
-};
+import { Product } from './Product';
 
-export type ProductInCart = {
-  product: ProductTrimmed;
+export interface ProductInCart {
+  id: number;
+  userId: number;
+  productId: number;
   quantity: number;
-};
+  product: Product;
+}

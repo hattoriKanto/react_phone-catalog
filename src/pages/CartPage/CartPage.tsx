@@ -36,7 +36,7 @@ export const CartPage = () => {
       }
     >;
     message: string;
-    status: 'warning' | 'success' | null;
+    status: 'warning' | 'success' | 'error' | null;
   }>({
     open: false,
     Transition: Grow,
@@ -58,10 +58,9 @@ export const CartPage = () => {
   }
 
   const { cart, cartQuantity } = useCartContext();
-  const totalPrice = cart.reduce(
-    (total, item) => total + item.product.price * item.quantity,
-    0,
-  );
+  const totalPrice = cart.reduce((total, item) => {
+    return total + item.product.price * item.quantity;
+  }, 0);
 
   return (
     <>
@@ -140,8 +139,8 @@ export const CartPage = () => {
             >
               {cartQuantity > 0 &&
                 cart.map(item => (
-                  <Box key={item.product.prodId} sx={{ pb: 2 }}>
-                    <CartItem product={item} />{' '}
+                  <Box key={item.productId} sx={{ pb: 2 }}>
+                    <CartItem currentPoduct={item} />
                   </Box>
                 ))}
             </Box>

@@ -1,7 +1,7 @@
 import Card from '@mui/material/Card';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Product } from '../../types';
+import { ProductInCart, Product } from '../../types';
 import {
   Box,
   Button,
@@ -21,6 +21,10 @@ import {
   removeFromFavorites,
   isProductInFavorites,
   getOneFavorite,
+  isProductInCart,
+  addProductToCart,
+  deleteProductFromCart,
+  getOneProductInCart,
 } from '../../utils/useFetchData';
 import { Favorite } from '../../types/Favorites';
 import { useFavoritesContext } from '../../hooks/useFavoritesContext';
@@ -42,43 +46,61 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     slug,
   } = product;
 
-  const { setFavorites } = useFavoritesContext();
-  const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
-  const userId = localStorage.getItem('userId');
+  const { setFavorites, favorites } = useFavoritesContext();
+  const { setCart, cart } = useCartContext();
 
-  //
   const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
+  const [isInCart, setIsInCart] = useState(false);
 
   const currentImg = images[0];
 
-  //
   useEffect(() => {
     const checkFavorites = async () => {
       const result = await isProductInFavorites(product.id);
       setIsInFavorites(result);
     };
 
-    checkFavorites();
-  }, [userId, product.id]);
+    const checkCart = async () => {
+      const result = await isProductInCart(product.id);
+      setIsInCart(result);
+    };
 
-  const toggleAddToCard = (product: Product, event: React.MouseEvent) => {
+    checkFavorites();
+    checkCart();
+  }, [favorites, cart]);
+
+  const toggleAddToCard = async (product: Product, event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
 
-    if (!isInCart) {
-      addToCart({
-        prodId: product.slug,
-        img: product.images[0],
-        name: product.name,
-        category: product.category,
-        price: product.price,
-      });
-    } else {
-      deleteFromCart(product.slug);
+    try {
+      if (!isInCart) {
+        await addProductToCart(product.id);
+
+        const newCartProduct = await getOneProductInCart(product.id) as ProductInCart;
+
+        setCart((currentCart: ProductInCart[]) => [
+          ...currentCart,
+          newCartProduct,
+        ]);
+      } else {
+        await deleteProductFromCart(product.id);
+
+        setCart((currentCart: ProductInCart[]) =>
+          currentCart.filter(
+            productInCart => productInCart.productId !== product.id,
+          ),
+        );
+      }
+
+      const result = await isProductInCart(product.id);
+
+      setIsInCart(result);
+    } catch (error) {
+      throw new Error('Failed to toggle `Add to cart`');
     }
   };
 
-  //
   const toggleAddToFavorites = async (
     product: Product,
     event: React.MouseEvent,
@@ -115,8 +137,6 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       throw new Error('Failed to toggle favorites');
     }
   };
-
-  const isInCart = isProductInCart(product.slug);
 
   return (
     <Link
