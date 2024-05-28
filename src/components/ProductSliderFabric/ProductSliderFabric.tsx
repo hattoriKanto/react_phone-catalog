@@ -7,7 +7,6 @@ import {
   styled,
   Grid,
 } from '@mui/material';
-import products from '../../../public/api/products.json';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Product } from '../../types';
 import { ProductCard } from '../ProductCard/ProductCard';
@@ -15,30 +14,13 @@ import { useTheme } from '@mui/material/styles';
 import { customBreakpoints } from '../../theme/breakpoints.config';
 import { customTypography } from '../../theme/typography.config';
 import { CustomGrid } from '../CustomGrid';
-import { FilterCallback } from '../../types/FilterCallback';
-
-type UniqueProducts = {
-  [itemIdWithoutColor: string]: Product;
-};
-
-const uniqueProducts: UniqueProducts = {};
-
-products.forEach((product: Product) => {
-  const idWithoutColor = product.itemId.replace(/-[a-z]+$/, '');
-  if (!uniqueProducts[idWithoutColor]) {
-    uniqueProducts[idWithoutColor] = product;
-  }
-});
 
 type Props = {
   title: string;
-  callback: (product: Product) => void;
+  products: Product[];
 };
 
-export const ProductSliderFabric: React.FC<Props> = ({
-  title,
-  callback = FilterCallback.NewModels,
-}) => {
+export const ProductSliderFabric: React.FC<Props> = ({ title, products }) => {
   const [startIndex, setStartIndex] = useState(0);
   let productsPerRow = 4;
   const { sm, md, lg } = customBreakpoints.values;
@@ -63,8 +45,6 @@ export const ProductSliderFabric: React.FC<Props> = ({
       productsPerRow = 1;
       break;
   }
-
-  const newHotPrices: Product[] = products.filter(callback);
 
   const handleClickPrev = () => {
     setStartIndex(Math.max(startIndex - 1, 0));
@@ -99,7 +79,7 @@ export const ProductSliderFabric: React.FC<Props> = ({
 
           <Button
             onClick={handleClickNext}
-            disabled={startIndex + productsPerRow >= newHotPrices.length}
+            disabled={startIndex + productsPerRow >= products.length}
           >
             <ArrowForward />
           </Button>
@@ -108,7 +88,7 @@ export const ProductSliderFabric: React.FC<Props> = ({
 
       <Box display={'flex'} justifyContent={'center'}>
         <CustomGrid>
-          {newHotPrices
+          {products
             .slice(startIndex, startIndex + productsPerRow)
             .map((product: Product) => (
               <GridStyled item xs={1} md={1} key={product.id}>

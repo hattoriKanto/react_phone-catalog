@@ -2,12 +2,13 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Favorite } from '../types/Favorites';
 import { apiDBurl } from './config';
+import { ProductExpanded } from '../types';
 
 const BASE_URL = apiDBurl;
 
 //test data token
-const TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJDaHJpc3RpbmEyIiwiaWF0IjoxNzE2ODIxNjU5LCJleHAiOjE3MTk0MTM2NTl9.tHE6xxlPtvgo59vmBlpTLyQZaBhr5pb_8ffU3HH98Ow';
+// const TOKEN =
+//   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJDaHJpc3RpbmEyIiwiaWF0IjoxNzE2ODIxNjU5LCJleHAiOjE3MTk0MTM2NTl9.tHE6xxlPtvgo59vmBlpTLyQZaBhr5pb_8ffU3HH98Ow';
 
 type FetchState<T> = {
   data: T[];
@@ -24,9 +25,7 @@ function useFetchData<T>(url: string): FetchState<T> {
     const fetchData = async () => {
       try {
         const response = await axios.get<T[]>(BASE_URL + url);
-
-        console.log(response.data);
-
+        
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -45,15 +44,54 @@ function useFetchData<T>(url: string): FetchState<T> {
   return { data, isLoading, error };
 }
 
+async function getOneProductBySlug(url: string) {
+  try {
+    const response = await axios.get<ProductExpanded>(BASE_URL + url);
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error('Failed to fetch data');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+}
+
+async function getProductsByNamespaceId(url: string, namespaceId: string) {
+  try {
+    const response = await axios.get<ProductExpanded[]>(BASE_URL + url, {
+      params: { namespaceId },
+    });
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error('Failed to fetch data');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+}
+
 //c
 async function addToFavorites(
-  userId: number,
   productId: number,
 ): Promise<void> {
   try {
-    if (!userId) {
-      userId = 1;
+    const token = localStorage.getItem('token')
+    const id = localStorage.getItem('userId');
+
+    if (id === null) {
+      throw new Error('userId is null');
     }
+
+    const userId = +id;
+
+    if(!token) {
+      throw new Error('Token is unavailable');
+    }
+
     const response = await axios.post(
       `${BASE_URL}users/favorites`,
       {
@@ -62,7 +100,7 @@ async function addToFavorites(
       },
       {
         headers: {
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -73,14 +111,26 @@ async function addToFavorites(
 }
 
 async function removeFromFavorites(
-  userId: number,
   productId: number,
 ): Promise<void> {
   try {
+    const token = localStorage.getItem('token')
+    const id = localStorage.getItem('userId');
+
+    if (id === null) {
+      throw new Error('userId is unavailable');
+    }
+
+    const userId = +id;
+
+    if(!token) {
+      throw new Error('Token is unavailable');
+    }
+
     const response = await axios.delete(`${BASE_URL}users/favorites`, {
-      data: { userId, productId },
+      data: { userId: userId, productId },
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
@@ -89,11 +139,24 @@ async function removeFromFavorites(
   }
 }
 
-async function getUserFavorites(userId: number) {
+async function getUserFavorites() {
   try {
+    const token = localStorage.getItem('token')
+    const id = localStorage.getItem('userId');
+
+    if (id === null) {
+      throw new Error('userId is unavailable');
+    }
+
+    const userId = +id;
+
+    if(!token) {
+      throw new Error('Token is unavailable');
+    }
+
     const response = await axios.get(`${BASE_URL}users/${userId}/favorites`, {
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
@@ -102,13 +165,30 @@ async function getUserFavorites(userId: number) {
   }
 }
 
+async function getDiscounts() {
+  try {
+    const response = await axios.get(`${BASE_URL}discount`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch discounts');
+  }
+}
+
+async function getNewProducts() {
+  try {
+    const response = await axios.get(`${BASE_URL}products/new`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch new products');
+  }
+}
+
 //c
 async function isProductInFavorites(
-  userId: number,
   productId: number,
 ): Promise<boolean> {
   try {
-    const favorites = await getUserFavorites(userId);
+    const favorites = await getUserFavorites();
 
     return favorites.some(
       (favorite: Favorite) => favorite.productId === productId,
@@ -119,11 +199,10 @@ async function isProductInFavorites(
 }
 
 async function getOneFavorite(
-  userId: number,
   productId: number,
 ): Promise<Favorite | null> {
   try {
-    const favorites = await getUserFavorites(userId);
+    const favorites = await getUserFavorites();
     const favorite = favorites.find(
       (favorite: Favorite) => favorite.productId === productId,
     );
@@ -170,6 +249,8 @@ async function loginUser(username: string, password: string): Promise<void> {
 
 export default useFetchData;
 export {
+  getOneProductBySlug,
+  getProductsByNamespaceId,
   addToFavorites,
   removeFromFavorites,
   getUserFavorites,
@@ -177,4 +258,6 @@ export {
   getOneFavorite,
   registerUser,
   loginUser,
+  getDiscounts,
+  getNewProducts,
 };

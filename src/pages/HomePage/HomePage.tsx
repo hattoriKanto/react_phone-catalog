@@ -1,13 +1,12 @@
 import { Box, Slide, Typography, styled } from '@mui/material';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Container from '../../components/Container/Container';
 import { Category } from '../../types/Category';
-import useFetchData from '../../utils/useFetchData';
+import useFetchData, { getDiscounts } from '../../utils/useFetchData';
 import { Product } from '../../types';
 import { CategorySelector } from '../../components/CategorySelector';
 import Slider from '../../components/Slider';
 import { ProductSliderFabric } from '../../components/ProductSliderFabric/ProductSliderFabric';
-import { FilterCallback } from '../../types/FilterCallback';
 
 const SliderOnPageContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -20,6 +19,22 @@ const SliderOnPageContainer = styled(Box)(({ theme }) => ({
 
 export const HomePage: FC = () => {
   const { data } = useFetchData<Product>('products');
+  const [discountProducts, setDiscountProducts] = useState<Product[]>([]);
+  const [newProducts, setNewProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchDiscounts = async () => {
+      const discounts = await getDiscounts();
+      setDiscountProducts(discounts);
+    };
+    fetchDiscounts();
+
+    const fetchNewProducts = async () => {
+      const newProducts = await getDiscounts();
+      setNewProducts(newProducts);
+    };
+    fetchNewProducts();
+  }, []);
 
   const categories: Category[] = [
     {
@@ -64,19 +79,13 @@ export const HomePage: FC = () => {
       </SliderOnPageContainer>
       <Container>
         <Box py={2} id="2">
-          <ProductSliderFabric
-            title="New models"
-            callback={FilterCallback.NewModels}
-          />
+          <ProductSliderFabric title="New models" products={discountProducts} />
         </Box>
         <Box py={2} id="3">
           <CategorySelector categories={categories} />
         </Box>
         <Box py={2} id="4">
-          <ProductSliderFabric
-            title="Hot prices"
-            callback={FilterCallback.HotPrices}
-          />
+          <ProductSliderFabric title="Hot prices" products={newProducts} />
         </Box>
       </Container>
     </>

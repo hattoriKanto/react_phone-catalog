@@ -42,8 +42,9 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     slug,
   } = product;
 
-  const { setFavorites, normalizedUserId } = useFavoritesContext();
+  const { setFavorites } = useFavoritesContext();
   const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
+  const userId = localStorage.getItem('userId');
 
   //
   const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
@@ -53,12 +54,12 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   //
   useEffect(() => {
     const checkFavorites = async () => {
-      const result = await isProductInFavorites(normalizedUserId, product.id);
+      const result = await isProductInFavorites(product.id);
       setIsInFavorites(result);
     };
 
     checkFavorites();
-  }, [normalizedUserId, product.id]);
+  }, [userId, product.id]);
 
   const toggleAddToCard = (product: Product, event: React.MouseEvent) => {
     event.stopPropagation();
@@ -87,9 +88,9 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
     try {
       if (!isInFavorites) {
-        await addToFavorites(normalizedUserId, product.id);
+        await addToFavorites(product.id);
 
-        const newFavorite = await getOneFavorite(normalizedUserId, product.id);
+        const newFavorite = await getOneFavorite(product.id);
 
         if (newFavorite) {
           setFavorites((currentFavorites: Favorite[]) => [
@@ -98,7 +99,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           ]);
         }
       } else {
-        await removeFromFavorites(normalizedUserId, product.id);
+        await removeFromFavorites(product.id);
 
         setFavorites((currentFavorites: Favorite[]) =>
           currentFavorites.filter(
@@ -107,7 +108,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         );
       }
 
-      const result = await isProductInFavorites(normalizedUserId, product.id);
+      const result = await isProductInFavorites(product.id);
 
       setIsInFavorites(result);
     } catch (error) {
