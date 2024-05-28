@@ -6,6 +6,9 @@ import Typography from '@mui/material/Typography';
 import HttpsIcon from '@mui/icons-material/Https';
 import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
+import { InputAdornment } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { customTypography } from '../../theme/typography.config';
 import { Button, Grow, GrowProps, TextField } from '@mui/material';
@@ -39,6 +42,12 @@ export const AuthModal: React.FC<Props> = ({
   const [password, setPassword] = useState('');
   let isValid = true;
   const [isRegistered, setIsRegistered] = useState(false);
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
+
+  const togglePasswordHide = () => {
+    setIsPasswordShown(!isPasswordShown);
+  };
+
   const emailRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const [error, setError] = useState<string[]>([]);
@@ -268,7 +277,7 @@ export const AuthModal: React.FC<Props> = ({
                     }
                     fullWidth
                     label="Password"
-                    type="password"
+                    type={isPasswordShown ? 'text' : 'password'}
                     id="fullWidth"
                     variant="standard"
                     required
@@ -276,6 +285,24 @@ export const AuthModal: React.FC<Props> = ({
                     name="password"
                     onBlur={e => validateField(e.target.name)}
                     onChange={e => handleChange(e)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          {' '}
+                          {isPasswordShown ? (
+                            <Visibility
+                              className="cursor_pointer"
+                              onClick={togglePasswordHide}
+                            />
+                          ) : (
+                            <VisibilityOff
+                              onClick={togglePasswordHide}
+                              sx={{ cursor: 'pointer' }}
+                            />
+                          )}
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Box>
               </Box>
