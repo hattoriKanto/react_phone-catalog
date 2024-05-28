@@ -20,6 +20,7 @@ const CategorySort = () => {
   function handlePerPageChange(event: SelectChangeEvent<string | number>) {
     const newSearchParams = getSearchWith(searchParams, {
       perPage: event.target.value.toString(),
+      page: '1',
     });
 
     setSearchParams(newSearchParams);
