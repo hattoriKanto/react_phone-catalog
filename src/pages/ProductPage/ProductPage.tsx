@@ -21,7 +21,6 @@ import {
   BreadCrumbsComponent,
   RecommendedProducts,
   CartAndFavouriteBlock,
-  // CartAndFavouriteBlock,
 } from '../../components';
 import { getOneProductBySlug } from '../../utils/useFetchData';
 import { ProductExpanded } from '../../types';

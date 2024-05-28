@@ -229,11 +229,7 @@ async function getUserCart(): Promise<ProductInCart[]> {
 
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error('Failed to fetch products in cart');
-    } else {
-      throw new Error('An unknown error occurred');
-    }
+    throw new Error('Failed to fetch cart products');
   }
 }
 

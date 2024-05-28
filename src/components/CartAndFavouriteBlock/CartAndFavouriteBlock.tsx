@@ -1,4 +1,4 @@
-import { Product, ProductExpanded } from '../../types';
+import { Product, ProductExpanded, ProductInCart } from '../../types';
 import { useCartContext } from '../../hooks/useCartContext';
 import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -11,8 +11,12 @@ import {
 } from './CartAndFavouriteBlock.styles';
 import { useEffect, useState } from 'react';
 import {
+  addProductToCart,
   addToFavorites,
+  deleteProductFromCart,
   getOneFavorite,
+  getOneProductInCart,
+  isProductInCart,
   isProductInFavorites,
   removeFromFavorites,
 } from '../../utils';
@@ -23,11 +27,10 @@ type Props = {
 };
 
 export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
-  const { setFavorites } = useFavoritesContext();
+  const { setCart, cart } = useCartContext();
+  const { setFavorites, favorites } = useFavoritesContext();
   const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
-  const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
-
-  const userId = localStorage.getItem('userId');
+  const [isInCart, setIsInCart] = useState(false);
 
   useEffect(() => {
     const checkFavorites = async () => {
@@ -35,26 +38,46 @@ export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
       setIsInFavorites(result);
     };
 
-    checkFavorites();
-  }, [userId, product.id]);
+    const checkCart = async () => {
+      const result = await isProductInCart(product.id);
+      setIsInCart(result);
+    };
 
-  const toggleAddToCard = (
-    product: ProductExpanded,
-    event: React.MouseEvent,
-  ) => {
+    checkFavorites();
+    checkCart();
+  }, [favorites, cart]);
+
+  const toggleAddToCard = async (product: Product, event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
 
-    if (!isInCart) {
-      addToCart({
-        prodId: product.slug,
-        img: product.images[0],
-        name: product.name,
-        category: product.category,
-        price: product.price,
-      });
-    } else {
-      deleteFromCart(product.slug);
+    try {
+      if (!isInCart) {
+        await addProductToCart(product.id);
+
+        const newCartProduct = (await getOneProductInCart(
+          product.id,
+        )) as ProductInCart;
+
+        setCart((currentCart: ProductInCart[]) => [
+          ...currentCart,
+          newCartProduct,
+        ]);
+      } else {
+        await deleteProductFromCart(product.id);
+
+        setCart((currentCart: ProductInCart[]) =>
+          currentCart.filter(
+            productInCart => productInCart.productId !== product.id,
+          ),
+        );
+      }
+
+      const result = await isProductInCart(product.id);
+
+      setIsInCart(result);
+    } catch (error) {
+      throw new Error('Failed to toggle `Add to cart`');
     }
   };
 
@@ -94,8 +117,6 @@ export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
       throw new Error('Failed to toggle favorites');
     }
   };
-
-  const isInCart = isProductInCart(product.slug);
 
   return (
     <AddToCartAndFavStack direction="row" spacing={2}>
