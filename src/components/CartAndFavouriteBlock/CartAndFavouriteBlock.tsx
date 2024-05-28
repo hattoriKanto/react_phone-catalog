@@ -1,4 +1,4 @@
-import { ProductExpanded } from '../../types';
+import { Product, ProductExpanded } from '../../types';
 import { useCartContext } from '../../hooks/useCartContext';
 import { useFavoritesContext } from '../../hooks/useFavoritesContext';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -9,15 +9,34 @@ import {
   AddToCartTypography,
   AddToFavouritesButton,
 } from './CartAndFavouriteBlock.styles';
+import { useEffect, useState } from 'react';
+import {
+  addToFavorites,
+  getOneFavorite,
+  isProductInFavorites,
+  removeFromFavorites,
+} from '../../utils';
+import { Favorite } from '../../types/Favorites';
 
 type Props = {
   product: ProductExpanded;
 };
 
 export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
+  const { setFavorites } = useFavoritesContext();
+  const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
   const { addToCart, deleteFromCart, isProductInCart } = useCartContext();
-  const { addToFavorites, deleteFromFavorites, isProductInFavorites } =
-    useFavoritesContext();
+
+  const userId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    const checkFavorites = async () => {
+      const result = await isProductInFavorites(product.id);
+      setIsInFavorites(result);
+    };
+
+    checkFavorites();
+  }, [userId, product.id]);
 
   const toggleAddToCard = (
     product: ProductExpanded,
@@ -28,33 +47,55 @@ export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
 
     if (!isInCart) {
       addToCart({
-        prodId: product.id,
+        prodId: product.slug,
         img: product.images[0],
         name: product.name,
         category: product.category,
-        price: product.priceDiscount,
+        price: product.price,
       });
     } else {
-      deleteFromCart(product.id);
+      deleteFromCart(product.slug);
     }
   };
 
-  const toggleAddToFavorites = (
-    product: ProductExpanded,
+  const toggleAddToFavorites = async (
+    product: Product,
     event: React.MouseEvent,
   ) => {
     event.stopPropagation();
     event.preventDefault();
 
-    if (!isInFavorites) {
-      addToFavorites(product.id);
-    } else {
-      deleteFromFavorites(product.id);
+    try {
+      if (!isInFavorites) {
+        await addToFavorites(product.id);
+
+        const newFavorite = await getOneFavorite(product.id);
+
+        if (newFavorite) {
+          setFavorites((currentFavorites: Favorite[]) => [
+            ...currentFavorites,
+            newFavorite,
+          ]);
+        }
+      } else {
+        await removeFromFavorites(product.id);
+
+        setFavorites((currentFavorites: Favorite[]) =>
+          currentFavorites.filter(
+            favorite => favorite.product.id !== product.id,
+          ),
+        );
+      }
+
+      const result = await isProductInFavorites(product.id);
+
+      setIsInFavorites(result);
+    } catch (error) {
+      throw new Error('Failed to toggle favorites');
     }
   };
 
-  const isInCart = isProductInCart(product.id);
-  const isInFavorites = isProductInFavorites(product.id);
+  const isInCart = isProductInCart(product.slug);
 
   return (
     <AddToCartAndFavStack direction="row" spacing={2}>

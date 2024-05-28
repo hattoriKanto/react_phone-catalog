@@ -20,6 +20,7 @@ import {
   SmallSpecsBlock,
   BreadCrumbsComponent,
   RecommendedProducts,
+  CartAndFavouriteBlock,
   // CartAndFavouriteBlock,
 } from '../../components';
 import { getOneProductBySlug } from '../../utils/useFetchData';
@@ -60,7 +61,7 @@ export const ProductPage: FC = () => {
             <ProductInfoWrapper>
               <ChangeColorSizeBlock currentProduct={product} />
               <PriceBlock price={product.price} fullPrice={product.fullPrice} />
-              {/* <CartAndFavouriteBlock product={product} /> */}
+              <CartAndFavouriteBlock product={product} />
               <SmallSpecsBlock
                 screen={product.screen}
                 resolution={product.resolution}
@@ -74,7 +75,7 @@ export const ProductPage: FC = () => {
             <TechSpecs product={product} />
           </StyledFlexWrapper>
           <Box sx={{ pb: { xs: 3, sm: 6 } }}>
-            <RecommendedProducts slug={product.slug}/>
+            <RecommendedProducts slug={product.slug} />
           </Box>
         </Container>
       )}
