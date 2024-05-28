@@ -14,12 +14,17 @@ import {
 } from './CartItem.styles.tsx';
 import { IconButton, Typography, styled } from '@mui/material';
 import React from 'react';
-import { useCartContext } from '../../hooks/useCartContext.ts';
 import { ProductInCart } from '../../types/ProductInCart.ts';
 import { Link } from 'react-router-dom';
+import {
+  changeQuantityOnOneProduct,
+  deleteProductFromCart,
+  getUserCart,
+} from '../../utils/useFetchData.ts';
+import { useCartContext } from '../../hooks/useCartContext.ts';
 
 type Props = {
-  product: ProductInCart;
+  currentPoduct: ProductInCart;
 };
 
 export const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -32,10 +37,33 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-const CartItem: React.FC<Props> = ({ product }) => {
-  const { deleteFromCart, increaseQuantity, decreaseQuantity, cart } =
-    useCartContext();
-  const { prodId, name, price, img, category } = product.product;
+const CartItem: React.FC<Props> = ({ currentPoduct }) => {
+  const { product, quantity, productId } = currentPoduct;
+  const { setCart } = useCartContext();
+
+  const handeleDelete = async () => {
+    await deleteProductFromCart(product.id);
+    setCart(await getUserCart());
+  };
+
+  const handleChangeQuantityMinus = async () => {
+    const newQuantity = quantity - 1;
+
+    if (newQuantity === 0 || newQuantity < 0) {
+      await deleteProductFromCart(productId);
+    } else {
+      await changeQuantityOnOneProduct(productId, newQuantity);
+    }
+
+    setCart(await getUserCart());
+  };
+
+  const handleChangeQuantityPlus = async () => {
+    const newQuantity = quantity + 1;
+    await changeQuantityOnOneProduct(productId, newQuantity);
+
+    setCart(await getUserCart());
+  };
 
   return (
     <Container>
@@ -48,10 +76,10 @@ const CartItem: React.FC<Props> = ({ product }) => {
             spacing={{ xs: 2, sm: 3 }}
             direction={{ xs: 'row' }}
           >
-            <StyledIconButton onClick={() => deleteFromCart(prodId)}>
+            <StyledIconButton onClick={handeleDelete}>
               <DeleteIcon />
             </StyledIconButton>
-            <Link to={`/${category}/${prodId}`}>
+            <Link to={`/${product.category}/${product.slug}`}>
               <ProductImage
                 sx={{
                   transition: 'transform 0.3s ease-in-out',
@@ -60,33 +88,27 @@ const CartItem: React.FC<Props> = ({ product }) => {
                   },
                 }}
               >
-                <Image src={img} />
+                <Image src={product.images[0]} />
               </ProductImage>
             </Link>
 
             <ProductName
-              to={`/${category}/${prodId}`}
+              to={`/${product.category}/${product.slug}`}
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
-              <Typography variant="body1">{name}</Typography>
+              <Typography variant="body1">{product.name}</Typography>
             </ProductName>
           </ContainerLeftSide>
 
           <ContainerRightSide spacing={{ sm: 3 }} direction={{ xs: 'row' }}>
             <ProductQuantity>
-              <IconButtonQuantityMinus
-                onClick={() => decreaseQuantity(prodId)}
-              />
-              <Typography variant="body1">
-                {cart.find(item => item.product.prodId === prodId)?.quantity}
-              </Typography>
-              <IconButtonQuantityPlus
-                onClick={() => increaseQuantity(prodId)}
-              />
+              <IconButtonQuantityMinus onClick={handleChangeQuantityMinus} />
+              <Typography variant="body1">{quantity}</Typography>
+              <IconButtonQuantityPlus onClick={handleChangeQuantityPlus} />
             </ProductQuantity>
 
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-              {`$${price}`}
+              {`${product.price}`}
             </Typography>
           </ContainerRightSide>
         </ContentContainer>

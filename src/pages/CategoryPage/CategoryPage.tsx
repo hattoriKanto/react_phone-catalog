@@ -43,8 +43,6 @@ export const CategoryPage = () => {
     setVisibleData(data);
   }, [data, searchParams]);
 
-  console.log(data);
-
   const { isSearchOpen, setIsSearchOpen, handleClearSearch } =
     useSearchContext();
   const page = searchParams.get('page') || 1;

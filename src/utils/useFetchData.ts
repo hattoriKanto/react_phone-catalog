@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Favorite } from '../types/Favorites';
 import { apiDBurl } from './config';
-import { Product, ProductExpanded } from '../types';
+import { Product, ProductExpanded, ProductInCart } from '../types';
 
 const BASE_URL = apiDBurl;
 
@@ -152,19 +152,12 @@ async function removeFromFavorites(productId: number): Promise<void> {
 async function getUserFavorites() {
   try {
     const token = localStorage.getItem('token');
-    const id = localStorage.getItem('userId');
-
-    if (id === null) {
-      throw new Error('userId is unavailable');
-    }
-
-    const userId = +id;
 
     if (!token) {
-      throw new Error('Token is unavailable');
+      return [];
     }
 
-    const response = await axios.get(`${BASE_URL}users/${userId}/favorites`, {
+    const response = await axios.get(`${BASE_URL}users/user/favorites`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -219,6 +212,170 @@ async function getOneFavorite(productId: number): Promise<Favorite | null> {
   }
 }
 
+//cart
+async function getUserCart(): Promise<ProductInCart[]> {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return [];
+    }
+
+    const response = await axios.get(`${BASE_URL}cart`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error('Failed to fetch products in cart');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+}
+
+async function getOneProductInCart(
+  productId: number,
+): Promise<ProductInCart | null> {
+  try {
+    const cart = await getUserCart();
+    const product = cart.find(
+      (productInCart: ProductInCart) => productInCart.productId === productId,
+    );
+
+    return product || null;
+  } catch (error) {
+    throw new Error('Failed to find the product');
+  }
+}
+
+async function addProductToCart(productId: number): Promise<ProductInCart> {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error('Token is unavailable');
+    }
+
+    const response = await axios.post(
+      `${BASE_URL}cart`,
+      {
+        productId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error('Failed to add product in cart');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+}
+
+async function deleteProductFromCart(productId: number) {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error('Token is unavailable');
+    }
+
+    await axios.delete(`${BASE_URL}cart`, {
+      data: { productId },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error('Failed to delete product from cart');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+}
+
+async function isProductInCart(productId: number) {
+  try {
+    const cart = await getUserCart();
+
+    const currentProduct =
+      cart.find((product: ProductInCart) => product.productId === productId) ||
+      null;
+
+    return Boolean(currentProduct);
+  } catch (error) {
+    throw new Error('Failed to check if product is in cart');
+  }
+}
+
+async function deleteAll() {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error('Token is unavailable');
+    }
+
+    await axios.delete(`${BASE_URL}cart/all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error('Failed to delete all products in cart');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+}
+
+async function changeQuantityOnOneProduct(
+  productId: number,
+  quantity: number,
+): Promise<ProductInCart> {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error('Token is unavailable');
+    }
+
+    const response = await axios.put(
+      `${BASE_URL}cart`,
+      {
+        productId,
+        quantity,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error('Failed to change quantity of product in cart');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+}
+
+//user
 async function registerUser(
   username: string,
   email: string,
@@ -267,4 +424,11 @@ export {
   getDiscounts,
   getNewProducts,
   getRecommendedProducts,
+  getUserCart,
+  addProductToCart,
+  deleteProductFromCart,
+  isProductInCart,
+  deleteAll,
+  getOneProductInCart,
+  changeQuantityOnOneProduct,
 };

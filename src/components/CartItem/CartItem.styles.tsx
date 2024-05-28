@@ -45,10 +45,13 @@ export const DeleteButton = styled(IconButton)({
 });
 
 export const DeleteIcon = styled(ClearIcon)(({ theme }) => ({
+  color: theme.palette.primary.main,
+
   '&:hover': {
-    color: theme.palette.primary.main,
-    backgroundColor: 'transparent',
+    color: theme.palette.secondary.main,
   },
+
+  transition: 'all 300ms',
 }));
 
 export const ProductImage = styled(Box)({
