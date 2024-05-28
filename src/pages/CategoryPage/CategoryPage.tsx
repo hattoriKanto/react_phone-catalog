@@ -12,13 +12,12 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { Product } from '../../types';
-import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import { CardSkeleton } from '../../components/ProductCard';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getSearchWith } from '../../utils/searchHelper';
 import { BreadCrumbsComponent } from '../../components';
 import CategorySort from '../../components/CategorySort/CategorySort';
@@ -27,39 +26,57 @@ import { useSearchContext } from '../../hooks/useSearchContext';
 import { DotLottiePlayer } from '@dotlottie/react-player';
 import { customBreakpoints } from '../../theme/breakpoints.config';
 import { useTheme } from '@mui/material/styles';
+import axios from 'axios';
+import { apiDBurl } from '../../utils/config';
 
 export const CategoryPage = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const categoryName = location.pathname.slice(1);
-  const search = location.search;
-  const { data, isLoading, error } = useFetchData<Product>(
-    `products/${categoryName}${search}`,
-  );
+  const categoryName = location.pathname;
 
-  const [visibleData, setVisibleData] = React.useState<Product[]>(data);
+  const [maxPrice, setMaxPrice] = useState(Number.MAX_SAFE_INTEGER);
+  const [minPrice, setMinPrice] = useState(0);
+  const [productCount, setProductCount] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [visibleData, setVisibleData] = React.useState<Product[]>([]);
+  const [error, setError] = useState<Error | null>(null);
+
+  const fetchProducts = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get(`${apiDBurl}products${categoryName}`, {
+        params: searchParams,
+      });
+
+      setVisibleData(data.products);
+      setProductCount(data.productCount);
+      setMaxPrice(data.maxPrice);
+      setMinPrice(data.minPrice);
+      setPageCount(data.pageCount);
+    } catch (error) {
+      setError(error as Error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setVisibleData(data);
-  }, [data, searchParams]);
+    fetchProducts();
+  }, []);
 
   const { isSearchOpen, setIsSearchOpen, handleClearSearch } =
     useSearchContext();
   const page = searchParams.get('page') || 1;
   const perPage = searchParams.get('perPage') || 4;
 
+  useEffect(() => {
+    fetchProducts();
+  }, [searchParams, categoryName]);
+
   const { sm } = customBreakpoints.values;
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.up(sm));
-
-  const pricesInCategory = data
-    .filter(product => product.category === categoryName)
-    .map(product => product.price);
-
-  const minPriceInCategory =
-    Math.floor(Math.min(...pricesInCategory) / 100) * 100;
-  const maxPriceInCategory =
-    Math.ceil(Math.max(...pricesInCategory) / 100) * 100;
 
   if (error) return <p>Error: {error.message}</p>;
 
@@ -77,24 +94,21 @@ export const CategoryPage = () => {
     setSearchParams(newSearchParams);
   }
 
-  const clearSearchParams = () => {
-    setSearchParams({});
-  };
-
   return (
     <>
       <Container>
         <BreadCrumbsComponent />
         <Stack>
-          <Slide in={true} direction="down" key={categoryName}>
+          <Slide in={true} direction="down" key={categoryName.slice(2)}>
             <Typography variant="h1" sx={{ pt: 4 }}>
-              {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
+              {categoryName.slice(1).charAt(0).toUpperCase() +
+                categoryName.slice(2)}
             </Typography>
           </Slide>
 
           {visibleData.length > 0 && (
             <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
-              {visibleData.length} models
+              {productCount} models
             </Typography>
           )}
           <script
@@ -109,7 +123,7 @@ export const CategoryPage = () => {
                 sx={{ alignItems: 'center', pt: 3 }}
               >
                 <Typography variant="h4">
-                  There are no {categoryName} matching the query.
+                  There are no {categoryName.slice(1)} matching the query.
                 </Typography>
                 <Box
                   sx={{
@@ -127,7 +141,7 @@ export const CategoryPage = () => {
                   ></DotLottiePlayer>
                 </Box>
                 <Typography variant="h4" sx={{}}>
-                  Go ahead & explore {categoryName} full list.
+                  Go ahead & explore {categoryName.slice(1)} full list.
                 </Typography>
                 <Button
                   variant="contained"
@@ -143,7 +157,6 @@ export const CategoryPage = () => {
                     },
                   }}
                   onClick={() => {
-                    clearSearchParams();
                     if (isSearchOpen) {
                       setIsSearchOpen(false);
                       handleClearSearch();
@@ -166,8 +179,8 @@ export const CategoryPage = () => {
             <Stack direction={'column'}>
               <CategorySort />
               <CategoryPriceRange
-                minPriceInCategory={minPriceInCategory}
-                maxPriceInCategory={maxPriceInCategory}
+                minPriceInCategory={minPrice}
+                maxPriceInCategory={maxPrice}
               />
             </Stack>
           )}
@@ -203,11 +216,7 @@ export const CategoryPage = () => {
             color="primary"
             page={Number(page)}
             onChange={handlePageChange}
-            count={
-              perPage === 'All'
-                ? 1
-                : Math.ceil(visibleData.length / Number(perPage))
-            }
+            count={perPage === 'All' ? 1 : pageCount}
             sx={{
               py: 4,
               display: 'flex',

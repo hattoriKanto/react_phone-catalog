@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
@@ -13,6 +13,7 @@ import {
 } from '.';
 import { Divider, InputAdornment } from '@mui/material';
 import { useSearchContext } from '../../hooks/useSearchContext';
+import { getSearchWith } from '../../functions/getSearchWIth';
 
 export const Search: React.FC = () => {
   const {
@@ -21,17 +22,32 @@ export const Search: React.FC = () => {
     setIsSearchOpen,
     setQuery,
     handleSearchIconClick,
-    handleChangeQuery,
     handleClearSearch,
   } = useSearchContext();
 
   const { pathname } = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
-  const applyQuery = useCallback(debounce(setQuery, 1000), []);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const debouncedSetQuery = useCallback(
+    debounce(newQuery => {
+      setSearchParams(
+        getSearchWith(searchParams, {
+          query: newQuery || null,
+        }),
+      );
+    }, 600),
+    [],
+  );
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+    debouncedSetQuery(query);
+  };
 
   useEffect(() => {
-    applyQuery(query);
-  }, [query, applyQuery]);
+    debouncedSetQuery(query);
+  }, [query, debouncedSetQuery]);
 
   useEffect(() => {
     setIsSearchOpen(false);
@@ -62,7 +78,7 @@ export const Search: React.FC = () => {
           <StyledSearchInput
             placeholder={`Search in ${pathname.slice(1)}...`}
             value={query}
-            onChange={handleChangeQuery}
+            onChange={handleInputChange}
             inputRef={inputRef}
             endAdornment={
               !!query.length && (
