@@ -7,27 +7,21 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import products from '../../../public/api/products.json';
 import { Product } from '../../types';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { customBreakpoints } from '../../theme/breakpoints.config';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { customTypography } from '../../theme/typography.config';
 import { CustomGrid } from '../CustomGrid';
 import { ProductCard } from '../ProductCard/ProductCard';
+import { getRecommendedProducts } from '../../utils';
 
 interface RecommendedProps {
-  id: string;
-  color: string;
+  slug: string;
 }
 
-export const RecommendedProducts: FC<RecommendedProps> = ({ id, color }) => {
-  const recommendedProducts = products
-    .filter(item => {
-      return id !== item.itemId && item.color === color;
-    })
-    .sort((a, b) => a.price - b.price);
-
+export const RecommendedProducts: FC<RecommendedProps> = ({ slug }) => {
+  const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);
   const [startIndex, setStartIndex] = useState(0);
   let productsPerRow = 4;
   const { sm, md, lg } = customBreakpoints.values;
@@ -37,6 +31,12 @@ export const RecommendedProducts: FC<RecommendedProps> = ({ id, color }) => {
   const isLaptop = useMediaQuery(theme.breakpoints.between(md, lg));
   const isTablet = useMediaQuery(theme.breakpoints.between(sm, md));
   const isMobile = useMediaQuery(theme.breakpoints.down(sm));
+
+  useEffect(() => {
+    const url = 'products/' + slug + '/recommended';
+    getRecommendedProducts(url).then(setRecommendedProducts);
+    setStartIndex(0);
+  }, [slug]);
 
   switch (true) {
     case isDesktop:
@@ -58,7 +58,9 @@ export const RecommendedProducts: FC<RecommendedProps> = ({ id, color }) => {
   };
 
   const handleClickNext = () => {
-    setStartIndex(Math.min(startIndex + 1, products.length - productsPerRow));
+    setStartIndex(
+      Math.min(startIndex + 1, recommendedProducts.length - productsPerRow),
+    );
   };
 
   const GridStyled = styled(Grid)({
@@ -97,8 +99,8 @@ export const RecommendedProducts: FC<RecommendedProps> = ({ id, color }) => {
           {recommendedProducts
             .slice(startIndex, startIndex + productsPerRow)
             .map((product: Product) => (
-              <GridStyled item xs={1} md={1} key={product.id}>
-                <ProductCard product={product} key={product.id}></ProductCard>
+              <GridStyled item xs={1} md={1} key={product.slug}>
+                <ProductCard product={product} key={product.slug}></ProductCard>
               </GridStyled>
             ))}
         </CustomGrid>

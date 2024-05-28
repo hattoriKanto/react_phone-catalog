@@ -19,7 +19,7 @@ import {
   TechSpecs,
   SmallSpecsBlock,
   BreadCrumbsComponent,
-  // RecommendedProducts,
+  RecommendedProducts,
   // CartAndFavouriteBlock,
 } from '../../components';
 import { getOneProductBySlug } from '../../utils/useFetchData';
@@ -74,7 +74,7 @@ export const ProductPage: FC = () => {
             <TechSpecs product={product} />
           </StyledFlexWrapper>
           <Box sx={{ pb: { xs: 3, sm: 6 } }}>
-            {/* <RecommendedProducts id={product.id} color={product.color} /> */}
+            <RecommendedProducts slug={product.slug}/>
           </Box>
         </Container>
       )}

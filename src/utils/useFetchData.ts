@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Favorite } from '../types/Favorites';
 import { apiDBurl } from './config';
-import { ProductExpanded } from '../types';
+import { Product, ProductExpanded } from '../types';
 
 const BASE_URL = apiDBurl;
 
@@ -25,7 +25,7 @@ function useFetchData<T>(url: string): FetchState<T> {
     const fetchData = async () => {
       try {
         const response = await axios.get<T[]>(BASE_URL + url);
-        
+
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -51,7 +51,7 @@ async function getOneProductBySlug(url: string) {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error('Failed to fetch data');
+      throw new Error('Failed to fetch product by slug');
     } else {
       throw new Error('An unknown error occurred');
     }
@@ -67,7 +67,21 @@ async function getProductsByNamespaceId(url: string, namespaceId: string) {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error('Failed to fetch data');
+      throw new Error('Failed to fetch products by namespaceID');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+}
+
+async function getRecommendedProducts(url: string) {
+  try {
+    const response = await axios.get<Product[]>(BASE_URL + url);
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error('Failed to fetch recommended');
     } else {
       throw new Error('An unknown error occurred');
     }
@@ -75,11 +89,9 @@ async function getProductsByNamespaceId(url: string, namespaceId: string) {
 }
 
 //c
-async function addToFavorites(
-  productId: number,
-): Promise<void> {
+async function addToFavorites(productId: number): Promise<void> {
   try {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     const id = localStorage.getItem('userId');
 
     if (id === null) {
@@ -88,7 +100,7 @@ async function addToFavorites(
 
     const userId = +id;
 
-    if(!token) {
+    if (!token) {
       throw new Error('Token is unavailable');
     }
 
@@ -110,11 +122,9 @@ async function addToFavorites(
   }
 }
 
-async function removeFromFavorites(
-  productId: number,
-): Promise<void> {
+async function removeFromFavorites(productId: number): Promise<void> {
   try {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     const id = localStorage.getItem('userId');
 
     if (id === null) {
@@ -123,7 +133,7 @@ async function removeFromFavorites(
 
     const userId = +id;
 
-    if(!token) {
+    if (!token) {
       throw new Error('Token is unavailable');
     }
 
@@ -141,7 +151,7 @@ async function removeFromFavorites(
 
 async function getUserFavorites() {
   try {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     const id = localStorage.getItem('userId');
 
     if (id === null) {
@@ -150,7 +160,7 @@ async function getUserFavorites() {
 
     const userId = +id;
 
-    if(!token) {
+    if (!token) {
       throw new Error('Token is unavailable');
     }
 
@@ -184,9 +194,7 @@ async function getNewProducts() {
 }
 
 //c
-async function isProductInFavorites(
-  productId: number,
-): Promise<boolean> {
+async function isProductInFavorites(productId: number): Promise<boolean> {
   try {
     const favorites = await getUserFavorites();
 
@@ -198,9 +206,7 @@ async function isProductInFavorites(
   }
 }
 
-async function getOneFavorite(
-  productId: number,
-): Promise<Favorite | null> {
+async function getOneFavorite(productId: number): Promise<Favorite | null> {
   try {
     const favorites = await getUserFavorites();
     const favorite = favorites.find(
@@ -260,4 +266,5 @@ export {
   loginUser,
   getDiscounts,
   getNewProducts,
+  getRecommendedProducts,
 };
