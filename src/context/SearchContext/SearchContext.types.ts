@@ -5,6 +5,7 @@ export interface SearchContextProps {
   setQuery: (newQuery: string) => void;
   handleSearchIconClick: () => void;
   handleChangeQuery: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleClearSearch: () => void;
 }
 

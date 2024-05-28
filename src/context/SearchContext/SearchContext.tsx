@@ -10,8 +10,8 @@ export const SearchContext = React.createContext<SearchContextProps>({
   setIsSearchOpen: () => {},
   setQuery: () => {},
   handleSearchIconClick: () => {},
-  handleChangeQuery: () => {},
   handleClearSearch: () => {},
+  handleInputChange: () => {},
 });
 
 export const SearchContextProvider: React.FC<SearchProviderProps> = ({
@@ -31,17 +31,6 @@ export const SearchContextProvider: React.FC<SearchProviderProps> = ({
     }
   };
 
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value;
-    setQuery(inputValue);
-
-    setSearchParams(
-      getSearchWith(searchParams, {
-        query: inputValue || null,
-      }),
-    );
-  };
-
   const handleClearSearch = () => {
     setQuery('');
 
@@ -52,14 +41,19 @@ export const SearchContextProvider: React.FC<SearchProviderProps> = ({
     );
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+    debouncedSetQuery(query);
+  };
+
   const searchState = {
     isSearchOpen,
     query,
     setIsSearchOpen,
     setQuery,
     handleSearchIconClick,
-    handleChangeQuery,
     handleClearSearch,
+    handleInputChange,
   };
 
   return (
@@ -68,3 +62,6 @@ export const SearchContextProvider: React.FC<SearchProviderProps> = ({
     </SearchContext.Provider>
   );
 };
+function debouncedSetQuery(query: string) {
+  throw new Error('Function not implemented.');
+}
