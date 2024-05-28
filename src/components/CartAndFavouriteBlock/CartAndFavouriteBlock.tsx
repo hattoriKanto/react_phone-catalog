@@ -45,7 +45,7 @@ export const CartAndFavouriteBlock: React.FC<Props> = ({ product }) => {
 
     checkFavorites();
     checkCart();
-  }, [favorites, cart]);
+  }, [favorites, cart, product.id]);
 
   const toggleAddToCard = async (product: Product, event: React.MouseEvent) => {
     event.stopPropagation();
