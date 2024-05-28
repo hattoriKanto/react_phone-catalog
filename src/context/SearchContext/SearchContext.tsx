@@ -47,7 +47,6 @@ export const SearchContextProvider: React.FC<SearchProviderProps> = ({
     setQuery,
     handleSearchIconClick,
     handleClearSearch,
-    handleInputChange,
   };
 
   return (
