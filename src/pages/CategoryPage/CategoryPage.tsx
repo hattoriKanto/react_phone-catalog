@@ -33,38 +33,31 @@ import { error } from 'console';
 
 export const CategoryPage = () => {
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const filters = {};
-  searchParams.forEach((value, key) => (filters[key] = value));
-  console.log(filters);
+  const [searchParams, setSearchParams] = useSearchParams();
   const categoryName = location.pathname;
 
   const [maxPrice, setMaxPrice] = useState(Number.MAX_SAFE_INTEGER);
   const [minPrice, setMinPrice] = useState(0);
-
-  const [pageNumber, setPageNumber] = useState(1);
+  const [productCount, setProductCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-  //const [];
-
   const [isLoading, setIsLoading] = useState(false);
   const [visibleData, setVisibleData] = React.useState<Product[]>([]);
+  const [error, setError] = useState<Error | null>(null);
 
   const fetchProducts = async () => {
     setIsLoading(true);
     try {
       const { data } = await axios.get(`${apiDBurl}products${categoryName}`, {
-        params: filters,
+        params: searchParams,
       });
 
-      console.log(data);
-
       setVisibleData(data.products);
-      // setProductCount(data.productCount);
+      setProductCount(data.productCount);
       setMaxPrice(data.maxPrice);
       setMinPrice(data.minPrice);
       setPageCount(data.pageCount);
     } catch (error) {
-      console.log(error);
+      setError(error as Error);
     } finally {
       setIsLoading(false);
     }
@@ -78,36 +71,16 @@ export const CategoryPage = () => {
     useSearchContext();
   const page = searchParams.get('page') || 1;
   const perPage = searchParams.get('perPage') || 4;
-  const querySearch = searchParams.get('query') || '';
-  const sortBySearch = searchParams.get('sortBy') || '';
-  const minPriceSearch = searchParams.get('minPrice') || 0;
-  const maxPriceSearch = searchParams.get('maxPrice') || maxPrice;
 
   useEffect(() => {
     fetchProducts();
-  }, [
-    page,
-    perPage,
-    minPriceSearch,
-    maxPriceSearch,
-    querySearch,
-    sortBySearch,
-  ]);
+  }, [searchParams, categoryName]);
 
   const { sm } = customBreakpoints.values;
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.up(sm));
 
-  // const pricesInCategory = data
-  //   .filter(product => product.category === categoryName)
-  //   .map(product => product.price);
-
-  // const minPriceInCategory =
-  //   Math.floor(Math.min(...pricesInCategory) / 100) * 100;
-  // const maxPriceInCategory =
-  //   Math.ceil(Math.max(...pricesInCategory) / 100) * 100;
-
-  // if (error) return <p>Error: {error.message}</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   const GridStyled = styled(Grid)({
     '&.MuiGrid-root': {
@@ -123,10 +96,6 @@ export const CategoryPage = () => {
     setSearchParams(newSearchParams);
   }
 
-  const clearSearchParams = () => {
-    setSearchParams({});
-  };
-
   return (
     <>
       <Container>
@@ -141,7 +110,7 @@ export const CategoryPage = () => {
 
           {visibleData.length > 0 && (
             <Typography variant="body1" color="secondary" sx={{ pb: 4 }}>
-              {visibleData.length} models
+              {productCount} models
             </Typography>
           )}
           <script
@@ -156,7 +125,7 @@ export const CategoryPage = () => {
                 sx={{ alignItems: 'center', pt: 3 }}
               >
                 <Typography variant="h4">
-                  There are no {categoryName} matching the query.
+                  There are no {categoryName.slice(1)} matching the query.
                 </Typography>
                 <Box
                   sx={{
@@ -174,7 +143,7 @@ export const CategoryPage = () => {
                   ></DotLottiePlayer>
                 </Box>
                 <Typography variant="h4" sx={{}}>
-                  Go ahead & explore {categoryName} full list.
+                  Go ahead & explore {categoryName.slice(1)} full list.
                 </Typography>
                 <Button
                   variant="contained"
@@ -190,7 +159,6 @@ export const CategoryPage = () => {
                     },
                   }}
                   onClick={() => {
-                    clearSearchParams();
                     if (isSearchOpen) {
                       setIsSearchOpen(false);
                       handleClearSearch();
