@@ -221,7 +221,16 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             </Typography>
             <Typography
               variant="body1"
-              sx={{ color: 'black', fontWeight: 'bold' }}
+              sx={{
+                color: 'black',
+                fontWeight: 'bold',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                WebkitLineClamp: 1,
+                paddingLeft: 2,
+              }}
             >
               {screen}
             </Typography>
