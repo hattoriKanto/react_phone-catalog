@@ -41,7 +41,10 @@ export const SearchContextProvider: React.FC<SearchProviderProps> = ({
     );
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    debouncedSetQuery: (query: string) => void,
+  ) => {
     setQuery(event.target.value);
     debouncedSetQuery(query);
   };
@@ -62,6 +65,3 @@ export const SearchContextProvider: React.FC<SearchProviderProps> = ({
     </SearchContext.Provider>
   );
 };
-function debouncedSetQuery(query: string) {
-  throw new Error('Function not implemented.');
-}

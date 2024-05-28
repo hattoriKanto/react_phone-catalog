@@ -12,7 +12,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { Product } from '../../types';
-import useFetchData from '../../utils/useFetchData';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CustomGrid } from '../../components/CustomGrid';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -29,7 +28,6 @@ import { customBreakpoints } from '../../theme/breakpoints.config';
 import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import { apiDBurl } from '../../utils/config';
-import { error } from 'console';
 
 export const CategoryPage = () => {
   const location = useLocation();
