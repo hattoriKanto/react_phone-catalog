@@ -10,7 +10,7 @@ This project is a multi-page website designed for selling electronic devices. It
 - **User Interaction**: Registered users can add products to Cart and Favorites stored in the database.
 - **Category-wise Search**: Integrated search functionality for each category.
 - **Product Sorting**: Implemented sorting options based on price, name, and novelty.
-- **Pagination**: Enabled pagination with options for displaying 4, 6, 8, or 12 products per page.
+- **Pagination**: Enabled pagination with options for displaying 4, 6, 8, or 16 products per page.
 
 ## Frontend Technologies:
 
